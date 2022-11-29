@@ -19,6 +19,7 @@ import {useColorScheme} from 'react-native';
 const CheckOutScreen = ({navigation}) => {
   //-------------------- Checkbox Selection --------------------//
   const [isSelected, setSelection] = useState(false);
+  const [radioBtn, setSelectedRadioBtn] = useState('');
   const [changeFor, setChangeFor] = useState('');
 
   const data = [
@@ -112,6 +113,7 @@ const CheckOutScreen = ({navigation}) => {
             <View style={{alignItems: 'center'}}>
               <RadioButtonRN
                 data={data}
+                boxActiveBgColor="#03a9f4"
                 selectedBtn={e => console.log(e)}
                 boxStyle={{
                   borderRadius: 10,

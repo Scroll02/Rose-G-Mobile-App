@@ -38,6 +38,9 @@ const CardSlider2 = ({cardTitle, viewTitle, navigation}) => {
                   image: item.image,
                   price: item.price,
                   foodQty: item.foodQty,
+                  addOn: item.addOn,
+                  addOnPrice: item.addOnPrice,
+                  addOnQty: item.addOnQty,
                 })
               }>
               <View style={styles.cardContainer}>
@@ -46,7 +49,7 @@ const CardSlider2 = ({cardTitle, viewTitle, navigation}) => {
                 </View>
 
                 <Text style={styles.productTitle}>{item.title}</Text>
-                <Text style={styles.productPriceTxt}>{item.price}</Text>
+                <Text style={styles.productPriceTxt}>₱&nbsp;{item.price}</Text>
               </View>
             </TouchableOpacity>
           );

@@ -5,7 +5,7 @@ import {Icon} from '@rneui/base';
 import {colors} from '../globals/style';
 import {track_order_status} from '../globals/constant';
 const OrderTracker = ({navigation}) => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(3);
   return (
     <View style={styles.mainContainer}>
       {/*-------------------- Header Navigation --------------------*/}
@@ -15,7 +15,7 @@ const OrderTracker = ({navigation}) => {
             name="arrow-back"
             type="material"
             size={30}
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.navigate('Home2')}
           />
         </View>
 

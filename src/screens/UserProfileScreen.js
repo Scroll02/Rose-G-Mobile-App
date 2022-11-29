@@ -75,6 +75,14 @@ const UserProfileScreen = ({navigation}) => {
         }}>
         <Text style={button1.btn1Txt}>Sign Out</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+        style={button1.btn1}
+        onPress={() => {
+          navigation.navigate('MapView');
+        }}>
+        <Text style={button1.btn1Txt}>Map View</Text>
+      </TouchableOpacity>
     </View>
   );
 };

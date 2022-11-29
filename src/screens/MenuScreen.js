@@ -39,7 +39,7 @@ const MenuScreen = ({navigation, route}) => {
             name="arrow-back"
             type="material"
             size={30}
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.navigate('Home2')}
           />
         </View>
 
@@ -94,6 +94,9 @@ const MenuScreen = ({navigation, route}) => {
                     image: item.image,
                     price: item.price,
                     foodQty: item.foodQty,
+                    addOn: item.addOn,
+                    addOnPrice: item.addOnPrice,
+                    addOnQty: item.addOnQty,
                   })
                 }>
                 <View style={styles.foodContainerIn}>
@@ -101,7 +104,7 @@ const MenuScreen = ({navigation, route}) => {
                     <Image source={item.image} style={styles.foodImg} />
                   </View>
                   <Text style={styles.foodTitle}>{item.title}</Text>
-                  <Text style={styles.foodPriceTxt}>{item.price}</Text>
+                  <Text style={styles.foodPriceTxt}>₱&nbsp;{item.price}</Text>
                 </View>
               </TouchableOpacity>
             );

@@ -14,8 +14,11 @@ import {Icon} from '@rneui/base';
 import {colors} from '../globals/style';
 
 const FoodDetailsScreen = ({navigation, route}) => {
-  const [quantity, setQuantity] = useState('1');
-  //----------Food Quantity: Increase & Decrease Button Function----------
+  const data = route.params;
+
+  const [quantity, setQuantity] = useState(1);
+  const [addOnQuantity, setAddOnQuantity] = useState(0);
+  //----------Food Quantity: Increase & Decrease Button Function----------//
   const increaseQuantity = () => {
     setQuantity((parseInt(quantity) + 1).toString());
   };
@@ -24,6 +27,17 @@ const FoodDetailsScreen = ({navigation, route}) => {
       setQuantity((parseInt(quantity) - 1).toString());
     }
   };
+
+  //----------Add On Quantity: Increase & Decrease Button Function----------//
+  const increaseAddonQuantity = () => {
+    setAddOnQuantity((parseInt(addOnQuantity) + 1).toString());
+  };
+  const decreaseAddonQuantity = () => {
+    if (parseInt(addOnQuantity) > 0) {
+      setAddOnQuantity((parseInt(addOnQuantity) - 1).toString());
+    }
+  };
+
   return (
     <View style={styles.mainContainer}>
       {/*-------------------- Header Navigation --------------------*/}
@@ -33,7 +47,7 @@ const FoodDetailsScreen = ({navigation, route}) => {
             name="arrow-back"
             type="material"
             size={30}
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.navigate('Menu')}
           />
         </View>
 
@@ -51,14 +65,14 @@ const FoodDetailsScreen = ({navigation, route}) => {
           {/* Food Image */}
           <View
             style={{
-              height: 190,
+              height: 250,
               borderRadius: 15,
               backgroundColor: colors.col5,
             }}>
             <Image
-              source={route.params?.image}
+              source={data.image}
               style={{
-                height: 150,
+                height: 220,
                 width: '100%',
                 resizeMode: 'contain',
                 marginVertical: 20,
@@ -72,11 +86,11 @@ const FoodDetailsScreen = ({navigation, route}) => {
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text
                 style={{fontWeight: 'bold', fontSize: 20, color: colors.col7}}>
-                {route.params?.title}
+                {data.title}
               </Text>
               <Text
                 style={{fontWeight: 'bold', fontSize: 20, color: colors.col7}}>
-                {route.params?.price}
+                ₱&nbsp;{data.price}
               </Text>
             </View>
             <Text
@@ -86,13 +100,93 @@ const FoodDetailsScreen = ({navigation, route}) => {
                 textAlign: 'justify',
                 fontSize: 15,
               }}>
-              {route.params?.description}
+              {data.description}
             </Text>
+
+            {/* Add Ons */}
+            {data.addOnPrice !== 0 && (
+              <View style={{marginTop: 20}}>
+                <Text style={{fontSize: 15, fontWeight: 'bold'}}>Add Ons:</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-around',
+                  }}>
+                  <View>
+                    <Text style={{fontSize: 15}}>{data.addOn}</Text>
+                    <Text style={{fontSize: 15}}>
+                      ₱&nbsp;
+                      {parseInt(data.addOnPrice * addOnQuantity).toString()}
+                    </Text>
+                  </View>
+
+                  {/* Add On Quantity */}
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      height: 45,
+                      width: 150,
+                      backgroundColor: colors.col6,
+                      borderRadius: 10,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <View
+                      style={{
+                        width: 60,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <TouchableOpacity onPress={decreaseAddonQuantity}>
+                        <Icon
+                          name="minuscircleo"
+                          type="antdesign"
+                          size={22}
+                          style={{height: 23, width: 23}}
+                        />
+                      </TouchableOpacity>
+                    </View>
+
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 15,
+                          fontWeight: '500',
+                          color: colors.col7,
+                        }}>
+                        {addOnQuantity}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        width: 60,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <TouchableOpacity onPress={increaseAddonQuantity}>
+                        <Icon
+                          name="pluscircleo"
+                          type="antdesign"
+                          color={colors.col4}
+                          size={22}
+                          style={{height: 23, width: 23}}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            )}
           </View>
         </View>
       </ScrollView>
 
-      {/* Food Details Footer */}
+      {/*-------------------- Food Details Footer --------------------*/}
       <View
         style={{
           height: 120,
@@ -103,10 +197,21 @@ const FoodDetailsScreen = ({navigation, route}) => {
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
         }}>
-        <Text style={{fontWeight: 'bold', fontSize: 20, color: colors.col7}}>
-          Total Price:&nbsp;{route.params?.price}
-        </Text>
-
+        {/* Total Price */}
+        {data.addOnPrice !== 0 ? (
+          <Text style={{fontWeight: 'bold', fontSize: 20, color: colors.col7}}>
+            Total Price:&nbsp; ₱&nbsp;
+            {(
+              parseInt(data.price * quantity) +
+              parseInt(data.addOnPrice * addOnQuantity)
+            ).toString()}
+          </Text>
+        ) : (
+          <Text style={{fontWeight: 'bold', fontSize: 20, color: colors.col7}}>
+            Total Price:&nbsp; ₱&nbsp;
+            {parseInt(data.price * quantity).toString()}
+          </Text>
+        )}
         {/* Quantity & Add to Bag Button */}
         <View
           style={{

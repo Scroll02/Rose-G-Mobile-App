@@ -13,6 +13,7 @@ import BagScreen from '../screens/BagScreen';
 import CheckOutScreen from '../screens/CheckOutScreen';
 import OrderTrackerScreen from '../screens/OrderTrackerScreen';
 import UserProfileScreen from '../screens/UserProfileScreen';
+import MapViewScreen from './MapViewScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -24,6 +25,7 @@ const HomeStack = () => {
       <Stack.Screen name="Bag" component={BagScreen} />
       <Stack.Screen name="FoodDetails" component={FoodDetailsScreen} />
       <Stack.Screen name="CheckOut" component={CheckOutScreen} />
+      <Stack.Screen name="MapView" component={MapViewScreen} />
     </Stack.Navigator>
   );
 };
@@ -162,8 +164,6 @@ const getTabBarVisibility = route => {
   if (routeName == 'FoodDetails') {
     return 'none';
   } else if (routeName == 'Bag') {
-    return 'none';
-  } else if (routeName == 'Orders') {
     return 'none';
   } else if (routeName == 'CheckOut') {
     return 'none';
