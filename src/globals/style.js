@@ -5,6 +5,7 @@ module.exports = {
     col3: '#e3686b', //dark pink
     col4: '#c26522', //brown
     col5: '#f4ede5', //dirty white
+    // col5: '#EAD4AF',
     col6: 'white', //white
     col7: 'black', //black
     col8: 'grey', //grey

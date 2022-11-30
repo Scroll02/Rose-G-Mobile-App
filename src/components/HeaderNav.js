@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     width: '100%',
-    padding: 10,
+    height: 50,
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: colors.col1,
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   heading1: {
     color: colors.col7,
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 20,
   },

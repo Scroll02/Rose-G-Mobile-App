@@ -15,7 +15,7 @@ const OrderTracker = ({navigation}) => {
             name="arrow-back"
             type="material"
             size={30}
-            onPress={() => navigation.navigate('Home2')}
+            onPress={() => navigation.navigate('Home')}
           />
         </View>
 

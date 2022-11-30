@@ -21,10 +21,34 @@ const Tab = createBottomTabNavigator();
 const HomeStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Home2" component={HomeScreen} />
+      <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Bag" component={BagScreen} />
-      <Stack.Screen name="FoodDetails" component={FoodDetailsScreen} />
       <Stack.Screen name="CheckOut" component={CheckOutScreen} />
+    </Stack.Navigator>
+  );
+};
+
+const MenuStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Menu" component={MenuScreen} />
+      <Stack.Screen name="FoodDetails" component={FoodDetailsScreen} />
+    </Stack.Navigator>
+  );
+};
+
+const OrdersStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Orders" component={OrderTrackerScreen} />
+    </Stack.Navigator>
+  );
+};
+
+const ProfileStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="UserProfile" component={UserProfileScreen} />
       <Stack.Screen name="MapView" component={MapViewScreen} />
     </Stack.Navigator>
   );
@@ -49,7 +73,7 @@ const BottomNav = () => {
         },
       }}>
       <Tab.Screen
-        name="Home"
+        name="HomeTab"
         component={HomeStack}
         options={({route}) => ({
           tabBarStyle: {
@@ -83,9 +107,20 @@ const BottomNav = () => {
         })}
       />
       <Tab.Screen
-        name="Menu"
-        component={MenuScreen}
-        options={{
+        name="MenuTab"
+        component={MenuStack}
+        options={({route}) => ({
+          tabBarStyle: {
+            display: getTabBarVisibility(route),
+            backgroundColor: colors.col1,
+            height: 60,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            borderLeftWidth: 1,
+            borderRightWidth: 1,
+            borderColor: colors.col1,
+            elevation: 0,
+          },
           tabBarIcon: ({focused, color}) => (
             <View>
               <Icon
@@ -103,11 +138,11 @@ const BottomNav = () => {
               </Text>
             </View>
           ),
-        }}
+        })}
       />
       <Tab.Screen
-        name="Orders"
-        component={OrderTrackerScreen}
+        name="OrdersTab"
+        component={OrdersStack}
         options={{
           tabBarBadge: 0,
           tabBarBadgeStyle: {backgroundColor: colors.col4},
@@ -131,8 +166,8 @@ const BottomNav = () => {
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={UserProfileScreen}
+        name="ProfileTab"
+        component={ProfileStack}
         options={{
           tabBarIcon: ({focused, color}) => (
             <View>
@@ -161,11 +196,11 @@ const getTabBarVisibility = route => {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Feed';
   //console.log(routeName);
 
-  if (routeName == 'FoodDetails') {
-    return 'none';
-  } else if (routeName == 'Bag') {
-    return 'none';
-  } else if (routeName == 'CheckOut') {
+  if (
+    routeName?.includes('FoodDetails') ||
+    routeName?.includes('Bag') ||
+    routeName?.includes('CheckOut')
+  ) {
     return 'none';
   }
   return 'flex';

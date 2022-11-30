@@ -7,7 +7,6 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
 import {colors, button1} from '../globals/style';
 import {Icon} from '@rneui/base';
 import React, {useState} from 'react';

@@ -39,7 +39,7 @@ const MenuScreen = ({navigation, route}) => {
             name="arrow-back"
             type="material"
             size={30}
-            onPress={() => navigation.navigate('Home2')}
+            onPress={() => navigation.navigate('Home')}
           />
         </View>
 

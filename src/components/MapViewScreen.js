@@ -1,11 +1,11 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {colors} from '../globals/style';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+
 const MapViewScreen = () => {
   return (
     <View style={styles.mainContainer}>
-      <Text>asd</Text>
+      <Text>Map View Screen</Text>
     </View>
   );
 };

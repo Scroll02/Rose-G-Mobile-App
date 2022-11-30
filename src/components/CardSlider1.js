@@ -30,7 +30,9 @@ const CardSlider1 = ({cardTitle, viewTitle, navigation}) => {
         renderItem={({item}) => {
           return (
             <TouchableOpacity
-              onPress={() => navigation.navigate('Menu', {title: item.title})}>
+              onPress={() =>
+                navigation.navigate('MenuTab', {title: item.title})
+              }>
               <View style={styles.cardContainer}>
                 <Image source={item.image} style={styles.cardImg} />
                 <Text style={styles.menuTitle}>{item.title}</Text>

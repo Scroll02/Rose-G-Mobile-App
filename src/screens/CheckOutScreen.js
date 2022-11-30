@@ -9,30 +9,43 @@ import {
   Dimensions,
 } from 'react-native';
 import {ScrollView} from 'react-native-virtualized-view';
-import {CheckBox} from '@rneui/base';
-import RadioButtonRN from 'radio-buttons-react-native';
 import React, {useState, useEffect} from 'react';
 import {Icon} from '@rneui/base';
 import {colors} from '../globals/style';
-import {useColorScheme} from 'react-native';
+import RadioGroup from 'react-native-radio-buttons-group';
 
 const CheckOutScreen = ({navigation}) => {
-  //-------------------- Checkbox Selection --------------------//
-  const [isSelected, setSelection] = useState(false);
-  const [radioBtn, setSelectedRadioBtn] = useState('');
   const [changeFor, setChangeFor] = useState('');
-
-  const data = [
+  const [radioButtons, setRadioButtons] = useState([
     {
+      id: '1',
       label: 'Cash On Delivery',
+      value: 'Cash On Delviery',
+      image: require('../../assets/images/check_circle.png'),
+      borderColor: colors.col2,
+      color: colors.col2,
+      containerStyle: {...styles.radioButtonStyle},
     },
     {
+      id: '2',
       label: 'Cash On Pickup',
+      value: 'Cash On Pickup',
+      borderColor: colors.col2,
+      color: colors.col2,
+      containerStyle: {...styles.radioButtonStyle},
     },
     {
+      id: '3',
       label: 'G-Cash',
+      value: 'G-Cash',
+      borderColor: colors.col2,
+      color: colors.col2,
+      containerStyle: {...styles.radioButtonStyle},
     },
-  ];
+  ]);
+  function onPressRadioButton(radioButtonsArray) {
+    setRadioButtons(radioButtonsArray);
+  }
 
   return (
     <View style={styles.mainContainer}>
@@ -111,20 +124,14 @@ const CheckOutScreen = ({navigation}) => {
 
             {/*-------------------- Payment Methods --------------------*/}
             <View style={{alignItems: 'center'}}>
-              <RadioButtonRN
-                data={data}
-                boxActiveBgColor="#03a9f4"
-                selectedBtn={e => console.log(e)}
-                boxStyle={{
-                  borderRadius: 10,
-                  borderColor: colors.col2,
+              <RadioGroup
+                containerStyle={{
+                  width: '100%',
+                  alignItems: 'flex-start',
                   backgroundColor: colors.col5,
-                  width: '90%',
-                  height: 50,
                 }}
-                icon={
-                  <Icon name="check-circle" size={25} color={colors.col2} />
-                }
+                radioButtons={radioButtons}
+                onPress={onPressRadioButton}
               />
               <View
                 style={{
@@ -235,5 +242,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     color: colors.col7,
+  },
+
+  //-------------------- CheckOut Screen Body --------------------//
+  //-------------------- Choose Payment Method --------------------//
+  radioButtonStyle: {
+    borderRadius: 10,
+    borderColor: colors.col2,
+    paddingLeft: 15,
+    alignSelf: 'center',
+    width: '90%',
+    height: 50,
+    borderWidth: 1,
   },
 });
