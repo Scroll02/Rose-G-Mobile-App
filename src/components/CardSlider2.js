@@ -10,7 +10,11 @@ import React from 'react';
 import {colors} from '../globals/style';
 import {featuredData} from '../globals/sampleData';
 
-const CardSlider2 = ({cardTitle, viewTitle, navigation}) => {
+const CardSlider2 = ({cardTitle, viewTitle, navigation, data}) => {
+  const openFoodDetailsScreen = item => {
+    //console.log(item);
+    navigation.navigate('FoodDetails', item);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -26,29 +30,28 @@ const CardSlider2 = ({cardTitle, viewTitle, navigation}) => {
         style={styles.featuredContainer}
         horizontal
         showsHorizontalScrollIndicator={false}
-        data={featuredData}
+        data={data}
         renderItem={({item}) => {
           return (
             <TouchableOpacity
-              onPress={() =>
+              onPress={() => {
                 navigation.navigate('FoodDetails', {
                   id: item.id,
-                  title: item.title,
+                  foodName: item.foodName,
                   description: item.description,
-                  image: item.image,
+                  img: item.img,
                   price: item.price,
-                  foodQty: item.foodQty,
                   addOn: item.addOn,
                   addOnPrice: item.addOnPrice,
-                  addOnQty: item.addOnQty,
-                })
-              }>
+                  // openFoodDetailsScreen(item);
+                });
+              }}>
               <View style={styles.cardContainer}>
                 <View style={styles.imageContainer}>
-                  <Image source={item.image} style={styles.cardImg} />
+                  <Image source={{uri: item.img}} style={styles.cardImg} />
                 </View>
 
-                <Text style={styles.productTitle}>{item.title}</Text>
+                <Text style={styles.productTitle}>{item.foodName}</Text>
                 <Text style={styles.productPriceTxt}>₱&nbsp;{item.price}</Text>
               </View>
             </TouchableOpacity>

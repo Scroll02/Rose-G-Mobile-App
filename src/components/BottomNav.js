@@ -11,8 +11,11 @@ import MenuScreen from '../screens/MenuScreen';
 import FoodDetailsScreen from '../screens/FoodDetailsScreen';
 import BagScreen from '../screens/BagScreen';
 import CheckOutScreen from '../screens/CheckOutScreen';
+import EditRecipientDetailsScreen from '../screens/EditRecipientDetailsScreen';
 import OrderTrackerScreen from '../screens/OrderTrackerScreen';
 import UserProfileScreen from '../screens/UserProfileScreen';
+import EditProfileDetailsScreen from '../screens/EditProfileDetailsScreen';
+import ChangePasswordScreen from '../screens/ChangePasswordScreen';
 import MapViewScreen from './MapViewScreen';
 
 const Stack = createNativeStackNavigator();
@@ -22,8 +25,13 @@ const HomeStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Menu" component={MenuScreen} />
       <Stack.Screen name="Bag" component={BagScreen} />
       <Stack.Screen name="CheckOut" component={CheckOutScreen} />
+      <Stack.Screen
+        name="EditRecipientDetails"
+        component={EditRecipientDetailsScreen}
+      />
     </Stack.Navigator>
   );
 };
@@ -49,6 +57,11 @@ const ProfileStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="UserProfile" component={UserProfileScreen} />
+      <Stack.Screen
+        name="EditProfileDetails"
+        component={EditProfileDetailsScreen}
+      />
+      <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
       <Stack.Screen name="MapView" component={MapViewScreen} />
     </Stack.Navigator>
   );
@@ -168,7 +181,18 @@ const BottomNav = () => {
       <Tab.Screen
         name="ProfileTab"
         component={ProfileStack}
-        options={{
+        options={({route}) => ({
+          tabBarStyle: {
+            display: getTabBarVisibility(route),
+            backgroundColor: colors.col1,
+            height: 60,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            borderLeftWidth: 1,
+            borderRightWidth: 1,
+            borderColor: colors.col1,
+            elevation: 0,
+          },
           tabBarIcon: ({focused, color}) => (
             <View>
               <Icon
@@ -186,7 +210,7 @@ const BottomNav = () => {
               </Text>
             </View>
           ),
-        }}
+        })}
       />
     </Tab.Navigator>
   );
@@ -199,7 +223,10 @@ const getTabBarVisibility = route => {
   if (
     routeName?.includes('FoodDetails') ||
     routeName?.includes('Bag') ||
-    routeName?.includes('CheckOut')
+    routeName?.includes('CheckOut') ||
+    routeName?.includes('EditRecipientDetails') ||
+    routeName?.includes('EditProfileDetails') ||
+    routeName?.includes('ChangePassword')
   ) {
     return 'none';
   }

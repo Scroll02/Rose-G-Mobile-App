@@ -13,8 +13,80 @@ import React, {useState, useEffect} from 'react';
 import {Icon} from '@rneui/base';
 import {colors} from '../globals/style';
 import RadioGroup from 'react-native-radio-buttons-group';
+import {firebase} from '../Firebase/FirebaseConfig';
 
-const CheckOutScreen = ({navigation}) => {
+const CheckOutScreen = ({navigation, route}) => {
+  /*-------------------- Retrieving User Profile Data --------------------*/
+  const [userLoggedUid, setUserLoggedUid] = useState(null);
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const checklogin = () => {
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          //console.log(user);
+          setUserLoggedUid(user.uid);
+        } else {
+          setUserLoggedUid(null);
+        }
+      });
+    };
+    checklogin();
+  }, []);
+
+  const getUserData = async () => {
+    const docRef = firebase
+      .firestore()
+      .collection('UserData')
+      .where('uid', '==', userLoggedUid);
+    const doc = await docRef.get();
+    if (!doc.empty) {
+      doc.forEach(doc => {
+        setUserData(doc.data());
+      });
+    } else {
+      //navigation.navigate("Login");
+      console.log('No such document!');
+    }
+  };
+  useEffect(() => {
+    getUserData();
+  }, [userLoggedUid]);
+
+  /*-------------------- Retrieving Bag Data --------------------*/
+  const {bagData} = route.params;
+  // console.log(bagData);
+
+  const [orderData, setOrderData] = useState([]);
+  useEffect(() => {
+    setOrderData(JSON.parse(bagData));
+  }, [bagData]);
+  // console.log(orderData);
+
+  /*-------------------- Computing the Sub Total Cost & Total Cost --------------------*/
+  const [subtotalCost, setSubTotalCost] = useState('0');
+  const [totalCost, setTotalCost] = useState('0');
+
+  useEffect(() => {
+    if (bagData != null) {
+      const foodPrice = JSON.parse(bagData).bag;
+      let subTotalFoodCost = 0;
+      let grandTotalFoodCost = 0;
+      foodPrice.map(item => {
+        // Sub Total Cost
+        subTotalFoodCost =
+          parseInt(item.data.price * item.foodQty) +
+          parseInt(item.data.addOnPrice * item.addOnQty) +
+          subTotalFoodCost;
+        // Total Cost
+        grandTotalFoodCost = subTotalFoodCost + 50;
+      });
+      setSubTotalCost(JSON.stringify(subTotalFoodCost));
+      setTotalCost(JSON.stringify(grandTotalFoodCost));
+    }
+  }, [bagData]);
+
+  /*-------------------- Payment Method (Radio Button) --------------------*/
   const [changeFor, setChangeFor] = useState('');
   const [radioButtons, setRadioButtons] = useState([
     {
@@ -56,7 +128,7 @@ const CheckOutScreen = ({navigation}) => {
             name="arrow-back"
             type="material"
             size={30}
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.navigate('Bag', {bagData})}
           />
         </View>
 
@@ -81,12 +153,30 @@ const CheckOutScreen = ({navigation}) => {
               borderRadius: 10,
               padding: 10,
             }}>
-            <Text style={{fontWeight: 'bold', color: colors.col7}}>
-              Recipient Details
-            </Text>
-            <Text>Name: </Text>
-            <Text>Contact No.: </Text>
-            <Text>Delivery Address: </Text>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <Text style={{fontWeight: 'bold', color: colors.col7}}>
+                Recipient Details
+              </Text>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: colors.col2,
+                  width: 50,
+                  borderRadius: 10,
+                  alignItems: 'center',
+                }}
+                onPress={() => {
+                  navigation.replace('EditRecipientDetails', {bagData});
+                }}>
+                <Text style={{fontWeight: 'bold', color: colors.col7}}>
+                  Edit
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <Text>Name: {userData?.fullName}</Text>
+            <Text>Contact No.: {userData?.contactNumber}</Text>
+            <Text>Delivery Address: {userData?.address}</Text>
           </View>
 
           {/*-------------------- Order Summary --------------------*/}
@@ -101,11 +191,48 @@ const CheckOutScreen = ({navigation}) => {
             <Text style={{fontWeight: 'bold', color: colors.col7}}>
               Order Summary
             </Text>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text>Food Quantity</Text>
-              <Text>Food Name</Text>
-              <Text>Food Price</Text>
+
+            <FlatList
+              data={orderData.bag}
+              renderItem={({item}) => {
+                return (
+                  <View>
+                    {/*-------------------- Food Details Row --------------------*/}
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                      }}>
+                      <Text>{item.foodQty}x</Text>
+                      <Text>{item.data?.foodName}</Text>
+                      <Text>₱ {parseInt(item.data?.price * item.foodQty)}</Text>
+                    </View>
+
+                    {/*-------------------- Add Ons Details Row --------------------*/}
+                    {item.addOnQty != 0 && (
+                      <View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}>
+                          <Text>{item.addOnQty}x</Text>
+                          <Text>{item.data.addOn}</Text>
+                          <Text>
+                            ₱ {parseInt(item.data.addOnPrice * item.addOnQty)}
+                          </Text>
+                        </View>
+                      </View>
+                    )}
+                  </View>
+                );
+              }}
+            />
+
+            {/*-------------------- Sub Total & Shipping Fee --------------------*/}
+            <View style={{marginVertical: 10}}>
+              <Text>Subtotal: ₱ {subtotalCost}</Text>
+              <Text>Shipping Fee: ₱ 50</Text>
             </View>
           </View>
 
@@ -179,7 +306,7 @@ const CheckOutScreen = ({navigation}) => {
             Total:
           </Text>
           <Text style={{fontWeight: 'bold', fontSize: 18, color: colors.col7}}>
-            ₱ 123.00
+            ₱ {totalCost}
           </Text>
         </View>
         {/*-------------------- Place Order Button --------------------*/}

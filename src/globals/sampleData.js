@@ -27,11 +27,11 @@ export const menuCategoryData = [
   },
 ];
 
-//-------------------- CardSlider2.js --------------------//
+//-------------------- CardSlider2.js (Featured Section) --------------------//
 export const featuredData = [
   {
     id: 1,
-    title: 'Palabok',
+    foodName: 'Palabok',
     categoryTitle: 'Featured',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -43,7 +43,7 @@ export const featuredData = [
   },
   {
     id: 2,
-    title: 'Tapasilog',
+    foodName: 'Tapasilog',
     categoryTitle: 'Featured',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -55,7 +55,7 @@ export const featuredData = [
   },
   {
     id: 3,
-    title: 'Coke',
+    foodName: 'Coke',
     categoryTitle: 'Featured',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -66,7 +66,7 @@ export const featuredData = [
   },
   {
     id: 4,
-    title: 'Choco Sundae',
+    foodName: 'Choco Sundae',
     categoryTitle: 'Featured',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -110,7 +110,7 @@ export const productData = [
   //-------------------- Ice Cream --------------------//
   {
     id: 1,
-    title: 'Avocado Sundae',
+    foodName: 'Avocado Sundae',
     categoryTitle: 'Ice Cream',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -121,7 +121,7 @@ export const productData = [
   },
   {
     id: 2,
-    title: 'Choco Cup',
+    foodName: 'Choco Cup',
     categoryTitle: 'Ice Cream',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -132,7 +132,7 @@ export const productData = [
   },
   {
     id: 3,
-    title: 'Choco Melt',
+    foodName: 'Choco Melt',
     categoryTitle: 'Ice Cream',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -143,7 +143,7 @@ export const productData = [
   },
   {
     id: 4,
-    title: 'Choco Sundae',
+    foodName: 'Choco Sundae',
     categoryTitle: 'Ice Cream',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -154,7 +154,7 @@ export const productData = [
   },
   {
     id: 5,
-    title: 'Coffee Crispy',
+    foodName: 'Coffee Crispy',
     categoryTitle: 'Ice Cream',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -165,7 +165,7 @@ export const productData = [
   },
   {
     id: 6,
-    title: 'Mochi Chocolate',
+    foodName: 'Mochi Chocolate',
     categoryTitle: 'Ice Cream',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -177,7 +177,7 @@ export const productData = [
   //-------------------- Drinks --------------------//
   {
     id: 7,
-    title: 'Coke',
+    foodName: 'Coke',
     categoryTitle: 'Drinks',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -188,7 +188,7 @@ export const productData = [
   },
   {
     id: 8,
-    title: 'Mineral Water',
+    foodName: 'Mineral Water',
     categoryTitle: 'Drinks',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -199,7 +199,7 @@ export const productData = [
   },
   {
     id: 9,
-    title: 'Mountain Dew',
+    foodName: 'Mountain Dew',
     categoryTitle: 'Drinks',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -210,7 +210,7 @@ export const productData = [
   },
   {
     id: 10,
-    title: 'Royal',
+    foodName: 'Royal',
     categoryTitle: 'Drinks',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -221,7 +221,7 @@ export const productData = [
   },
   {
     id: 11,
-    title: 'Sprite',
+    foodName: 'Sprite',
     categoryTitle: 'Drinks',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -233,7 +233,7 @@ export const productData = [
   //-------------------- Rice Meal --------------------//
   {
     id: 12,
-    title: 'Hotsilog',
+    foodName: 'Hotsilog',
     categoryTitle: 'Rice Meal',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -245,7 +245,7 @@ export const productData = [
   },
   {
     id: 13,
-    title: 'Longsilog',
+    foodName: 'Longsilog',
     categoryTitle: 'Rice Meal',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -257,7 +257,7 @@ export const productData = [
   },
   {
     id: 14,
-    title: 'Porksilog',
+    foodName: 'Porksilog',
     categoryTitle: 'Rice Meal',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -269,7 +269,7 @@ export const productData = [
   },
   {
     id: 15,
-    title: 'Tapasilog',
+    foodName: 'Tapasilog',
     categoryTitle: 'Rice Meal',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -282,7 +282,7 @@ export const productData = [
   //-------------------- Palabok --------------------//
   {
     id: 16,
-    title: 'Palabok',
+    foodName: 'Palabok',
     categoryTitle: 'Palabok',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -295,7 +295,7 @@ export const productData = [
   //-------------------- Featured --------------------//
   {
     id: 17,
-    title: 'Palabok',
+    foodName: 'Palabok',
     categoryTitle: 'Featured',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -307,7 +307,7 @@ export const productData = [
   },
   {
     id: 18,
-    title: 'Tapasilog',
+    foodName: 'Tapasilog',
     categoryTitle: 'Featured',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -319,7 +319,7 @@ export const productData = [
   },
   {
     id: 19,
-    title: 'Coke',
+    foodName: 'Coke',
     categoryTitle: 'Featured',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
@@ -329,7 +329,7 @@ export const productData = [
   },
   {
     id: 20,
-    title: 'Choco Sundae',
+    foodName: 'Choco Sundae',
     categoryTitle: 'Featured',
     description:
       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',

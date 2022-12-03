@@ -1,14 +1,33 @@
 import {StyleSheet, Text, View, TextInput} from 'react-native';
 import {ScrollView} from 'react-native-virtualized-view';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {colors} from '../globals/style';
 import {Icon} from '@rneui/base';
 import HeaderNav from '../components/HeaderNav';
 import OfferSlider from '../components/OfferSlider';
 import CardSlider1 from '../components/CardSlider1';
 import CardSlider2 from '../components/CardSlider2';
+import {firebase} from '../Firebase/FirebaseConfig';
 
 const HomeScreen = ({navigation}) => {
+  const [foodData, setFoodData] = useState([]);
+
+  const [drinksData, setDrinksData] = useState([]);
+  const [iceCreamData, setIceCreamData] = useState([]);
+
+  const foodRef = firebase.firestore().collection('FoodData');
+
+  useEffect(() => {
+    foodRef.onSnapshot(snapshot => {
+      setFoodData(snapshot.docs.map(doc => doc.data()));
+    });
+  }, []);
+
+  useEffect(() => {
+    setDrinksData(foodData.filter(item => item.categoryTitle == 'Drinks'));
+    setIceCreamData(foodData.filter(item => item.categoryTitle == 'Ice Cream'));
+  }, [foodData]);
+
   return (
     <View style={styles.container}>
       <HeaderNav navigation={navigation} />
@@ -37,6 +56,7 @@ const HomeScreen = ({navigation}) => {
 
         {/*-------------------- Featured Slider Section -------------------- */}
         <CardSlider2
+          data={foodData}
           cardTitle={'Featured'}
           viewTitle={'View Featured'}
           navigation={navigation}

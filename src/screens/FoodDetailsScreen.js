@@ -8,16 +8,51 @@ import {
   TextInput,
   Pressable,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {ScrollView} from 'react-native-virtualized-view';
 import {Icon} from '@rneui/base';
 import {colors} from '../globals/style';
+import {firebase} from '../Firebase/FirebaseConfig';
 
 const FoodDetailsScreen = ({navigation, route}) => {
   const data = route.params;
 
-  const [quantity, setQuantity] = useState(1);
-  const [addOnQuantity, setAddOnQuantity] = useState(0);
+  const [quantity, setQuantity] = useState('1');
+  const [addOnQuantity, setAddOnQuantity] = useState('0');
+  const [addOnPrice, setAddOnPrice] = useState('0');
+
+  //----------Add To Bag Function----------
+  const addToBag = () => {
+    //console.log(addtocart);
+    const docRef = firebase
+      .firestore()
+      .collection('UserBag')
+      .doc(firebase.auth().currentUser.uid);
+
+    const data1 = {
+      data,
+      addOnQty: addOnQuantity,
+      foodQty: quantity,
+    };
+    console.log('data1', data1);
+
+    docRef.get().then(doc => {
+      if (doc.exists) {
+        docRef.update({
+          bag: firebase.firestore.FieldValue.arrayUnion(data1),
+        });
+        alert('Added to cart ');
+        navigation.navigate('Menu');
+      } else {
+        docRef.set({
+          bag: [data1],
+        });
+        alert('Added to cart');
+        navigation.navigate('Menu');
+      }
+    });
+  };
+
   //----------Food Quantity: Increase & Decrease Button Function----------//
   const increaseQuantity = () => {
     setQuantity((parseInt(quantity) + 1).toString());
@@ -60,20 +95,22 @@ const FoodDetailsScreen = ({navigation, route}) => {
             marginTop: 10,
             marginBottom: 10,
             paddingHorizontal: 20,
+            width: 370,
+            marginHorizontal: 10,
           }}>
           {/* Food Card */}
           {/* Food Image */}
           <View
             style={{
               height: 250,
+              width: '100%',
               borderRadius: 15,
               backgroundColor: colors.col5,
             }}>
             <Image
-              source={data.image}
+              source={{uri: data.img}}
               style={{
                 height: 220,
-                width: '100%',
                 resizeMode: 'contain',
                 marginVertical: 20,
               }}
@@ -86,7 +123,7 @@ const FoodDetailsScreen = ({navigation, route}) => {
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text
                 style={{fontWeight: 'bold', fontSize: 20, color: colors.col7}}>
-                {data.title}
+                {data.foodName}
               </Text>
               <Text
                 style={{fontWeight: 'bold', fontSize: 20, color: colors.col7}}>
@@ -104,7 +141,7 @@ const FoodDetailsScreen = ({navigation, route}) => {
             </Text>
 
             {/* Add Ons */}
-            {data.addOnPrice !== 0 && (
+            {data.addOnPrice !== ' ' && (
               <View style={{marginTop: 20}}>
                 <Text style={{fontSize: 15, fontWeight: 'bold'}}>Add Ons:</Text>
                 <View
@@ -116,7 +153,7 @@ const FoodDetailsScreen = ({navigation, route}) => {
                     <Text style={{fontSize: 15}}>{data.addOn}</Text>
                     <Text style={{fontSize: 15}}>
                       ₱&nbsp;
-                      {parseInt(data.addOnPrice * addOnQuantity).toString()}
+                      {data.addOnPrice}
                     </Text>
                   </View>
 
@@ -290,7 +327,7 @@ const FoodDetailsScreen = ({navigation, route}) => {
               borderRadius: 10,
               backgroundColor: colors.col2,
             }}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => addToBag()}>
               <Text
                 style={{fontWeight: 'bold', fontSize: 18, color: colors.col7}}>
                 Add to Bag

@@ -13,11 +13,78 @@ import {Icon} from '@rneui/base';
 import {colors} from '../globals/style';
 import {productData} from '../globals/sampleData';
 import {SwipeListView} from 'react-native-swipe-list-view';
+import {firebase} from '../Firebase/FirebaseConfig';
 
 const BagScreen = ({navigation}) => {
-  const [myBagList, setMyBagList] = useState(productData);
-
   const [quantity, setQuantity] = useState('1');
+
+  const [bagData, setBagData] = useState(null);
+  const [subtotalCost, setSubTotalCost] = useState('0');
+  const [totalCost, setTotalCost] = useState('0');
+
+  /*-------------------- Retrieving UserBag Data --------------------*/
+  const getBagData = async () => {
+    const docRef = firebase
+      .firestore()
+      .collection('UserBag')
+      .doc(firebase.auth().currentUser.uid);
+
+    docRef.get().then(doc => {
+      if (doc.exists) {
+        const data = JSON.stringify(doc.data());
+        setBagData(data);
+      } else {
+        console.log('No such document!');
+      }
+    });
+  };
+  useEffect(() => {
+    getBagData();
+  }, []);
+
+  //----------Food Quantity: Increase & Decrease Button Function----------//
+  const increaseQuantity = () => {
+    setQuantity((parseInt(quantity) + 1).toString());
+  };
+  const decreaseQuantity = () => {
+    if (parseInt(quantity) > 1) {
+      setQuantity((parseInt(quantity) - 1).toString());
+    }
+  };
+
+  /*-------------------- Sub Total Cost & Total Cost --------------------*/
+  useEffect(() => {
+    if (bagData != null) {
+      const foodPrice = JSON.parse(bagData).bag;
+      let subTotalFoodCost = 0;
+      let grandTotalFoodCost = 0;
+      foodPrice.map(item => {
+        // Sub Total Cost
+        subTotalFoodCost =
+          parseInt(item.data.price * item.foodQty) +
+          parseInt(item.data.addOnPrice * item.addOnQty) +
+          subTotalFoodCost;
+        // Total Cost
+        grandTotalFoodCost = subTotalFoodCost + 50;
+      });
+      setSubTotalCost(JSON.stringify(subTotalFoodCost));
+      setTotalCost(JSON.stringify(grandTotalFoodCost));
+    }
+  }, [bagData]);
+
+  /*-------------------- Delete Button --------------------*/
+  const deleteItem = item => {
+    const docRef = firebase
+      .firestore()
+      .collection('UserBag')
+      .doc(firebase.auth().currentUser.uid);
+    docRef.update({
+      bag: firebase.firestore.FieldValue.arrayRemove(item),
+    });
+    getBagData();
+  };
+
+  const [myBagList, setMyBagList] = useState(productData);
 
   return (
     <View style={styles.mainContainer}>
@@ -48,153 +115,188 @@ const BagScreen = ({navigation}) => {
       </View>
 
       {/*-------------------- Bag List --------------------*/}
-      <SwipeListView
-        data={myBagList}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={item => `${item.id}`}
-        contentContainerStyle={{
-          paddingHorizontal: 20,
-          paddingBottom: 20,
-        }}
-        disableRightSwipe={true}
-        rightOpenValue={-75}
-        renderItem={(data, rowMap) => {
-          return (
-            <View
-              style={{
-                height: 120,
-                backgroundColor: colors.col5,
-                ...styles.bagItemContainer,
-              }}>
-              {/* Food Image */}
+      {bagData == null || JSON.parse(bagData).bag.length == 0 ? (
+        /*-------------------- Bag is empty --------------------*/
+        <View style={{flex: 1, alignItems: 'center'}}>
+          <View style={{marginVertical: 30}}>
+            <Image
+              source={require('../../assets/images/shopping-bag.png')}
+              style={{width: 200, height: 200}}
+            />
+          </View>
+          <Text style={{fontWeight: 'bold', fontSize: 25, margin: 10}}>
+            Your bag is empty
+          </Text>
+          <Text style={{fontWeight: 'bold', fontSize: 15, margin: 10}}>
+            Check the food we offer on the Menu
+          </Text>
+        </View>
+      ) : (
+        /*-------------------- Bag is not empty --------------------*/
+        <SwipeListView
+          data={JSON.parse(bagData).bag}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={item => `${item.id}`}
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+            paddingBottom: 20,
+          }}
+          disableRightSwipe={true}
+          rightOpenValue={-75}
+          renderItem={(data, rowMap) => {
+            return (
               <View
                 style={{
-                  width: 90,
-                  height: 80,
-                  marginLeft: -15,
+                  height: 120,
+                  backgroundColor: colors.col5,
+                  ...styles.bagItemContainer,
                 }}>
-                <Image
-                  source={data.item.image}
-                  resizeMode="contain"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    position: 'absolute',
-                  }}
-                />
-              </View>
-              {/* Food Info */}
-              <View style={{flex: 1}}>
-                <Text style={{color: colors.col7, fontWeight: '500'}}>
-                  {data.item.title}
-                </Text>
-                <Text style={{color: colors.col7, fontWeight: 'bold'}}>
-                  {data.item.price}
-                </Text>
-                <Text style={{fontSize: 13, marginTop: 5}}>Add ons:</Text>
-                <View style={{flexDirection: 'row'}}>
-                  <Text style={{fontSize: 13}}>{data.item.addOnQty}&nbsp;</Text>
-                  <Text style={{fontSize: 13}}>{data.item.addOn}</Text>
-                </View>
-              </View>
-              {/* Total Price per item & Quantity */}
-              <View>
-                {/* Total Price per item */}
-                <Text
-                  style={{
-                    alignSelf: 'flex-end',
-                    padding: 10,
-                    color: colors.col7,
-                    fontWeight: 'bold',
-                    fontSize: 15,
-                  }}>
-                  ₱ 123123
-                </Text>
-                {/* Quantity */}
+                {/* Food Image */}
                 <View
                   style={{
-                    flexDirection: 'row',
-                    height: 40,
-                    width: 100,
-                    backgroundColor: colors.col5,
-                    borderRadius: 10,
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                    width: 90,
+                    height: 80,
+                    marginLeft: -15,
                   }}>
-                  <View
+                  <Image
+                    source={{uri: data.item.data?.img}}
+                    resizeMode="contain"
                     style={{
-                      width: 30,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <TouchableOpacity>
-                      <Icon
-                        name="minuscircleo"
-                        type="antdesign"
-                        size={20}
-                        style={{height: 20, width: 20}}
-                      />
-                    </TouchableOpacity>
+                      width: '100%',
+                      height: '100%',
+                      position: 'absolute',
+                    }}
+                  />
+                </View>
+                {/* Food Info */}
+                <View style={{flex: 1}}>
+                  <Text style={{color: colors.col7, fontWeight: '500'}}>
+                    {data.item.data?.foodName}
+                  </Text>
+                  <Text style={{color: colors.col7, fontWeight: 'bold'}}>
+                    ₱ {data.item.data?.price}
+                  </Text>
+                  <Text style={{fontSize: 13, marginTop: 5}}>Add ons:</Text>
+                  <View style={{flexDirection: 'row'}}>
+                    {data.item.addOnQty != 0 && (
+                      <Text style={{fontSize: 13}}>
+                        {data.item.addOnQty}&nbsp;
+                      </Text>
+                    )}
+                    {data.item.addOnQty != 0 && (
+                      <Text style={{fontSize: 13}}>
+                        {data.item.data?.addOn}
+                      </Text>
+                    )}
                   </View>
+                </View>
 
+                {/* Total Price per item & Quantity */}
+                <View>
+                  {/* Total Price per item */}
+                  <Text
+                    style={{
+                      alignSelf: 'flex-end',
+                      padding: 10,
+                      color: colors.col7,
+                      fontWeight: 'bold',
+                      fontSize: 15,
+                    }}>
+                    ₱
+                    {data.item.addOnQty != 0
+                      ? parseInt(data.item.data?.price * data.item.foodQty) +
+                        parseInt(
+                          data.item.data?.addOnPrice * data.item.addOnQty,
+                        )
+                      : parseInt(data.item.data?.price * data.item.foodQty)}
+                  </Text>
+                  {/* Quantity */}
                   <View
                     style={{
-                      flex: 1,
+                      flexDirection: 'row',
+                      height: 40,
+                      width: 100,
+                      backgroundColor: colors.col5,
+                      borderRadius: 10,
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
-                    <Text
+                    <View
                       style={{
-                        fontSize: 15,
-                        fontWeight: '500',
-                        color: colors.col7,
+                        width: 30,
+                        alignItems: 'center',
+                        justifyContent: 'center',
                       }}>
-                      {quantity}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      width: 30,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <TouchableOpacity>
-                      <Icon
-                        name="pluscircleo"
-                        type="antdesign"
-                        color={colors.col4}
-                        size={20}
-                        style={{height: 20, width: 20}}
-                      />
-                    </TouchableOpacity>
+                      <TouchableOpacity>
+                        <Icon
+                          name="minuscircleo"
+                          type="antdesign"
+                          size={20}
+                          style={{height: 20, width: 20}}
+                        />
+                      </TouchableOpacity>
+                    </View>
+
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 15,
+                          fontWeight: '500',
+                          color: colors.col7,
+                        }}>
+                        {parseInt(data.item.foodQty * quantity).toString()}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        width: 30,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}>
+                      <TouchableOpacity>
+                        <Icon
+                          name="pluscircleo"
+                          type="antdesign"
+                          color={colors.col4}
+                          size={20}
+                          style={{height: 20, width: 20}}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               </View>
-            </View>
-          );
-        }}
-        renderHiddenItem={(data, rowMap) => {
-          return (
-            /*-------------------- Delete Button --------------------*/
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'flex-end',
-                backgroundColor: colors.col2,
-                ...styles.bagItemContainer,
-              }}>
-              <TouchableOpacity>
-                <Icon
-                  name="delete-outline"
-                  type="material-icon"
-                  size={30}
-                  style={{marginRight: 5, fontWeight: 'bold'}}
-                />
-              </TouchableOpacity>
-            </View>
-          );
-        }}
-      />
+            );
+          }}
+          renderHiddenItem={(data, rowMap) => {
+            return (
+              /*-------------------- Delete Button --------------------*/
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'flex-end',
+                  backgroundColor: colors.col2,
+                  ...styles.bagItemContainer,
+                }}>
+                <TouchableOpacity onPress={() => deleteItem(data.item)}>
+                  <Icon
+                    name="delete-outline"
+                    type="material-icon"
+                    size={30}
+                    style={{marginRight: 5, fontWeight: 'bold'}}
+                  />
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+        />
+      )}
+
       {/*-------------------- Footer Component --------------------*/}
       <View
         style={{
@@ -203,6 +305,7 @@ const BagScreen = ({navigation}) => {
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
         }}>
+        {/*-------------------- Sub Total --------------------*/}
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text
             style={{
@@ -222,10 +325,11 @@ const BagScreen = ({navigation}) => {
               color: colors.col7,
               fontWeight: '500',
             }}>
-            ₱123.00
+            ₱ {subtotalCost}
           </Text>
         </View>
 
+        {/*-------------------- Shipping Fee --------------------*/}
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text
             style={{
@@ -245,10 +349,11 @@ const BagScreen = ({navigation}) => {
               color: colors.col7,
               fontWeight: '500',
             }}>
-            ₱ 0.00
+            ₱ 50
           </Text>
         </View>
 
+        {/*-------------------- Total Cost --------------------*/}
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text
             style={{
@@ -268,33 +373,62 @@ const BagScreen = ({navigation}) => {
               color: colors.col7,
               fontWeight: 'bold',
             }}>
-            ₱ 123.00
+            ₱ {totalCost}
           </Text>
         </View>
 
         {/*-------------------- Proceed to Checkout Button --------------------*/}
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <TouchableOpacity
+        {bagData == null || JSON.parse(bagData).bag.length == 0 ? (
+          /*-------------------- Disabled Proceed to Checkout Button when bag is empty --------------------*/
+          <View
             style={{
-              backgroundColor: colors.col2,
-              width: 300,
-              height: 40,
-              borderRadius: 20,
+              flex: 1,
               justifyContent: 'center',
               alignItems: 'center',
-            }}
-            onPress={() => navigation.navigate('CheckOut')}>
-            <Text
-              style={{fontSize: 18, fontWeight: 'bold', color: colors.col7}}>
-              Proceed to Checkout
-            </Text>
-          </TouchableOpacity>
-        </View>
+            }}>
+            <TouchableOpacity
+              disabled={true}
+              style={{
+                backgroundColor: colors.col2,
+                width: 300,
+                height: 40,
+                borderRadius: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+                opacity: 0.6,
+              }}
+              onPress={() => navigation.navigate('CheckOut', {bagData})}>
+              <Text
+                style={{fontSize: 18, fontWeight: 'bold', color: colors.col7}}>
+                Proceed to Checkout
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          /*-------------------- Enable Button Proceed to Checkout Button when bag is not empty --------------------*/
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: colors.col2,
+                width: 300,
+                height: 40,
+                borderRadius: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={() => navigation.navigate('CheckOut', {bagData})}>
+              <Text
+                style={{fontSize: 18, fontWeight: 'bold', color: colors.col7}}>
+                Proceed to Checkout
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );

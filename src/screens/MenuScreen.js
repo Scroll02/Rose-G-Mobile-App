@@ -13,21 +13,43 @@ import {Icon} from '@rneui/base';
 import {colors} from '../globals/style';
 import {categoryList} from '../globals/sampleData';
 import {productData} from '../globals/sampleData';
+import {firebase} from '../Firebase/FirebaseConfig';
 
 const MenuScreen = ({navigation, route}) => {
   const [selectedCategoryIndex, setSelectedCategoryIndex] = useState(0);
 
-  const [productList, setProductList] = useState(productData);
+  const [foodData, setFoodData] = useState([]);
+  const [drinksData, setDrinksData] = useState([]);
+  const [iceCreamData, setIceCreamData] = useState([]);
+  const foodRef = firebase.firestore().collection('FoodData');
+  useEffect(() => {
+    foodRef.onSnapshot(snapshot => {
+      setFoodData(snapshot.docs.map(doc => doc.data()));
+    });
+  }, []);
+
+  useEffect(() => {
+    setDrinksData(foodData.filter(item => item.categoryTitle == 'Drinks'));
+    setIceCreamData(foodData.filter(item => item.categoryTitle == 'Ice Cream'));
+  }, [foodData]);
+  // console.log(drinksData);
+
+  const [productList, setProductList] = useState(foodData);
 
   const setCategoryFilter = selectedCategoryIndex => {
     if (selectedCategoryIndex !== 0) {
       setProductList([
-        ...productData.filter(e => e.categoryTitle === selectedCategoryIndex),
+        ...foodData.filter(e => e.categoryTitle === selectedCategoryIndex),
       ]);
     } else {
-      setProductList(productData);
+      setProductList(foodData);
     }
     setSelectedCategoryIndex(selectedCategoryIndex);
+  };
+
+  const openFoodDetailsScreen = item => {
+    //console.log(item);
+    navigation.navigate('FoodDetails', item);
   };
 
   return (
@@ -89,21 +111,19 @@ const MenuScreen = ({navigation, route}) => {
                 onPress={() =>
                   navigation.navigate('FoodDetails', {
                     id: item.id,
-                    title: item.title,
+                    foodName: item.foodName,
                     description: item.description,
-                    image: item.image,
+                    img: item.img,
                     price: item.price,
-                    foodQty: item.foodQty,
                     addOn: item.addOn,
                     addOnPrice: item.addOnPrice,
-                    addOnQty: item.addOnQty,
                   })
                 }>
                 <View style={styles.foodContainerIn}>
                   <View style={styles.foodImgContainer}>
-                    <Image source={item.image} style={styles.foodImg} />
+                    <Image source={{uri: item.img}} style={styles.foodImg} />
                   </View>
-                  <Text style={styles.foodTitle}>{item.title}</Text>
+                  <Text style={styles.foodTitle}>{item.foodName}</Text>
                   <Text style={styles.foodPriceTxt}>₱&nbsp;{item.price}</Text>
                 </View>
               </TouchableOpacity>

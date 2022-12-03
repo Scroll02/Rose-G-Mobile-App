@@ -11,7 +11,7 @@ const OfferSlider = () => {
           autoplayTimeout={6}
           showsButtons={true}
           dotColor={colors.col6}
-          activeDotColor={colors.col1}
+          activeDotColor={colors.col2}
           nextButton={<Text style={styles.buttonText}>›</Text>}
           prevButton={<Text style={styles.buttonText}>‹</Text>}>
           <View style={styles.slide}>

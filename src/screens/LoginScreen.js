@@ -164,7 +164,7 @@ const LoginScreen = ({navigation}) => {
         </View>
 
         {/* -------------------- Order as Guest Button -------------------- */}
-        <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+        <TouchableOpacity>
           <View style={styles.signInWithBtn}>
             <Icon name="user" type="font-awesome" />
             <Text style={styles.loginInWithBtnTxt}>Order as Guest</Text>
