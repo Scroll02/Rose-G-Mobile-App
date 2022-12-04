@@ -26,6 +26,7 @@ const HomeStack = () => {
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Menu" component={MenuScreen} />
+      <Stack.Screen name="FoodDetails" component={FoodDetailsScreen} />
       <Stack.Screen name="Bag" component={BagScreen} />
       <Stack.Screen name="CheckOut" component={CheckOutScreen} />
       <Stack.Screen

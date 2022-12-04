@@ -95,13 +95,12 @@ const BagScreen = ({navigation}) => {
             name="arrow-back"
             type="material"
             size={30}
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.replace('Home')}
           />
         </View>
 
         <Text style={styles.heading1}>Bag</Text>
       </View>
-
       {/*-------------------- Order Summary Title --------------------*/}
       <View
         style={{
@@ -113,7 +112,6 @@ const BagScreen = ({navigation}) => {
           Order Summary
         </Text>
       </View>
-
       {/*-------------------- Bag List --------------------*/}
       {bagData == null || JSON.parse(bagData).bag.length == 0 ? (
         /*-------------------- Bag is empty --------------------*/
@@ -258,7 +256,7 @@ const BagScreen = ({navigation}) => {
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}>
-                      <TouchableOpacity>
+                      <TouchableOpacity onPress={increaseQuantity}>
                         <Icon
                           name="pluscircleo"
                           type="antdesign"
@@ -296,7 +294,6 @@ const BagScreen = ({navigation}) => {
           }}
         />
       )}
-
       {/*-------------------- Footer Component --------------------*/}
       <View
         style={{

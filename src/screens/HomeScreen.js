@@ -10,6 +10,7 @@ import CardSlider2 from '../components/CardSlider2';
 import {firebase} from '../Firebase/FirebaseConfig';
 
 const HomeScreen = ({navigation}) => {
+  /*-------------------- Retrieving Food Data --------------------*/
   const [foodData, setFoodData] = useState([]);
 
   const [drinksData, setDrinksData] = useState([]);
@@ -28,9 +29,30 @@ const HomeScreen = ({navigation}) => {
     setIceCreamData(foodData.filter(item => item.categoryTitle == 'Ice Cream'));
   }, [foodData]);
 
+  /*-------------------- Count Bag Items --------------------*/
+  const [bagData, setBagData] = useState(null);
+  const getBagData = async () => {
+    const docRef = firebase
+      .firestore()
+      .collection('UserBag')
+      .doc(firebase.auth().currentUser.uid);
+
+    docRef.get().then(doc => {
+      if (doc.exists) {
+        const data = JSON.stringify(doc.data());
+        setBagData(data);
+      } else {
+        console.log('No such document!');
+      }
+    });
+  };
+  useEffect(() => {
+    getBagData();
+  }, []);
+
   return (
     <View style={styles.container}>
-      <HeaderNav navigation={navigation} />
+      <HeaderNav navigation={navigation} data={bagData} />
 
       <ScrollView showsVerticalScrollIndicator={false}>
         {/*-------------------- Search Container -------------------- */}

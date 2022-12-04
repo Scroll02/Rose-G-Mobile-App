@@ -1,8 +1,10 @@
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Icon} from '@rneui/base';
 import {colors} from '../globals/style';
-const HeaderNav = ({navigation}) => {
+
+const HeaderNav = ({navigation, data}) => {
+  // console.log(JSON.parse(data)?.bag.length);
   return (
     <View>
       <View style={styles.headerContainer}>
@@ -27,7 +29,13 @@ const HeaderNav = ({navigation}) => {
               borderRadius: 30,
               backgroundColor: colors.col4,
             }}>
-            <Text style={{color: colors.col6, fontSize: 11}}>6</Text>
+            {JSON.parse(data)?.bag.length == 0 ? (
+              <Text style={{color: colors.col6, fontSize: 11}}>0</Text>
+            ) : (
+              <Text style={{color: colors.col6, fontSize: 11}}>
+                {JSON.parse(data)?.bag.length}
+              </Text>
+            )}
           </View>
         </TouchableOpacity>
       </View>

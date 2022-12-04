@@ -42,13 +42,13 @@ const FoodDetailsScreen = ({navigation, route}) => {
           bag: firebase.firestore.FieldValue.arrayUnion(data1),
         });
         alert('Added to cart ');
-        navigation.navigate('Menu');
+        navigation.replace('Menu');
       } else {
         docRef.set({
           bag: [data1],
         });
         alert('Added to cart');
-        navigation.navigate('Menu');
+        navigation.replace('Menu');
       }
     });
   };
@@ -82,7 +82,7 @@ const FoodDetailsScreen = ({navigation, route}) => {
             name="arrow-back"
             type="material"
             size={30}
-            onPress={() => navigation.navigate('Menu')}
+            onPress={() => navigation.replace('Menu')}
           />
         </View>
 

@@ -35,7 +35,7 @@ const CardSlider2 = ({cardTitle, viewTitle, navigation, data}) => {
           return (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('FoodDetails', {
+                navigation.replace('FoodDetails', {
                   id: item.id,
                   foodName: item.foodName,
                   description: item.description,

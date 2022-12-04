@@ -9,10 +9,11 @@ import {
   Dimensions,
 } from 'react-native';
 import {ScrollView} from 'react-native-virtualized-view';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import React, {useState, useEffect} from 'react';
 import {Icon} from '@rneui/base';
 import {colors} from '../globals/style';
-import RadioGroup from 'react-native-radio-buttons-group';
+import {RadioButton} from 'react-native-paper';
 import {firebase} from '../Firebase/FirebaseConfig';
 
 const CheckOutScreen = ({navigation, route}) => {
@@ -88,36 +89,34 @@ const CheckOutScreen = ({navigation, route}) => {
 
   /*-------------------- Payment Method (Radio Button) --------------------*/
   const [changeFor, setChangeFor] = useState('');
-  const [radioButtons, setRadioButtons] = useState([
-    {
-      id: '1',
-      label: 'Cash On Delivery',
-      value: 'Cash On Delviery',
-      image: require('../../assets/images/check_circle.png'),
-      borderColor: colors.col2,
-      color: colors.col2,
-      containerStyle: {...styles.radioButtonStyle},
-    },
-    {
-      id: '2',
-      label: 'Cash On Pickup',
-      value: 'Cash On Pickup',
-      borderColor: colors.col2,
-      color: colors.col2,
-      containerStyle: {...styles.radioButtonStyle},
-    },
-    {
-      id: '3',
-      label: 'G-Cash',
-      value: 'G-Cash',
-      borderColor: colors.col2,
-      color: colors.col2,
-      containerStyle: {...styles.radioButtonStyle},
-    },
-  ]);
-  function onPressRadioButton(radioButtonsArray) {
-    setRadioButtons(radioButtonsArray);
-  }
+  const [checked, setChecked] = useState('Cash On Delivery');
+
+  /*-------------------- Place Order Function --------------------*/
+  const placeOrder = () => {
+    const docRef = firebase
+      .firestore()
+      .collection('UserOrders')
+      .doc(new Date().getTime().toString());
+
+    docRef
+      .set({
+        orderId: docRef.id,
+        orderData: orderData.bag,
+        orderStatus: 'Pending',
+        orderTotalCost: totalCost,
+        orderDate: firebase.firestore.FieldValue.serverTimestamp(),
+        orderAddress: userData.address,
+        orderContactNumber: userData.contactNumber,
+        orderFullName: userData.fullName,
+        orderUserUid: userLoggedUid,
+        orderPayment: checked,
+        changeFor: changeFor,
+      })
+      .then(() => {
+        alert('Order placed');
+      });
+    //console.log("pay");
+  };
 
   return (
     <View style={styles.mainContainer}>
@@ -136,7 +135,7 @@ const CheckOutScreen = ({navigation, route}) => {
       </View>
 
       {/*-------------------- Check Out Screen Body --------------------*/}
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             alignItems: 'center',
@@ -251,40 +250,73 @@ const CheckOutScreen = ({navigation, route}) => {
 
             {/*-------------------- Payment Methods --------------------*/}
             <View style={{alignItems: 'center'}}>
-              <RadioGroup
-                containerStyle={{
-                  width: '100%',
-                  alignItems: 'flex-start',
-                  backgroundColor: colors.col5,
-                }}
-                radioButtons={radioButtons}
-                onPress={onPressRadioButton}
-              />
-              <View
-                style={{
-                  flexDirection: 'row',
-                  height: 35,
-                  width: '50%',
-                  borderWidth: 1,
-                  borderColor: colors.col7,
-                  marginVertical: 7,
-                  marginHorizontal: 10,
-                  borderRadius: 10,
-                }}>
-                <TextInput
-                  placeholder="Change for"
-                  value={changeFor}
-                  placeholderTextColor={'#000'}
-                  style={{fontSize: 12, marginLeft: 15}}
-                  onChangeText={text => {
-                    setChangeFor(text);
-                  }}
+              <View style={styles.radioBtnContainer}>
+                <RadioButton
+                  value="Cash On Delivery"
+                  color={colors.col2}
+                  status={
+                    checked === 'Cash On Delivery' ? 'checked' : 'unchecked'
+                  } //if the value of checked is Apple, then select this button
+                  onPress={() => setChecked('Cash On Delivery')} //when pressed, set the value of the checked Hook to 'Apple'
                 />
+                <Text>Cash On Delivery</Text>
               </View>
+
+              <View style={styles.radioBtnContainer}>
+                <RadioButton
+                  value="Cash On Pickup"
+                  color={colors.col2}
+                  status={
+                    checked === 'Cash On Pickup' ? 'checked' : 'unchecked'
+                  }
+                  onPress={() => setChecked('Cash On Pickup')}
+                />
+                <Text>Cash On Pickup</Text>
+              </View>
+
+              <View style={styles.radioBtnContainer}>
+                <RadioButton
+                  value="GCash"
+                  color={colors.col2}
+                  status={checked === 'GCash' ? 'checked' : 'unchecked'}
+                  onPress={() => setChecked('GCash')}
+                />
+                <Text>GCash</Text>
+              </View>
+
+              <View style={{marginVertical: 5}}>
+                <Text>You selected "{checked}"</Text>
+              </View>
+
+              {/* Change for if COD */}
+              {checked === 'Cash On Delivery' && (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    height: 35,
+                    width: '50%',
+                    borderWidth: 1,
+                    borderColor: colors.col7,
+                    marginVertical: 7,
+                    marginHorizontal: 10,
+                    paddingLeft: 10,
+                    borderRadius: 10,
+                  }}>
+                  <TextInput
+                    placeholder="Change for"
+                    value={changeFor}
+                    placeholderTextColor={'#000'}
+                    style={{fontSize: 12}}
+                    onChangeText={text => {
+                      setChangeFor(text);
+                    }}
+                  />
+                </View>
+              )}
             </View>
           </View>
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
 
       {/*-------------------- Footer --------------------*/}
       <View
@@ -312,6 +344,7 @@ const CheckOutScreen = ({navigation, route}) => {
         {/*-------------------- Place Order Button --------------------*/}
         <View style={{alignItems: 'center'}}>
           <TouchableOpacity
+            onPress={placeOrder}
             style={{
               width: '90%',
               color: '#000',
@@ -373,13 +406,14 @@ const styles = StyleSheet.create({
 
   //-------------------- CheckOut Screen Body --------------------//
   //-------------------- Choose Payment Method --------------------//
-  radioButtonStyle: {
-    borderRadius: 10,
-    borderColor: colors.col2,
-    paddingLeft: 15,
-    alignSelf: 'center',
+  radioBtnContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     width: '90%',
-    height: 50,
-    borderWidth: 1,
+    borderWidth: 2,
+    borderColor: colors.col2,
+    borderRadius: 10,
+    marginVertical: 5,
+    paddingLeft: 10,
   },
 });
