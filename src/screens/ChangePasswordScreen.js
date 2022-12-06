@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {ScrollView} from 'react-native-virtualized-view';
 import React, {useState, useEffect} from 'react';
-import {color, Icon} from '@rneui/base';
+import {Icon} from '@rneui/base';
 import {button1, colors} from '../globals/style';
 import {firebase} from '../Firebase/FirebaseConfig';
-import {NavigationHelpersContext} from '@react-navigation/native';
 
 const ChangePasswordScreen = ({navigation}) => {
   /*-------------------- Retrieving User Data --------------------*/
@@ -129,99 +129,101 @@ const ChangePasswordScreen = ({navigation}) => {
       </View>
 
       {/*-------------------- Change Password Screen Body --------------------*/}
-      <View style={styles.bodyContainer}>
-        {/*-------------------- Old Password --------------------*/}
-        <Text style={styles.txt1}>Old Password:</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            secureTextEntry={showOldPassword === false ? true : false}
-            placeholder="Enter Old Password"
-            onFocus={() => {
-              setOldPasswordFocus(true);
-              setShowOldPassword(false);
-              setNewPasswordFocus(false);
-              setShowNewPassword(false);
-              setConfirmNewPasswordFocus(false);
-              setShowConfirmNewPassword(false);
-            }}
-            onChangeText={e => setOldPassword(e)}
-          />
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.bodyContainer}>
+          {/*-------------------- Old Password --------------------*/}
+          <Text style={styles.txt1}>Old Password:</Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              secureTextEntry={showOldPassword === false ? true : false}
+              placeholder="Enter Old Password"
+              onFocus={() => {
+                setOldPasswordFocus(true);
+                setShowOldPassword(false);
+                setNewPasswordFocus(false);
+                setShowNewPassword(false);
+                setConfirmNewPasswordFocus(false);
+                setShowConfirmNewPassword(false);
+              }}
+              onChangeText={e => setOldPassword(e)}
+            />
 
-          <Icon
-            name={showOldPassword === false ? 'eye-off' : 'eye'}
-            type="ionicon"
-            style={styles.eyeIcon}
-            size={20}
-            onPress={() => setShowOldPassword(!showOldPassword)}
-          />
+            <Icon
+              name={showOldPassword === false ? 'eye-off' : 'eye'}
+              type="ionicon"
+              style={styles.eyeIcon}
+              size={20}
+              onPress={() => setShowOldPassword(!showOldPassword)}
+            />
+          </View>
+
+          {/*-------------------- New Password --------------------*/}
+          <Text style={styles.txt1}>New Password:</Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              secureTextEntry={showNewPassword === false ? true : false}
+              placeholder="Enter New Password"
+              onFocus={() => {
+                setOldPasswordFocus(false);
+                setShowOldPassword(false);
+                setNewPasswordFocus(true);
+                setShowNewPassword(false);
+                setConfirmNewPasswordFocus(false);
+                setShowConfirmNewPassword(false);
+              }}
+              onChangeText={e => setNewPassword(e)}
+            />
+
+            <Icon
+              name={showNewPassword === false ? 'eye-off' : 'eye'}
+              type="ionicon"
+              style={styles.eyeIcon}
+              size={20}
+              onPress={() => setShowNewPassword(!showNewPassword)}
+            />
+          </View>
+
+          {/*-------------------- Confirm New Password --------------------*/}
+          <Text style={styles.txt1}>Confirm New Password:</Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              secureTextEntry={showConfirmNewPassword === false ? true : false}
+              placeholder="Enter Confirm New Password"
+              onFocus={() => {
+                setOldPasswordFocus(false);
+                setShowOldPassword(false);
+                setNewPasswordFocus(false);
+                setShowNewPassword(false);
+                setConfirmNewPasswordFocus(true);
+                setShowConfirmNewPassword(false);
+              }}
+              onChangeText={e => setConfirmNewPassword(e)}
+            />
+
+            <Icon
+              name={showConfirmNewPassword === false ? 'eye-off' : 'eye'}
+              type="ionicon"
+              style={styles.eyeIcon}
+              size={20}
+              onPress={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
+            />
+          </View>
+
+          {customError !== '' && (
+            <Text style={styles.errorMsg}>{customError}</Text>
+          )}
+
+          {/*-------------------- Save Button --------------------*/}
+          <View style={{alignItems: 'center'}}>
+            <TouchableOpacity style={button1.btn1} onPress={updatePassword}>
+              <Text style={button1.btn1Txt}>Save</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-
-        {/*-------------------- New Password --------------------*/}
-        <Text style={styles.txt1}>New Password:</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            secureTextEntry={showNewPassword === false ? true : false}
-            placeholder="Enter New Password"
-            onFocus={() => {
-              setOldPasswordFocus(false);
-              setShowOldPassword(false);
-              setNewPasswordFocus(true);
-              setShowNewPassword(false);
-              setConfirmNewPasswordFocus(false);
-              setShowConfirmNewPassword(false);
-            }}
-            onChangeText={e => setNewPassword(e)}
-          />
-
-          <Icon
-            name={showNewPassword === false ? 'eye-off' : 'eye'}
-            type="ionicon"
-            style={styles.eyeIcon}
-            size={20}
-            onPress={() => setShowNewPassword(!showNewPassword)}
-          />
-        </View>
-
-        {/*-------------------- Confirm New Password --------------------*/}
-        <Text style={styles.txt1}>Confirm New Password:</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            secureTextEntry={showConfirmNewPassword === false ? true : false}
-            placeholder="Enter Confirm New Password"
-            onFocus={() => {
-              setOldPasswordFocus(false);
-              setShowOldPassword(false);
-              setNewPasswordFocus(false);
-              setShowNewPassword(false);
-              setConfirmNewPasswordFocus(true);
-              setShowConfirmNewPassword(false);
-            }}
-            onChangeText={e => setConfirmNewPassword(e)}
-          />
-
-          <Icon
-            name={showConfirmNewPassword === false ? 'eye-off' : 'eye'}
-            type="ionicon"
-            style={styles.eyeIcon}
-            size={20}
-            onPress={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
-          />
-        </View>
-
-        {customError !== '' && (
-          <Text style={styles.errorMsg}>{customError}</Text>
-        )}
-
-        {/*-------------------- Save Button --------------------*/}
-        <View style={{alignItems: 'center'}}>
-          <TouchableOpacity style={button1.btn1} onPress={updatePassword}>
-            <Text style={button1.btn1Txt}>Save</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      </KeyboardAwareScrollView>
     </View>
   );
 };

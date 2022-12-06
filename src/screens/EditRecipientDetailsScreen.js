@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {ScrollView} from 'react-native-virtualized-view';
 import React, {useState, useEffect} from 'react';
 import {colors, button1} from '../globals/style';
@@ -112,34 +113,36 @@ const EditRecipientDetailsScreen = ({navigation, route}) => {
       </View>
 
       {/*-------------------- Edit Receipt Details Screen Body --------------------*/}
-      <View style={styles.bodyContainer}>
-        <Text style={styles.recipientDetailsTxt}>Recipient Details</Text>
-        <Text style={styles.txt1}>Full Name: {userData?.fullName}</Text>
-        <TextInput
-          style={styles.txtInput}
-          placeholder="Enter New Full Name"
-          onChangeText={e => setNewFullName(e)}
-        />
-        <Text style={styles.txt1}>
-          Contact Number:{userData?.contactNumber}
-        </Text>
-        <TextInput
-          style={styles.txtInput}
-          placeholder="Enter New Contact Number"
-          onChangeText={e => setNewContactNum(e)}
-        />
-        <Text style={styles.txt1}>Address: {userData?.address}</Text>
-        <TextInput
-          style={styles.txtInput}
-          placeholder="Enter New Address"
-          onChangeText={e => setNewAddress(e)}
-        />
-        <View style={{alignItems: 'center'}}>
-          <TouchableOpacity style={button1.btn1} onPress={() => updateUser()}>
-            <Text style={button1.btn1Txt}>Save</Text>
-          </TouchableOpacity>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.bodyContainer}>
+          <Text style={styles.recipientDetailsTxt}>Recipient Details</Text>
+          <Text style={styles.txt1}>Full Name: {userData?.fullName}</Text>
+          <TextInput
+            style={styles.txtInput}
+            placeholder="Enter New Full Name"
+            onChangeText={e => setNewFullName(e)}
+          />
+          <Text style={styles.txt1}>
+            Contact Number:{userData?.contactNumber}
+          </Text>
+          <TextInput
+            style={styles.txtInput}
+            placeholder="Enter New Contact Number"
+            onChangeText={e => setNewContactNum(e)}
+          />
+          <Text style={styles.txt1}>Address: {userData?.address}</Text>
+          <TextInput
+            style={styles.txtInput}
+            placeholder="Enter New Address"
+            onChangeText={e => setNewAddress(e)}
+          />
+          <View style={{alignItems: 'center'}}>
+            <TouchableOpacity style={button1.btn1} onPress={() => updateUser()}>
+              <Text style={button1.btn1Txt}>Save</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </KeyboardAwareScrollView>
     </View>
   );
 };

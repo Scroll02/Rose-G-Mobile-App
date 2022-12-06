@@ -69,6 +69,7 @@ const MenuScreen = ({navigation, route}) => {
       </View>
 
       {/*-------------------- Categories Section --------------------*/}
+
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}

@@ -61,7 +61,7 @@ const CheckOutScreen = ({navigation, route}) => {
   const [orderData, setOrderData] = useState([]);
   useEffect(() => {
     setOrderData(JSON.parse(bagData));
-  }, [bagData]);
+  }, []);
   // console.log(orderData);
 
   /*-------------------- Computing the Sub Total Cost & Total Cost --------------------*/
@@ -114,9 +114,19 @@ const CheckOutScreen = ({navigation, route}) => {
       })
       .then(() => {
         alert('Order placed');
+        navigation.replace('Home');
       });
+
+    const docRef2 = firebase
+      .firestore()
+      .collection('UserBag')
+      .doc(firebase.auth().currentUser.uid);
+    docRef2.delete();
     //console.log("pay");
   };
+
+  /*-------------------- Error Message --------------------*/
+  const [customError, setcustomError] = useState('');
 
   return (
     <View style={styles.mainContainer}>
@@ -342,27 +352,56 @@ const CheckOutScreen = ({navigation, route}) => {
           </Text>
         </View>
         {/*-------------------- Place Order Button --------------------*/}
-        <View style={{alignItems: 'center'}}>
-          <TouchableOpacity
-            onPress={placeOrder}
-            style={{
-              width: '90%',
-              color: '#000',
-              height: 40,
-              marginTop: 5,
-              backgroundColor: '#bcc998',
-              borderRadius: 10,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              fontWeight: 'bold',
-              fontSize: 18,
-            }}>
-            <Text style={{fontSize: 18, fontWeight: 'bold', color: '#000'}}>
-              Place Order
-            </Text>
-          </TouchableOpacity>
-        </View>
+        {userData?.contactNumber !== null ||
+        userData?.address != null ||
+        userData?.fullName != null ? (
+          /*-------------------- Enabled Place Order Button --------------------*/
+          <View style={{alignItems: 'center'}}>
+            <TouchableOpacity
+              onPress={placeOrder}
+              style={{
+                width: '90%',
+                color: '#000',
+                height: 40,
+                marginTop: 5,
+                backgroundColor: '#bcc998',
+                borderRadius: 10,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                fontWeight: 'bold',
+                fontSize: 18,
+              }}>
+              <Text style={{fontSize: 18, fontWeight: 'bold', color: '#000'}}>
+                Place Order
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          /*-------------------- Disabled Place Order Button --------------------*/
+          <View style={{alignItems: 'center'}}>
+            <TouchableOpacity
+              disabled={true}
+              onPress={placeOrder}
+              style={{
+                width: '90%',
+                color: '#000',
+                height: 40,
+                marginTop: 5,
+                backgroundColor: '#bcc998',
+                borderRadius: 10,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                fontWeight: 'bold',
+                fontSize: 18,
+              }}>
+              <Text style={{fontSize: 18, fontWeight: 'bold', color: '#000'}}>
+                Place Order
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );

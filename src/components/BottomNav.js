@@ -12,6 +12,7 @@ import FoodDetailsScreen from '../screens/FoodDetailsScreen';
 import BagScreen from '../screens/BagScreen';
 import CheckOutScreen from '../screens/CheckOutScreen';
 import EditRecipientDetailsScreen from '../screens/EditRecipientDetailsScreen';
+import OrdersScreen from '../screens/OrdersScreen';
 import OrderTrackerScreen from '../screens/OrderTrackerScreen';
 import UserProfileScreen from '../screens/UserProfileScreen';
 import EditProfileDetailsScreen from '../screens/EditProfileDetailsScreen';
@@ -49,7 +50,8 @@ const MenuStack = () => {
 const OrdersStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Orders" component={OrderTrackerScreen} />
+      <Stack.Screen name="Orders" component={OrdersScreen} />
+      <Stack.Screen name="OrderTracker" component={OrderTrackerScreen} />
     </Stack.Navigator>
   );
 };
@@ -157,8 +159,19 @@ const BottomNav = () => {
       <Tab.Screen
         name="OrdersTab"
         component={OrdersStack}
-        options={{
-          tabBarBadge: 0,
+        options={({route}) => ({
+          tabBarStyle: {
+            display: getTabBarVisibility(route),
+            backgroundColor: colors.col1,
+            height: 60,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            borderLeftWidth: 1,
+            borderRightWidth: 1,
+            borderColor: colors.col1,
+            elevation: 0,
+          },
+          // tabBarBadge: 0,
           tabBarBadgeStyle: {backgroundColor: colors.col4},
           tabBarIcon: ({focused, color}) => (
             <View>
@@ -177,7 +190,7 @@ const BottomNav = () => {
               </Text>
             </View>
           ),
-        }}
+        })}
       />
       <Tab.Screen
         name="ProfileTab"

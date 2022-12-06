@@ -57,6 +57,7 @@ const LoginScreen = ({navigation}) => {
       </View>
 
       {/* -------------------- Bottom View of the Screen -------------------- */}
+
       <View style={styles.bottomView}>
         <Text style={styles.heading}>Welcome to Rose G!</Text>
 

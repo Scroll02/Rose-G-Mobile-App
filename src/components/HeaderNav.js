@@ -29,7 +29,7 @@ const HeaderNav = ({navigation, data}) => {
               borderRadius: 30,
               backgroundColor: colors.col4,
             }}>
-            {JSON.parse(data)?.bag.length == 0 ? (
+            {JSON.parse(data) == 0 || data == null ? (
               <Text style={{color: colors.col6, fontSize: 11}}>0</Text>
             ) : (
               <Text style={{color: colors.col6, fontSize: 11}}>

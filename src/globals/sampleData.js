@@ -81,26 +81,22 @@ export const featuredData = [
 export const categoryList = [
   {
     id: 1,
-    categoryTitle: 'Featured',
-  },
-  {
-    id: 2,
     categoryTitle: 'Palabok',
   },
   {
-    id: 3,
+    id: 2,
     categoryTitle: 'Rice Meal',
   },
   {
-    id: 4,
+    id: 3,
     categoryTitle: 'Barbecue',
   },
   {
-    id: 5,
+    id: 4,
     categoryTitle: 'Drinks',
   },
   {
-    id: 6,
+    id: 5,
     categoryTitle: 'Ice Cream',
   },
 ];

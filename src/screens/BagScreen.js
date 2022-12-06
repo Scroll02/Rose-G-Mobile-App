@@ -43,9 +43,7 @@ const BagScreen = ({navigation}) => {
   }, []);
 
   //----------Food Quantity: Increase & Decrease Button Function----------//
-  const increaseQuantity = () => {
-    setQuantity((parseInt(quantity) + 1).toString());
-  };
+  const increaseQuantity = () => {};
   const decreaseQuantity = () => {
     if (parseInt(quantity) > 1) {
       setQuantity((parseInt(quantity) - 1).toString());
@@ -113,6 +111,7 @@ const BagScreen = ({navigation}) => {
         </Text>
       </View>
       {/*-------------------- Bag List --------------------*/}
+
       {bagData == null || JSON.parse(bagData).bag.length == 0 ? (
         /*-------------------- Bag is empty --------------------*/
         <View style={{flex: 1, alignItems: 'center'}}>
@@ -134,7 +133,7 @@ const BagScreen = ({navigation}) => {
         <SwipeListView
           data={JSON.parse(bagData).bag}
           showsVerticalScrollIndicator={false}
-          keyExtractor={item => `${item.id}`}
+          keyExtractor={(item, index) => `${item.id}${index}`}
           contentContainerStyle={{
             paddingHorizontal: 20,
             paddingBottom: 20,

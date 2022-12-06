@@ -79,8 +79,8 @@ const HomeScreen = ({navigation}) => {
         {/*-------------------- Featured Slider Section -------------------- */}
         <CardSlider2
           data={foodData}
-          cardTitle={'Featured'}
-          viewTitle={'View Featured'}
+          cardTitle={'Foods'}
+          viewTitle={'View Foods'}
           navigation={navigation}
         />
       </ScrollView>
