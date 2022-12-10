@@ -127,7 +127,7 @@ const FoodDetailsScreen = ({navigation, route}) => {
               </Text>
               <Text
                 style={{fontWeight: 'bold', fontSize: 20, color: colors.col7}}>
-                ₱&nbsp;{data.price}
+                ₱&nbsp;{parseFloat(data.price).toFixed(2)}
               </Text>
             </View>
             <Text
@@ -153,7 +153,7 @@ const FoodDetailsScreen = ({navigation, route}) => {
                     <Text style={{fontSize: 15}}>{data.addOn}</Text>
                     <Text style={{fontSize: 15}}>
                       ₱&nbsp;
-                      {data.addOnPrice}
+                      {parseFloat(data.addOnPrice).toFixed(2)}
                     </Text>
                   </View>
 
@@ -239,14 +239,14 @@ const FoodDetailsScreen = ({navigation, route}) => {
           <Text style={{fontWeight: 'bold', fontSize: 20, color: colors.col7}}>
             Total Price:&nbsp; ₱&nbsp;
             {(
-              parseInt(data.price * quantity) +
-              parseInt(data.addOnPrice * addOnQuantity)
-            ).toString()}
+              parseFloat(data.price * quantity) +
+              parseFloat(data.addOnPrice * addOnQuantity)
+            ).toFixed(2)}
           </Text>
         ) : (
           <Text style={{fontWeight: 'bold', fontSize: 20, color: colors.col7}}>
             Total Price:&nbsp; ₱&nbsp;
-            {parseInt(data.price * quantity).toString()}
+            {parseFloat(data.price * quantity).toFixed(2)}
           </Text>
         )}
         {/* Quantity & Add to Bag Button */}

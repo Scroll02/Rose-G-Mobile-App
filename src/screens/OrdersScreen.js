@@ -13,9 +13,9 @@ import {Icon} from '@rneui/base';
 import {colors} from '../globals/style';
 import {firebase} from '../Firebase/FirebaseConfig';
 
-const OrdersScreen = () => {
+const OrdersScreen = ({navigation}) => {
+  // -------------------- Retrieve Users Orders Data -------------------- //
   const [orders, setOrders] = useState([]);
-
   const getOrders = async () => {
     const ordersRef = firebase
       .firestore()
@@ -29,11 +29,13 @@ const OrdersScreen = () => {
     getOrders();
   }, []);
 
+  // -------------------- Convert the Timestamp to Date -------------------- //
   const convertDate = date => {
     const newDate = new Date(date && date.toDate && date.toDate().getTime());
     return newDate.toDateString();
   };
 
+  // -------------------- Cancel Order Function -------------------- //
   const cancelOrder = orderitem => {
     const orderRef = firebase
       .firestore()
@@ -53,7 +55,7 @@ const OrdersScreen = () => {
       </View>
 
       {/*-------------------- Orders Screen Body --------------------*/}
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {orders.length == 0 ? (
           /*-------------------- Orders is empty --------------------*/
           <View style={{flex: 1, alignItems: 'center'}}>
@@ -79,138 +81,255 @@ const OrdersScreen = () => {
         ) : (
           /*-------------------- Orders is not empty --------------------*/
           <View>
+            <View style={{paddingVertical: 10, paddingHorizontal: 20}}>
+              <Text
+                style={{color: colors.col7, fontWeight: 'bold', fontSize: 17}}>
+                On Going Orders
+              </Text>
+            </View>
             {orders.map((order, index) => {
               return (
-                <View key={index} style={styles.orderContainer}>
-                  {/*-------------------- Order Id, Order Date, Order Status --------------------*/}
-                  <Text style={styles.orderIndex}>{index + 1}</Text>
-                  <Text style={styles.orderTxt2}>
-                    Order ID: {order.orderId}
-                  </Text>
-                  <Text style={styles.orderTxt2}>
-                    Order Date: {convertDate(order.orderDate)}
-                  </Text>
+                <View>
                   {order.orderStatus == 'Pending' && (
-                    <Text style={styles.orderPending}>
-                      Your order is pending{' '}
-                    </Text>
+                    <View key={index} style={styles.orderContainer}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('OrderTracker', {
+                            orderId: order.orderId,
+                            orderDate: order.orderDate,
+                            orderAddress: order.orderAddress,
+                            orderStatus: order.orderStatus,
+                            orderPayment: order.orderPayment,
+                            changeFor: order.changeFor,
+                            orderData: order.orderData,
+                            orderTotalCost: order.orderTotalCost,
+                          })
+                        }>
+                        {/*-------------------- Order Id, Order Date, Order Status --------------------*/}
+                        {/* <Text style={styles.orderIndex}>{index + 1}</Text> */}
+                        {order.orderStatus == 'Pending' && (
+                          <Text style={styles.orderPending}>
+                            Order Pending{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Confirmed' && (
+                          <Text style={styles.orderConfirmed}>
+                            Order Confirmed{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Prepared' && (
+                          <Text style={styles.orderPrepared}>
+                            Preparing Order{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Delivery' && (
+                          <Text style={styles.orderDelivery}>
+                            Delivery on its way{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Delivered' && (
+                          <Text style={styles.orderDelivered}>
+                            Order Delivered{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Cancelled' && (
+                          <Text style={styles.orderCancelled}>
+                            Order Cancelled{' '}
+                          </Text>
+                        )}
+                        <Text style={styles.orderTxt2}>
+                          Order ID: {order.orderId}
+                        </Text>
+                        <Text style={styles.orderTxt2}>
+                          Order Date: {convertDate(order.orderDate)}
+                        </Text>
+                        <Text style={styles.grandTotalCost}>
+                          Total:&nbsp;₱
+                          {parseFloat(order.orderTotalCost).toFixed(2)}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   )}
                   {order.orderStatus == 'Confirmed' && (
-                    <Text style={styles.orderConfirmed}>
-                      Your order is confirmed{' '}
-                    </Text>
+                    <View key={index} style={styles.orderContainer}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('OrderTracker', {
+                            orderId: order.orderId,
+                            orderDate: order.orderDate,
+                            orderAddress: order.orderAddress,
+                            orderStatus: order.orderStatus,
+                            orderPayment: order.orderPayment,
+                            changeFor: order.changeFor,
+                            orderData: order.orderData,
+                            orderTotalCost: order.orderTotalCost,
+                          })
+                        }>
+                        {/*-------------------- Order Id, Order Date, Order Status --------------------*/}
+                        {/* <Text style={styles.orderIndex}>{index + 1}</Text> */}
+                        {order.orderStatus == 'Pending' && (
+                          <Text style={styles.orderPending}>
+                            Order Pending{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Confirmed' && (
+                          <Text style={styles.orderConfirmed}>
+                            Order Confirmed{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Prepared' && (
+                          <Text style={styles.orderPrepared}>
+                            Preparing Order{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Delivery' && (
+                          <Text style={styles.orderDelivery}>
+                            Delivery on its way{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Delivered' && (
+                          <Text style={styles.orderDelivered}>
+                            Order Delivered{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Cancelled' && (
+                          <Text style={styles.orderCancelled}>
+                            Order Cancelled{' '}
+                          </Text>
+                        )}
+                        <Text style={styles.orderTxt2}>
+                          Order ID: {order.orderId}
+                        </Text>
+                        <Text style={styles.orderTxt2}>
+                          Order Date: {convertDate(order.orderDate)}
+                        </Text>
+                        <Text style={styles.grandTotalCost}>
+                          Total:&nbsp;₱
+                          {parseFloat(order.orderTotalCost).toFixed(2)}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   )}
                   {order.orderStatus == 'Prepared' && (
-                    <Text style={styles.orderPrepared}>
-                      Your order is being prepared{' '}
-                    </Text>
+                    <View key={index} style={styles.orderContainer}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('OrderTracker', {
+                            orderId: order.orderId,
+                            orderDate: order.orderDate,
+                            orderAddress: order.orderAddress,
+                            orderStatus: order.orderStatus,
+                            orderPayment: order.orderPayment,
+                            changeFor: order.changeFor,
+                            orderData: order.orderData,
+                            orderTotalCost: order.orderTotalCost,
+                          })
+                        }>
+                        {/*-------------------- Order Id, Order Date, Order Status --------------------*/}
+                        {/* <Text style={styles.orderIndex}>{index + 1}</Text> */}
+                        {order.orderStatus == 'Pending' && (
+                          <Text style={styles.orderPending}>
+                            Order Pending{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Confirmed' && (
+                          <Text style={styles.orderConfirmed}>
+                            Order Confirmed{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Prepared' && (
+                          <Text style={styles.orderPrepared}>
+                            Preparing Order{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Delivery' && (
+                          <Text style={styles.orderDelivery}>
+                            Delivery on its way{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Delivered' && (
+                          <Text style={styles.orderDelivered}>
+                            Order Delivered{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Cancelled' && (
+                          <Text style={styles.orderCancelled}>
+                            Order Cancelled{' '}
+                          </Text>
+                        )}
+                        <Text style={styles.orderTxt2}>
+                          Order ID: {order.orderId}
+                        </Text>
+                        <Text style={styles.orderTxt2}>
+                          Order Date: {convertDate(order.orderDate)}
+                        </Text>
+                        <Text style={styles.grandTotalCost}>
+                          Total:&nbsp;₱
+                          {parseFloat(order.orderTotalCost).toFixed(2)}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   )}
                   {order.orderStatus == 'Delivery' && (
-                    <Text style={styles.orderDelivery}>
-                      Delivery on its way{' '}
-                    </Text>
-                  )}
-                  {order.orderStatus == 'Delivered' && (
-                    <Text style={styles.orderDelivered}>
-                      Your order is delivered{' '}
-                    </Text>
-                  )}
-                  {order.orderStatus == 'Cancelled' && (
-                    <Text style={styles.orderCancelled}>
-                      Your order is cancelled{' '}
-                    </Text>
-                  )}
-
-                  {/*-------------------- Delivery Rider Details --------------------*/}
-                  <View style={styles.row1}>
-                    <Text style={styles.orderTxt1}>
-                      Delivery Rider Name & Contact:
-                    </Text>
-                    {order.deliveryRiderName ? (
-                      <Text style={{marginBottom: 15, ...styles.orderTxt2}}>
-                        {order.deliveryRiderName} : {order.deliveryRiderContact}
-                      </Text>
-                    ) : (
-                      <Text style={{marginBottom: 15, ...styles.orderTxt2}}>
-                        Not Assigned
-                      </Text>
-                    )}
-                    {order.deliveryRiderContact ? (
-                      <Text style={{marginBottom: 15, ...styles.orderTxt2}}>
-                        {order.deliveryRiderContact}
-                      </Text>
-                    ) : null}
-                  </View>
-
-                  {/*-------------------- Order Summary --------------------*/}
-                  {order.orderData.map(item => {
-                    return (
-                      <View style={styles.rowOutContainer}>
-                        {/*-------------------- Food Details --------------------*/}
-                        <View style={styles.rowContainer}>
-                          <View style={styles.left}>
-                            <Text style={styles.qty}>{item.foodQty}x</Text>
-                            <Text style={styles.title}>
-                              {item.data.foodName}
-                            </Text>
-                            <Text style={styles.price}>
-                              ₱ {item.data.price}/each
-                            </Text>
-                          </View>
-
-                          <View style={styles.right}>
-                            <Text style={styles.totalPrice}>
-                              ₱ {parseInt(item.data.price * item.foodQty)}
-                            </Text>
-                          </View>
-                        </View>
-
-                        {/*-------------------- Food Add Ons Details --------------------*/}
-                        {item.addOnQty != 0 && (
-                          <View style={styles.rowContainer}>
-                            <View style={styles.left}>
-                              <Text style={styles.qty}>{item.addOnQty}x</Text>
-                              <Text style={styles.title}>
-                                {item.data.addOn}
-                              </Text>
-                              <Text style={styles.price}>
-                                ₱ {item.data.addOnPrice}/each
-                              </Text>
-                            </View>
-
-                            <View styles={styles.right}>
-                              <Text style={styles.totalPrice}>
-                                ₱
-                                {parseInt(item.data.addOnPrice * item.addOnQty)}
-                              </Text>
-                            </View>
-                          </View>
+                    <View key={index} style={styles.orderContainer}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('OrderTracker', {
+                            orderId: order.orderId,
+                            orderDate: order.orderDate,
+                            orderAddress: order.orderAddress,
+                            orderStatus: order.orderStatus,
+                            orderPayment: order.orderPayment,
+                            changeFor: order.changeFor,
+                            orderData: order.orderData,
+                            orderTotalCost: order.orderTotalCost,
+                          })
+                        }>
+                        {/*-------------------- Order Id, Order Date, Order Status --------------------*/}
+                        {/* <Text style={styles.orderIndex}>{index + 1}</Text> */}
+                        {order.orderStatus == 'Pending' && (
+                          <Text style={styles.orderPending}>
+                            Order Pending{' '}
+                          </Text>
                         )}
-                      </View>
-                    );
-                  })}
-
-                  <Text style={styles.grandTotalCost}>
-                    Total: ₱{order.orderTotalCost}
-                  </Text>
-                  {order.orderStatus === 'Delivered' ? (
-                    <Text style={styles.orderTxt3}>
-                      Thank you for ordering with us
-                    </Text>
-                  ) : null}
-                  {order.orderStatus === 'Cancelled' ? (
-                    <Text style={styles.orderTxt3}>
-                      Sorry for the inconvenience
-                    </Text>
-                  ) : null}
-                  {order.orderStatus != 'Cancelled' &&
-                  order.orderStatus != 'Delivered' ? (
-                    <TouchableOpacity
-                      style={styles.cancelBtn}
-                      onPress={() => cancelOrder(order)}>
-                      <Text style={styles.cancelBtnTxt}>Cancel Order</Text>
-                    </TouchableOpacity>
-                  ) : null}
+                        {order.orderStatus == 'Confirmed' && (
+                          <Text style={styles.orderConfirmed}>
+                            Order Confirmed{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Prepared' && (
+                          <Text style={styles.orderPrepared}>
+                            Preparing Order{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Delivery' && (
+                          <Text style={styles.orderDelivery}>
+                            Delivery on its way{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Delivered' && (
+                          <Text style={styles.orderDelivered}>
+                            Order Delivered{' '}
+                          </Text>
+                        )}
+                        {order.orderStatus == 'Cancelled' && (
+                          <Text style={styles.orderCancelled}>
+                            Order Cancelled{' '}
+                          </Text>
+                        )}
+                        <Text style={styles.orderTxt2}>
+                          Order ID: {order.orderId}
+                        </Text>
+                        <Text style={styles.orderTxt2}>
+                          Order Date: {convertDate(order.orderDate)}
+                        </Text>
+                        <Text style={styles.grandTotalCost}>
+                          Total:&nbsp;₱
+                          {parseFloat(order.orderTotalCost).toFixed(2)}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
                 </View>
               );
             })}
@@ -258,6 +377,8 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 10,
     padding: 10,
+    elevation: 5,
+    borderColor: colors.col7,
   },
   orderIndex: {
     fontSize: 15,
@@ -282,7 +403,7 @@ const styles = StyleSheet.create({
     color: colors.col7,
     textAlign: 'center',
     marginVertical: 5,
-    fontWeight: 'bold',
+    fontWeight: '400',
   },
   orderTxt3: {
     fontSize: 15,
@@ -296,116 +417,82 @@ const styles = StyleSheet.create({
   },
   // Order Status //
   orderPending: {
-    fontSize: 15,
-    backgroundColor: 'yellow',
-    color: 'grey',
+    fontSize: 18,
+    fontWeight: 'bold',
+    // backgroundColor: 'black',
+    color: colors.col4,
     textAlign: 'center',
     borderRadius: 10,
-    padding: 5,
-    marginVertical: 10,
+    // padding: 5,
+    // marginVertical: 10,
     paddingHorizontal: 20,
     alignSelf: 'center',
   },
   orderConfirmed: {
-    fontSize: 15,
-    backgroundColor: 'orange',
-    color: 'white',
+    fontSize: 18,
+    // backgroundColor: 'orange',
+    color: 'orange',
+    fontWeight: 'bold',
     textAlign: 'center',
     borderRadius: 10,
-    padding: 5,
-    marginVertical: 10,
+    // padding: 5,
+    // marginVertical: 5,
     paddingHorizontal: 20,
     alignSelf: 'center',
   },
   orderPrepared: {
-    fontSize: 15,
-    backgroundColor: 'orange',
-    color: 'white',
+    fontSize: 18,
+    // backgroundColor: 'orange',
+    color: 'orange',
+    fontWeight: 'bold',
     textAlign: 'center',
     borderRadius: 10,
-    padding: 5,
-    marginVertical: 10,
+    // padding: 5,
+    // marginVertical: 10,
     paddingHorizontal: 20,
     alignSelf: 'center',
   },
   orderDelivery: {
-    fontSize: 15,
-    backgroundColor: 'green',
-    color: 'white',
+    fontSize: 18,
+    // backgroundColor: 'green',
+    color: 'green',
+    fontWeight: 'bold',
     textAlign: 'center',
     borderRadius: 10,
-    padding: 5,
-    marginVertical: 10,
+    // padding: 5,
+    // marginVertical: 10,
     paddingHorizontal: 20,
     alignSelf: 'center',
   },
   orderDelivered: {
-    fontSize: 15,
-    backgroundColor: 'green',
-    color: 'white',
+    fontSize: 18,
+    // backgroundColor: 'green',
+    fontWeight: 'bold',
+    color: 'green',
     textAlign: 'center',
     borderRadius: 10,
-    padding: 5,
-    marginVertical: 10,
+    // padding: 5,
+    // marginVertical: 10,
     paddingHorizontal: 20,
     alignSelf: 'center',
   },
   orderCancelled: {
-    fontSize: 15,
-    backgroundColor: 'red',
-    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+    // backgroundColor: 'red',
+    color: 'red',
     textAlign: 'center',
     borderRadius: 10,
-    padding: 5,
-    marginVertical: 10,
+    // padding: 5,
+    // marginVertical: 10,
     paddingHorizontal: 20,
     alignSelf: 'center',
   },
-
-  // Order Summary //
-  rowOutContainer: {
-    flexDirection: 'column',
-    marginHorizontal: 10,
-    borderRadius: 10,
-  },
-  rowContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 5,
-    justifyContent: 'space-between',
-  },
-  left: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  right: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  qty: {
-    fontSize: 13,
-    color: colors.text1,
-    marginRight: 10,
-  },
-  title: {
-    fontSize: 13,
-    color: colors.text1,
-    marginRight: 10,
-  },
-  price: {
-    fontSize: 13,
-    color: colors.text1,
-    marginRight: 10,
-  },
-  totalPrice: {
-    fontSize: 13,
-    // color: colors.text1,
-    marginRight: 10,
-  },
   grandTotalCost: {
     fontSize: 15,
+    fontWeight: 'bold',
     color: colors.col7,
-    textAlign: 'right',
+    textAlign: 'center',
     marginVertical: 10,
     marginRight: 20,
   },

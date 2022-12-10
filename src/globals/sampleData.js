@@ -3,7 +3,7 @@ export const menuCategoryData = [
   {
     id: 1,
     title: 'Palabok',
-    image: require('../../assets/images/pasta.png'),
+    image: require('../../assets/images/palabok-logo.png'),
   },
   {
     id: 2,

@@ -214,7 +214,10 @@ const CheckOutScreen = ({navigation, route}) => {
                       }}>
                       <Text>{item.foodQty}x</Text>
                       <Text>{item.data?.foodName}</Text>
-                      <Text>₱ {parseInt(item.data?.price * item.foodQty)}</Text>
+                      <Text>
+                        ₱{' '}
+                        {parseFloat(item.data?.price * item.foodQty).toFixed(2)}
+                      </Text>
                     </View>
 
                     {/*-------------------- Add Ons Details Row --------------------*/}
@@ -228,7 +231,10 @@ const CheckOutScreen = ({navigation, route}) => {
                           <Text>{item.addOnQty}x</Text>
                           <Text>{item.data.addOn}</Text>
                           <Text>
-                            ₱ {parseInt(item.data.addOnPrice * item.addOnQty)}
+                            ₱{' '}
+                            {parseFloat(
+                              item.data.addOnPrice * item.addOnQty,
+                            ).toFixed(2)}
                           </Text>
                         </View>
                       </View>
@@ -240,8 +246,8 @@ const CheckOutScreen = ({navigation, route}) => {
 
             {/*-------------------- Sub Total & Shipping Fee --------------------*/}
             <View style={{marginVertical: 10}}>
-              <Text>Subtotal: ₱ {subtotalCost}</Text>
-              <Text>Shipping Fee: ₱ 50</Text>
+              <Text>Subtotal: ₱ {parseFloat(subtotalCost).toFixed(2)}</Text>
+              <Text>Shipping Fee: ₱ 50.00</Text>
             </View>
           </View>
 
@@ -348,7 +354,7 @@ const CheckOutScreen = ({navigation, route}) => {
             Total:
           </Text>
           <Text style={{fontWeight: 'bold', fontSize: 18, color: colors.col7}}>
-            ₱ {totalCost}
+            ₱ {parseFloat(totalCost).toFixed(2)}
           </Text>
         </View>
         {/*-------------------- Place Order Button --------------------*/}

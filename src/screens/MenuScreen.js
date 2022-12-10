@@ -111,7 +111,7 @@ const MenuScreen = ({navigation, route}) => {
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate('FoodDetails', {
-                    id: item.id,
+                    foodId: item.foodId,
                     foodName: item.foodName,
                     description: item.description,
                     img: item.img,
@@ -125,7 +125,9 @@ const MenuScreen = ({navigation, route}) => {
                     <Image source={{uri: item.img}} style={styles.foodImg} />
                   </View>
                   <Text style={styles.foodTitle}>{item.foodName}</Text>
-                  <Text style={styles.foodPriceTxt}>₱&nbsp;{item.price}</Text>
+                  <Text style={styles.foodPriceTxt}>
+                    ₱&nbsp;{parseFloat(item.price).toFixed(2)}
+                  </Text>
                 </View>
               </TouchableOpacity>
             );

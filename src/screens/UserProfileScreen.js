@@ -115,6 +115,13 @@ const UserProfileScreen = ({navigation, route}) => {
           <Text style={button1.btn1Txt}>Edit Profile</Text>
         </TouchableOpacity>
 
+        {/*-------------------- Activity History Button --------------------*/}
+        <TouchableOpacity
+          style={{alignSelf: 'center', ...button1.btn1}}
+          onPress={() => navigation.replace('ActivityHistory')}>
+          <Text style={button1.btn1Txt}>Activity History</Text>
+        </TouchableOpacity>
+
         {/*-------------------- Change Password Button --------------------*/}
         <TouchableOpacity
           style={{alignSelf: 'center', ...button1.btn1}}

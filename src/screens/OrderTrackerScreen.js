@@ -1,11 +1,60 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import {ScrollView} from 'react-native-virtualized-view';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Icon} from '@rneui/base';
 import {colors} from '../globals/style';
 import {track_order_status} from '../globals/constant';
-const OrderTracker = ({navigation}) => {
-  const [currentStep, setCurrentStep] = useState(3);
+const OrderTracker = ({navigation, route}) => {
+  // -------------------- Retrieve User Orders Data -------------------- //
+  const orders = route.params;
+  // console.log(orders);
+
+  // -------------------- Compute Sub Total Cost -------------------- //
+  const [subtotalCost, setSubTotalCost] = useState('0');
+  useEffect(() => {
+    if (orders != null) {
+      const foodPrice = orders.orderData;
+      let subTotalFoodCost = 0;
+      foodPrice.map(item => {
+        // Sub Total Cost
+        subTotalFoodCost =
+          parseInt(item.data.price * item.foodQty) +
+          parseInt(item.data.addOnPrice * item.addOnQty) +
+          subTotalFoodCost;
+      });
+      setSubTotalCost(JSON.stringify(subTotalFoodCost));
+    }
+  }, [orders]);
+
+  // -------------------- Convert the Timestamp to Date -------------------- //
+  const convertDate = date => {
+    const newDate = new Date(date && date.toDate && date.toDate().getTime());
+    return newDate.toDateString();
+  };
+
+  const [currentStep, setCurrentStep] = useState('0');
+  useEffect(() => {
+    if (orders != null) {
+      const status = orders.orderStatus;
+      if (status === 'Pending') {
+        setCurrentStep(0);
+      }
+      if (status === 'Confirmed') {
+        setCurrentStep(1);
+      }
+      if (status === 'Prepared') {
+        setCurrentStep(2);
+      }
+      if (status === 'Delivery') {
+        setCurrentStep(3);
+      }
+      if (status === 'Delivered') {
+        setCurrentStep(4);
+      }
+    }
+  }, [orders]);
+  // console.log(currentStep);
+
   return (
     <View style={styles.mainContainer}>
       {/*-------------------- Header Navigation --------------------*/}
@@ -15,36 +64,69 @@ const OrderTracker = ({navigation}) => {
             name="arrow-back"
             type="material"
             size={30}
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => navigation.navigate('Orders')}
           />
         </View>
 
         <Text style={styles.heading1}>Order Tracker</Text>
       </View>
 
-      {/*-------------------- Header Title --------------------*/}
-
-      {/*-------------------- Order Tracker --------------------*/}
+      {/*-------------------- Order Tracker Screen Body --------------------*/}
       <ScrollView showsVerticalScrollIndicator={false}>
+        {/*-------------------- Order Details --------------------*/}
         <View
           style={{
             marginTop: 10,
-            marginHorizontal: 10,
+            width: '90%',
+            marginHorizontal: 20,
             paddingVertical: 10,
             borderRadius: 10,
             borderWidth: 2,
             borderColor: colors.col7,
             backgroundColor: colors.col5,
           }}>
-          {/* Estimated Order Arrival Time */}
+          {/* Order ID */}
           <View
-            style={{marginTop: 10, marginBottom: 10, paddingHorizontal: 10}}>
+            style={{
+              flexDirection: 'row',
+              alignItem: 'center',
+              justifyContent: 'space-between',
+              marginBottom: 5,
+              paddingHorizontal: 10,
+            }}>
+            <Text style={{fontWeight: 'bold', color: colors.col7}}>
+              Order ID:
+            </Text>
+            <Text style={{}}>{orders.orderId}</Text>
+          </View>
+
+          {/* Order Date */}
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItem: 'center',
+              justifyContent: 'space-between',
+              marginBottom: 10,
+              paddingHorizontal: 10,
+            }}>
+            <Text style={{fontWeight: 'bold', color: colors.col7}}>
+              Order Date:
+            </Text>
+            <Text style={{}}>{convertDate(orders.orderDate)}</Text>
+          </View>
+
+          {/* Delivery Address */}
+          <View
+            style={{
+              marginBottom: 20,
+              paddingHorizontal: 10,
+            }}>
             <Text
               style={{
                 color: colors.col7,
                 fontSize: 14,
               }}>
-              Estimated Order Arrival Time:
+              Delivery Address:
             </Text>
             <Text
               style={{
@@ -52,23 +134,8 @@ const OrderTracker = ({navigation}) => {
                 fontSize: 14,
                 fontWeight: 'bold',
               }}>
-              5:50 PM - 6:00 PM
+              {orders.orderAddress}
             </Text>
-          </View>
-
-          {/* Track Order */}
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItem: 'center',
-              justifyContent: 'space-between',
-              marginBottom: 20,
-              paddingHorizontal: 10,
-            }}>
-            <Text style={{fontWeight: 'bold', color: colors.col7}}>
-              Tracker Order:
-            </Text>
-            <Text style={{}}>XYZ012345</Text>
           </View>
 
           {/* Status */}
@@ -129,33 +196,227 @@ const OrderTracker = ({navigation}) => {
             );
           })}
         </View>
-      </ScrollView>
 
-      {/* -------------------- Footer Component -------------------- */}
-      <View style={{marginTop: 10, marginBottom: 10, alignItems: 'center'}}>
-        {currentStep < track_order_status.length - 1 && (
+        {/*-------------------- Order Summary --------------------*/}
+        <View
+          style={{
+            marginTop: 10,
+            width: '90%',
+            marginHorizontal: 20,
+            paddingVertical: 10,
+            borderRadius: 10,
+            borderWidth: 2,
+            borderColor: colors.col7,
+            backgroundColor: colors.col5,
+          }}>
           <View
             style={{
-              width: '70%',
+              marginTop: 10,
+              marginBottom: 10,
+              paddingHorizontal: 10,
             }}>
-            {/* Cancel Order Button */}
-            <TouchableOpacity
+            <Text
               style={{
-                borderRadius: 10,
-                backgroundColor: colors.col2,
-                height: 45,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              onPress={() => navigation.navigate('Menu')}>
-              <Text
-                style={{fontWeight: 'bold', color: colors.col7, fontSize: 20}}>
-                Cancel Order
-              </Text>
-            </TouchableOpacity>
+                color: colors.col7,
+                fontSize: 14,
+                fontWeight: 'bold',
+              }}>
+              Order Summary
+            </Text>
           </View>
-        )}
-      </View>
+
+          {/* Order Summary Body */}
+          {orders.orderData.map(item => {
+            return (
+              <View>
+                <View style={styles.rowOutContainer}>
+                  {/*-------------------- Food Details --------------------*/}
+                  <View style={styles.rowContainer}>
+                    <View style={styles.left}>
+                      <Text style={styles.qty}>{item.foodQty}x</Text>
+                      <Text style={styles.title}>{item.data.foodName}</Text>
+                      <Text style={styles.price}>
+                        ₱ {parseFloat(item.data.price).toFixed(2)} /each
+                      </Text>
+                    </View>
+
+                    <View style={styles.right}>
+                      <Text style={styles.totalPrice}>
+                        ₱{parseFloat(item.data.price * item.foodQty).toFixed(2)}
+                      </Text>
+                    </View>
+                  </View>
+
+                  {/*-------------------- Food Add Ons Details --------------------*/}
+                  {item.addOnQty != 0 && (
+                    <View style={styles.rowContainer}>
+                      <View style={styles.left}>
+                        <Text style={styles.qty}>{item.addOnQty}x</Text>
+                        <Text style={styles.title}>{item.data.addOn}</Text>
+                        <Text style={styles.price}>
+                          ₱ {parseFloat(item.data.addOnPrice).toFixed(2)}
+                          /each
+                        </Text>
+                      </View>
+
+                      <View styles={styles.right}>
+                        <Text style={styles.totalPrice}>
+                          ₱
+                          {parseFloat(
+                            item.data.addOnPrice * item.addOnQty,
+                          ).toFixed(2)}
+                        </Text>
+                      </View>
+                    </View>
+                  )}
+                </View>
+              </View>
+            );
+          })}
+
+          {/* Sub Total */}
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 15,
+              marginHorizontal: 10,
+              justifyContent: 'space-between',
+            }}>
+            <View style={styles.left}>
+              <Text>Subtotal:</Text>
+            </View>
+            <View style={styles.right}>
+              <Text>₱&nbsp;{parseFloat(subtotalCost).toFixed(2)}</Text>
+            </View>
+          </View>
+
+          {/* Shipping Fee */}
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 5,
+              marginHorizontal: 10,
+              justifyContent: 'space-between',
+            }}>
+            <View style={styles.left}>
+              <Text>Shipping Fee:</Text>
+            </View>
+            <View style={styles.right}>
+              <Text>₱&nbsp;{parseFloat(50).toFixed(2)}</Text>
+            </View>
+          </View>
+
+          {/* Total Cost */}
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 5,
+              marginHorizontal: 10,
+              justifyContent: 'space-between',
+            }}>
+            <View style={styles.left}>
+              <Text
+                style={{fontWeight: 'bold', fontSize: 15, color: colors.col7}}>
+                Total:
+              </Text>
+            </View>
+            <View style={styles.right}>
+              <Text
+                style={{fontWeight: 'bold', fontSize: 15, color: colors.col7}}>
+                ₱&nbsp;{parseFloat(orders.orderTotalCost).toFixed(2)}
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/*-------------------- Order Payment Method --------------------*/}
+        <View
+          style={{
+            marginTop: 10,
+            width: '90%',
+            marginHorizontal: 20,
+            paddingVertical: 10,
+            borderRadius: 10,
+            borderWidth: 2,
+            borderColor: colors.col7,
+            backgroundColor: colors.col5,
+          }}>
+          <View
+            style={{
+              marginTop: 10,
+              marginBottom: 10,
+              paddingHorizontal: 10,
+            }}>
+            <Text
+              style={{
+                color: colors.col7,
+                fontSize: 14,
+                fontWeight: 'bold',
+              }}>
+              Payment
+            </Text>
+          </View>
+
+          {/* Payment Method */}
+          <View
+            style={{
+              flexDirection: 'row',
+              marginHorizontal: 10,
+            }}>
+            <Icon name="money-bill" type="font-awesome-5" size={22} />
+            <Text style={{alignSelf: 'center', marginLeft: 5}}>
+              {orders.orderPayment}
+            </Text>
+            {orders.changeFor != 0 && (
+              <Text style={{alignSelf: 'center'}}>
+                &nbsp;
+                {'('}
+                Change for&nbsp;₱
+                {parseFloat(orders.changeFor).toFixed(2)}
+                {')'}
+              </Text>
+            )}
+          </View>
+        </View>
+
+        {/* -------------------- Footer Component -------------------- */}
+        <View
+          style={{
+            marginTop: 10,
+            marginBottom: 10,
+            alignItems: 'center',
+          }}>
+          {currentStep < track_order_status.length - 1 && (
+            <View
+              style={{
+                width: '90%',
+              }}>
+              {/* Cancel Order Button */}
+              <TouchableOpacity
+                style={{
+                  borderRadius: 10,
+                  backgroundColor: colors.col2,
+                  height: 45,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                onPress={() => navigation.navigate('Menu')}>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    color: colors.col7,
+                    fontSize: 20,
+                  }}>
+                  Cancel Order
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -193,5 +454,48 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     color: colors.col7,
+  },
+
+  //-------------------- Order Tracker Body --------------------//
+
+  // Order Summary //
+  rowOutContainer: {
+    flexDirection: 'column',
+    marginHorizontal: 10,
+    borderRadius: 10,
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
+    justifyContent: 'space-between',
+  },
+  left: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  right: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  qty: {
+    fontSize: 13,
+    color: colors.text1,
+    marginRight: 10,
+  },
+  title: {
+    fontSize: 13,
+    color: colors.text1,
+    marginRight: 10,
+  },
+  price: {
+    fontSize: 13,
+    color: colors.text1,
+    marginRight: 10,
+  },
+  totalPrice: {
+    fontSize: 13,
+    // color: colors.text1,
+    marginRight: 10,
   },
 });

@@ -18,6 +18,8 @@ import UserProfileScreen from '../screens/UserProfileScreen';
 import EditProfileDetailsScreen from '../screens/EditProfileDetailsScreen';
 import ChangePasswordScreen from '../screens/ChangePasswordScreen';
 import MapViewScreen from './MapViewScreen';
+import ActivityHistoryScreen from '../screens/ActivityHistoryScreen';
+import ActivityHistoryDetailsScreen from '../screens/ActivityHistoryDetailsScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -65,6 +67,11 @@ const ProfileStack = () => {
         component={EditProfileDetailsScreen}
       />
       <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+      <Stack.Screen name="ActivityHistory" component={ActivityHistoryScreen} />
+      <Stack.Screen
+        name="ActivityHistoryDetails"
+        component={ActivityHistoryDetailsScreen}
+      />
       <Stack.Screen name="MapView" component={MapViewScreen} />
     </Stack.Navigator>
   );
@@ -238,8 +245,11 @@ const getTabBarVisibility = route => {
     routeName?.includes('FoodDetails') ||
     routeName?.includes('Bag') ||
     routeName?.includes('CheckOut') ||
+    routeName?.includes('OrderTracker') ||
     routeName?.includes('EditRecipientDetails') ||
     routeName?.includes('EditProfileDetails') ||
+    routeName?.includes('ActivityHistory') ||
+    routeName?.includes('ActivityHistoryDetails') ||
     routeName?.includes('ChangePassword')
   ) {
     return 'none';

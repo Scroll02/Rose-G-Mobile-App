@@ -171,7 +171,7 @@ const BagScreen = ({navigation}) => {
                     {data.item.data?.foodName}
                   </Text>
                   <Text style={{color: colors.col7, fontWeight: 'bold'}}>
-                    ₱ {data.item.data?.price}
+                    ₱ {parseFloat(data.item.data?.price).toFixed(2)}
                   </Text>
                   <Text style={{fontSize: 13, marginTop: 5}}>Add ons:</Text>
                   <View style={{flexDirection: 'row'}}>
@@ -201,11 +201,17 @@ const BagScreen = ({navigation}) => {
                     }}>
                     ₱
                     {data.item.addOnQty != 0
-                      ? parseInt(data.item.data?.price * data.item.foodQty) +
-                        parseInt(
-                          data.item.data?.addOnPrice * data.item.addOnQty,
-                        )
-                      : parseInt(data.item.data?.price * data.item.foodQty)}
+                      ? (
+                          parseFloat(
+                            data.item.data?.price * data.item.foodQty,
+                          ) +
+                          parseFloat(
+                            data.item.data?.addOnPrice * data.item.addOnQty,
+                          )
+                        ).toFixed(2)
+                      : parseFloat(
+                          data.item.data?.price * data.item.foodQty,
+                        ).toFixed(2)}
                   </Text>
                   {/* Quantity */}
                   <View
@@ -321,7 +327,7 @@ const BagScreen = ({navigation}) => {
               color: colors.col7,
               fontWeight: '500',
             }}>
-            ₱ {subtotalCost}
+            ₱ {parseFloat(subtotalCost).toFixed(2)}
           </Text>
         </View>
 
@@ -345,7 +351,7 @@ const BagScreen = ({navigation}) => {
               color: colors.col7,
               fontWeight: '500',
             }}>
-            ₱ 50
+            ₱ 50.00
           </Text>
         </View>
 
@@ -369,7 +375,7 @@ const BagScreen = ({navigation}) => {
               color: colors.col7,
               fontWeight: 'bold',
             }}>
-            ₱ {totalCost}
+            ₱ {parseFloat(totalCost).toFixed(2)}
           </Text>
         </View>
 

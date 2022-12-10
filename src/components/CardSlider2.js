@@ -36,7 +36,7 @@ const CardSlider2 = ({cardTitle, viewTitle, navigation, data}) => {
             <TouchableOpacity
               onPress={() => {
                 navigation.replace('FoodDetails', {
-                  id: item.id,
+                  foodId: item.foodId,
                   foodName: item.foodName,
                   description: item.description,
                   img: item.img,
@@ -52,7 +52,9 @@ const CardSlider2 = ({cardTitle, viewTitle, navigation, data}) => {
                 </View>
 
                 <Text style={styles.productTitle}>{item.foodName}</Text>
-                <Text style={styles.productPriceTxt}>₱&nbsp;{item.price}</Text>
+                <Text style={styles.productPriceTxt}>
+                  ₱&nbsp;{parseFloat(item.price).toFixed(2)}
+                </Text>
               </View>
             </TouchableOpacity>
           );
