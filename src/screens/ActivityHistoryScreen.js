@@ -11,6 +11,7 @@ import React, {useState, useEffect} from 'react';
 import {Icon} from '@rneui/base';
 import {button1, colors} from '../globals/style';
 import {firebase} from '../Firebase/FirebaseConfig';
+import moment from 'moment';
 
 const ActivityHistoryScreen = ({navigation}) => {
   // -------------------- Retrieve Users Orders Data -------------------- //
@@ -30,11 +31,6 @@ const ActivityHistoryScreen = ({navigation}) => {
 
   // console.log(orders.orderId);
 
-  // -------------------- Convert the Timestamp to Date -------------------- //
-  const convertDate = date => {
-    const newDate = new Date(date && date.toDate && date.toDate().getTime());
-    return newDate.toDateString();
-  };
   return (
     <View style={styles.mainContainer}>
       {/*-------------------- Header Navigation --------------------*/}
@@ -52,21 +48,35 @@ const ActivityHistoryScreen = ({navigation}) => {
       </View>
 
       {/*-------------------- Activity History Screen Body --------------------*/}
-      {/* {orders.orderStatus === 'Delivered' && (
-        <View>
-          <Text>{orders.orderId}</Text>
-        </View>
-      )} */}
       <ScrollView showsVerticalScrollIndicator={false}>
         {orders.length == 0 ||
         orders.orderStatus == 'Pending' ||
         orders.orderStatus == 'Prepared' ||
         orders.orderStatus == 'Confirmed' ||
         orders.orderStatus == 'Delivery' ? (
-          <View>
-            <Text>No activity history yet.</Text>
+          /* Activity History is empty */
+          <View style={{flex: 1, alignItems: 'center'}}>
+            <View style={{marginVertical: 50}}>
+              <Image
+                source={require('../../assets/images/no-history.png')}
+                style={{width: 250, height: 250}}
+              />
+            </View>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                fontSize: 20,
+                margin: 10,
+                textAlign: 'center',
+              }}>
+              Nothing's happened yet.
+            </Text>
+            <Text style={{fontWeight: 'bold', fontSize: 15, margin: 10}}>
+              When an activity is over, it'll appear here.
+            </Text>
           </View>
         ) : (
+          /* Activity History is not empty */
           <View>
             {orders.map((order, index) => {
               return (
@@ -75,7 +85,16 @@ const ActivityHistoryScreen = ({navigation}) => {
                     <View style={styles.activityContainer}>
                       <TouchableOpacity
                         onPress={() =>
-                          navigation.replace('ActivityHistoryDetails')
+                          navigation.replace('ActivityHistoryDetails', {
+                            orderId: order.orderId,
+                            orderDate: order.orderDate,
+                            orderAddress: order.orderAddress,
+                            orderStatus: order.orderStatus,
+                            orderPayment: order.orderPayment,
+                            changeFor: order.changeFor,
+                            orderData: order.orderData,
+                            orderTotalCost: order.orderTotalCost,
+                          })
                         }>
                         <View style={styles.rowContainer}>
                           <View style={styles.left}>
@@ -104,17 +123,66 @@ const ActivityHistoryScreen = ({navigation}) => {
                             </Text>
                           </Text>
                           <Text>
-                            Order Date:&nbsp;{convertDate(order.orderDate)}
+                            Order Date:&nbsp;
+                            {moment(order.orderDate.toDate()).format(
+                              'MMM D, YYYY h:mm A',
+                            )}
                           </Text>
                         </View>
                       </TouchableOpacity>
                     </View>
                   )}
-                  {/* {order.orderStatus == 'Cancelled' && (
-                    <View>
-                      <Text>{order.orderStatus}</Text>
+                  {order.orderStatus == 'Cancelled' && (
+                    <View style={styles.activityContainer}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.replace('ActivityHistoryDetails', {
+                            orderId: order.orderId,
+                            orderDate: order.orderDate,
+                            orderAddress: order.orderAddress,
+                            orderStatus: order.orderStatus,
+                            orderPayment: order.orderPayment,
+                            changeFor: order.changeFor,
+                            orderData: order.orderData,
+                            orderTotalCost: order.orderTotalCost,
+                          })
+                        }>
+                        <View style={styles.rowContainer}>
+                          <View style={styles.left}>
+                            <View style={styles.imgContainer}>
+                              <Image
+                                style={styles.foodLogo}
+                                source={require('../../assets/images/healthy-eating.png')}
+                              />
+                            </View>
+                            <Text style={styles.txt1}>{order.orderId}</Text>
+                          </View>
+
+                          <View style={styles.right}>
+                            <Text style={styles.txt2}>
+                              ₱&nbsp;
+                              {parseFloat(order.orderTotalCost).toFixed(2)}
+                            </Text>
+                          </View>
+                        </View>
+
+                        <View style={{alignItems: 'center'}}>
+                          <Text>
+                            Order Status:&nbsp;
+                            <Text style={{color: 'red'}}>
+                              {order.orderStatus}
+                            </Text>
+                          </Text>
+                          <Text>
+                            Order Date:&nbsp;
+                            {moment(order.orderDate.toDate()).format(
+                              'MMM D, YYYY h:mm A',
+                            )}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
                     </View>
-                  )} */}
+                  )}
                 </View>
               );
             })}

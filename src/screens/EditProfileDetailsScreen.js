@@ -101,6 +101,11 @@ const EditProfileDetailsScreen = ({navigation, route}) => {
       console.log('no user data');
     }
   };
+
+  const onChanged = inputValue => {
+    setNewContactNum(inputValue.replace(/[^0-9]/g, ''));
+  };
+
   return (
     <View style={styles.mainContainer}>
       {/*-------------------- Header Navigation --------------------*/}
@@ -130,16 +135,19 @@ const EditProfileDetailsScreen = ({navigation, route}) => {
           <Text style={styles.txt1}>Email: {userData?.email}</Text>
           <TextInput
             style={styles.txtInput}
-            placeholder="Enter New Full Name"
+            placeholder="Enter New Email"
             onChangeText={e => setNewEmail(e)}
           />
           <Text style={styles.txt1}>
-            Contact Number:{userData?.contactNumber}
+            Contact Number:&nbsp;{userData?.contactNumber}
           </Text>
           <TextInput
             style={styles.txtInput}
             placeholder="Enter New Contact Number"
-            onChangeText={e => setNewContactNum(e)}
+            maxLength={11}
+            // onChangeText={e => setNewContactNum(e)}
+            onChangeText={onChanged}
+            value={newContactNum}
           />
           <Text style={styles.txt1}>Address: {userData?.address}</Text>
           <TextInput

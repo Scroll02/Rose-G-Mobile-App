@@ -1,7 +1,7 @@
 export const track_order_status = [
   {
     id: 1,
-    title: 'Order being validated',
+    title: 'Order Pending',
     sub_title: 'We are processing your order',
   },
   {

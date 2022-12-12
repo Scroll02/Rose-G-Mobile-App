@@ -35,7 +35,9 @@ const LoginScreen = ({navigation}) => {
       .catch(error => {
         var errorMessage = error.message;
         console.log(errorMessage);
-        if (
+        if (email.length == 0 && password.length == 0) {
+          setcustomError('Please enter email address and password');
+        } else if (
           errorMessage ===
           'Firebase: The email address is badly formatted. (auth/invalid-email).'
         ) {

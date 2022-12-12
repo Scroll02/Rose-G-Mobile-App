@@ -56,6 +56,10 @@ const EditRecipientDetailsScreen = ({navigation, route}) => {
   const [newFullName, setNewFullName] = useState('');
   const [newContactNum, setNewContactNum] = useState('');
   const [newAddress, setNewAddress] = useState('');
+
+  /*-------------------- Error Message --------------------*/
+  const [customError, setCustomError] = useState('');
+
   const updateUser = async () => {
     const docRef = firebase
       .firestore()
@@ -86,12 +90,16 @@ const EditRecipientDetailsScreen = ({navigation, route}) => {
           });
         });
       }
-      alert('your user data is updated');
+      alert('Your user data is updated');
       getUserData();
-      navigation.replace('CheckOut', {bagData});
+      // navigation.replace('CheckOut', {bagData});
     } else {
       console.log('no user data');
     }
+  };
+
+  const onChanged = inputValue => {
+    setNewContactNum(inputValue.replace(/[^0-9]/g, ''));
   };
 
   return (
@@ -123,12 +131,15 @@ const EditRecipientDetailsScreen = ({navigation, route}) => {
             onChangeText={e => setNewFullName(e)}
           />
           <Text style={styles.txt1}>
-            Contact Number:{userData?.contactNumber}
+            Contact Number:&nbsp;{userData?.contactNumber}
           </Text>
           <TextInput
             style={styles.txtInput}
             placeholder="Enter New Contact Number"
-            onChangeText={e => setNewContactNum(e)}
+            // onChangeText={e => setNewContactNum(e)}
+            value={newContactNum}
+            onChangeText={onChanged}
+            maxLength={11}
           />
           <Text style={styles.txt1}>Address: {userData?.address}</Text>
           <TextInput
@@ -141,6 +152,9 @@ const EditRecipientDetailsScreen = ({navigation, route}) => {
               <Text style={button1.btn1Txt}>Save</Text>
             </TouchableOpacity>
           </View>
+          {customError !== '' && (
+            <Text style={styles.errorMsg}>{customError}</Text>
+          )}
         </View>
       </KeyboardAwareScrollView>
     </View>
@@ -213,5 +227,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignSelf: 'center',
     paddingLeft: 10,
+  },
+  errorMsg: {
+    marginTop: 10,
+    textAlign: 'center',
+    color: 'red',
   },
 });

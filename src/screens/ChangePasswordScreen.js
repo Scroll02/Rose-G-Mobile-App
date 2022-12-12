@@ -113,6 +113,20 @@ const ChangePasswordScreen = ({navigation}) => {
       });
   };
 
+  /* -------------------- Password Validation -------------------- */
+  const [checkValidPassword, setCheckValidPassword] = useState(false);
+  const handleCheckPassword = text => {
+    let regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,}$/;
+
+    setNewPassword(text);
+    if (regex.test(text)) {
+      setCheckValidPassword(false);
+    } else {
+      setCheckValidPassword(true);
+    }
+  };
+
   return (
     <View style={styles.mainContainer}>
       {/*-------------------- Header Navigation --------------------*/}
@@ -163,6 +177,7 @@ const ChangePasswordScreen = ({navigation}) => {
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
+              value={newPassword}
               secureTextEntry={showNewPassword === false ? true : false}
               placeholder="Enter New Password"
               onFocus={() => {
@@ -173,7 +188,8 @@ const ChangePasswordScreen = ({navigation}) => {
                 setConfirmNewPasswordFocus(false);
                 setShowConfirmNewPassword(false);
               }}
-              onChangeText={e => setNewPassword(e)}
+              // onChangeText={e => setNewPassword(e)}
+              onChangeText={handleCheckPassword}
             />
 
             <Icon
@@ -184,6 +200,14 @@ const ChangePasswordScreen = ({navigation}) => {
               onPress={() => setShowNewPassword(!showNewPassword)}
             />
           </View>
+          {checkValidPassword ? (
+            <Text style={styles.textFailed}>
+              At least 8 characters, 1 numeric character, 1 lowercase letter, 1
+              uppercase letter, 1 special character
+            </Text>
+          ) : (
+            <Text style={styles.textFailed}> </Text>
+          )}
 
           {/*-------------------- Confirm New Password --------------------*/}
           <Text style={styles.txt1}>Confirm New Password:</Text>
@@ -302,7 +326,14 @@ const styles = StyleSheet.create({
     paddingTop: 7,
   },
   errorMsg: {
+    fontSize: 13,
     color: 'red',
     textAlign: 'center',
+  },
+  textFailed: {
+    fontSize: 13,
+    marginHorizontal: 30,
+    textAlign: 'justify',
+    color: 'red',
   },
 });

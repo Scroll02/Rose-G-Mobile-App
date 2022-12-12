@@ -12,6 +12,7 @@ import React, {useState, useEffect} from 'react';
 import {Icon} from '@rneui/base';
 import {colors} from '../globals/style';
 import {firebase} from '../Firebase/FirebaseConfig';
+import moment from 'moment';
 
 const OrdersScreen = ({navigation}) => {
   // -------------------- Retrieve Users Orders Data -------------------- //
@@ -29,11 +30,7 @@ const OrdersScreen = ({navigation}) => {
     getOrders();
   }, []);
 
-  // -------------------- Convert the Timestamp to Date -------------------- //
-  const convertDate = date => {
-    const newDate = new Date(date && date.toDate && date.toDate().getTime());
-    return newDate.toDateString();
-  };
+  // console.log(orders);
 
   // -------------------- Cancel Order Function -------------------- //
   const cancelOrder = orderitem => {
@@ -103,6 +100,7 @@ const OrdersScreen = ({navigation}) => {
                             changeFor: order.changeFor,
                             orderData: order.orderData,
                             orderTotalCost: order.orderTotalCost,
+                            deliveryRiderInfo: order.deliveryRiderInfo,
                           })
                         }>
                         {/*-------------------- Order Id, Order Date, Order Status --------------------*/}
@@ -141,7 +139,10 @@ const OrdersScreen = ({navigation}) => {
                           Order ID: {order.orderId}
                         </Text>
                         <Text style={styles.orderTxt2}>
-                          Order Date: {convertDate(order.orderDate)}
+                          Order Date:&nbsp;
+                          {moment(order.orderDate.toDate()).format(
+                            'MMM D, YYYY h:mm A',
+                          )}
                         </Text>
                         <Text style={styles.grandTotalCost}>
                           Total:&nbsp;₱
@@ -163,6 +164,7 @@ const OrdersScreen = ({navigation}) => {
                             changeFor: order.changeFor,
                             orderData: order.orderData,
                             orderTotalCost: order.orderTotalCost,
+                            deliveryRiderInfo: order.deliveryRiderInfo,
                           })
                         }>
                         {/*-------------------- Order Id, Order Date, Order Status --------------------*/}
@@ -201,7 +203,10 @@ const OrdersScreen = ({navigation}) => {
                           Order ID: {order.orderId}
                         </Text>
                         <Text style={styles.orderTxt2}>
-                          Order Date: {convertDate(order.orderDate)}
+                          Order Date:&nbsp;
+                          {moment(order.orderDate.toDate()).format(
+                            'MMM D, YYYY h:mm A',
+                          )}
                         </Text>
                         <Text style={styles.grandTotalCost}>
                           Total:&nbsp;₱
@@ -223,6 +228,7 @@ const OrdersScreen = ({navigation}) => {
                             changeFor: order.changeFor,
                             orderData: order.orderData,
                             orderTotalCost: order.orderTotalCost,
+                            deliveryRiderInfo: order.deliveryRiderInfo,
                           })
                         }>
                         {/*-------------------- Order Id, Order Date, Order Status --------------------*/}
@@ -261,7 +267,10 @@ const OrdersScreen = ({navigation}) => {
                           Order ID: {order.orderId}
                         </Text>
                         <Text style={styles.orderTxt2}>
-                          Order Date: {convertDate(order.orderDate)}
+                          Order Date:&nbsp;
+                          {moment(order.orderDate.toDate()).format(
+                            'MMM D, YYYY h:mm A',
+                          )}
                         </Text>
                         <Text style={styles.grandTotalCost}>
                           Total:&nbsp;₱
@@ -283,6 +292,7 @@ const OrdersScreen = ({navigation}) => {
                             changeFor: order.changeFor,
                             orderData: order.orderData,
                             orderTotalCost: order.orderTotalCost,
+                            deliveryRiderInfo: order.deliveryRiderInfo,
                           })
                         }>
                         {/*-------------------- Order Id, Order Date, Order Status --------------------*/}
@@ -318,10 +328,13 @@ const OrdersScreen = ({navigation}) => {
                           </Text>
                         )}
                         <Text style={styles.orderTxt2}>
-                          Order ID: {order.orderId}
+                          Order ID:&nbsp;{order.orderId}
                         </Text>
                         <Text style={styles.orderTxt2}>
-                          Order Date: {convertDate(order.orderDate)}
+                          Order Date:&nbsp;
+                          {moment(order.orderDate.toDate()).format(
+                            'MMM D, YYYY h:mm A',
+                          )}
                         </Text>
                         <Text style={styles.grandTotalCost}>
                           Total:&nbsp;₱

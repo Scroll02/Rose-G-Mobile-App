@@ -4,6 +4,9 @@ import React, {useState, useEffect} from 'react';
 import {Icon} from '@rneui/base';
 import {colors} from '../globals/style';
 import {track_order_status} from '../globals/constant';
+import {firebase} from '../Firebase/FirebaseConfig';
+import moment from 'moment';
+
 const OrderTracker = ({navigation, route}) => {
   // -------------------- Retrieve User Orders Data -------------------- //
   const orders = route.params;
@@ -26,12 +29,7 @@ const OrderTracker = ({navigation, route}) => {
     }
   }, [orders]);
 
-  // -------------------- Convert the Timestamp to Date -------------------- //
-  const convertDate = date => {
-    const newDate = new Date(date && date.toDate && date.toDate().getTime());
-    return newDate.toDateString();
-  };
-
+  // -------------------- Order Tracker -------------------- //
   const [currentStep, setCurrentStep] = useState('0');
   useEffect(() => {
     if (orders != null) {
@@ -54,6 +52,19 @@ const OrderTracker = ({navigation, route}) => {
     }
   }, [orders]);
   // console.log(currentStep);
+
+  // -------------------- Cancel Order Function -------------------- //
+  const cancelOrder = orderitem => {
+    const orderRef = firebase
+      .firestore()
+      .collection('UserOrders')
+      .doc(orderitem.orderId);
+    orderRef.update({
+      orderStatus: 'Cancelled',
+    });
+    alert('The order is cancelled');
+    navigation.replace('Orders');
+  };
 
   return (
     <View style={styles.mainContainer}>
@@ -81,8 +92,7 @@ const OrderTracker = ({navigation, route}) => {
             marginHorizontal: 20,
             paddingVertical: 10,
             borderRadius: 10,
-            borderWidth: 2,
-            borderColor: colors.col7,
+            elevation: 10,
             backgroundColor: colors.col5,
           }}>
           {/* Order ID */}
@@ -112,13 +122,15 @@ const OrderTracker = ({navigation, route}) => {
             <Text style={{fontWeight: 'bold', color: colors.col7}}>
               Order Date:
             </Text>
-            <Text style={{}}>{convertDate(orders.orderDate)}</Text>
+            <Text>
+              {moment(orders.orderDate.toDate()).format('MMM D, YYYY h:mm A')}
+            </Text>
           </View>
 
           {/* Delivery Address */}
           <View
             style={{
-              marginBottom: 20,
+              marginBottom: 10,
               paddingHorizontal: 10,
             }}>
             <Text
@@ -137,6 +149,55 @@ const OrderTracker = ({navigation, route}) => {
               {orders.orderAddress}
             </Text>
           </View>
+
+          {/* Delivery Rider Information */}
+          {orders.deliveryRiderInfo ? (
+            /* Delivery Rider - Assigned */
+            <View
+              style={{
+                marginBottom: 20,
+                paddingHorizontal: 10,
+              }}>
+              <Text
+                style={{
+                  color: colors.col7,
+                  fontSize: 14,
+                }}>
+                Delivery Rider:
+              </Text>
+              <Text
+                style={{
+                  color: colors.col7,
+                  fontSize: 14,
+                  fontWeight: 'bold',
+                }}>
+                {orders.deliveryRiderInfo}
+              </Text>
+            </View>
+          ) : (
+            /* Delivery Rider - Not Assigned */
+            <View
+              style={{
+                marginBottom: 20,
+                paddingHorizontal: 10,
+              }}>
+              <Text
+                style={{
+                  color: colors.col7,
+                  fontSize: 14,
+                }}>
+                Delivery Rider:
+              </Text>
+              <Text
+                style={{
+                  color: colors.col7,
+                  fontSize: 14,
+                  fontWeight: 'bold',
+                }}>
+                Not Assigned
+              </Text>
+            </View>
+          )}
 
           {/* Status */}
           {track_order_status.map((item, index) => {
@@ -205,8 +266,7 @@ const OrderTracker = ({navigation, route}) => {
             marginHorizontal: 20,
             paddingVertical: 10,
             borderRadius: 10,
-            borderWidth: 2,
-            borderColor: colors.col7,
+            elevation: 10,
             backgroundColor: colors.col5,
           }}>
           <View
@@ -340,8 +400,7 @@ const OrderTracker = ({navigation, route}) => {
             marginHorizontal: 20,
             paddingVertical: 10,
             borderRadius: 10,
-            borderWidth: 2,
-            borderColor: colors.col7,
+            elevation: 10,
             backgroundColor: colors.col5,
           }}>
           <View
@@ -382,40 +441,55 @@ const OrderTracker = ({navigation, route}) => {
           </View>
         </View>
 
-        {/* -------------------- Footer Component -------------------- */}
-        <View
-          style={{
-            marginTop: 10,
-            marginBottom: 10,
-            alignItems: 'center',
-          }}>
-          {currentStep < track_order_status.length - 1 && (
-            <View
-              style={{
-                width: '90%',
-              }}>
-              {/* Cancel Order Button */}
-              <TouchableOpacity
+        {/*-------------------- Delivered Message --------------------*/}
+        {orders.orderStatus === 'Delivered' ? (
+          <Text style={styles.deliveredMsg}>
+            Thank you for ordering with us
+          </Text>
+        ) : null}
+
+        {/*-------------------- Canceleed Message --------------------*/}
+        {orders.orderStatus === 'Cancelled' ? (
+          <Text style={styles.cancelledMsg}>Sorry for the inconvenience</Text>
+        ) : null}
+
+        {orders.orderStatus === 'Delivered' &&
+        orders.orderStatus === 'Cancelled' ? null : (
+          /* -------------------- Footer Component -------------------- */
+          <View
+            style={{
+              marginTop: 10,
+              marginBottom: 10,
+              alignItems: 'center',
+            }}>
+            {currentStep < track_order_status.length - 1 && (
+              <View
                 style={{
-                  borderRadius: 10,
-                  backgroundColor: colors.col2,
-                  height: 45,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-                onPress={() => navigation.navigate('Menu')}>
-                <Text
+                  width: '90%',
+                }}>
+                {/* Cancel Order Button */}
+                <TouchableOpacity
                   style={{
-                    fontWeight: 'bold',
-                    color: colors.col7,
-                    fontSize: 20,
-                  }}>
-                  Cancel Order
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
+                    borderRadius: 10,
+                    backgroundColor: colors.col2,
+                    height: 45,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  onPress={() => cancelOrder(orders)}>
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      color: colors.col7,
+                      fontSize: 20,
+                    }}>
+                    Cancel Order
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -497,5 +571,33 @@ const styles = StyleSheet.create({
     fontSize: 13,
     // color: colors.text1,
     marginRight: 10,
+  },
+  cancelledMsg: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    width: '90%',
+    color: colors.col7,
+    textAlign: 'center',
+    marginVertical: 20,
+    borderColor: 'red',
+    backgroundColor: colors.col5,
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 5,
+  },
+  deliveredMsg: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    width: '90%',
+    color: colors.col7,
+    textAlign: 'center',
+    marginVertical: 20,
+    borderColor: 'green',
+    backgroundColor: colors.col5,
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 5,
   },
 });

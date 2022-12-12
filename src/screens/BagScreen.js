@@ -224,7 +224,7 @@ const BagScreen = ({navigation}) => {
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
-                    <View
+                    {/* <View
                       style={{
                         width: 30,
                         alignItems: 'center',
@@ -238,7 +238,7 @@ const BagScreen = ({navigation}) => {
                           style={{height: 20, width: 20}}
                         />
                       </TouchableOpacity>
-                    </View>
+                    </View> */}
 
                     <View
                       style={{
@@ -252,10 +252,11 @@ const BagScreen = ({navigation}) => {
                           fontWeight: '500',
                           color: colors.col7,
                         }}>
+                        Quantity:&nbsp;
                         {parseInt(data.item.foodQty * quantity).toString()}
                       </Text>
                     </View>
-                    <View
+                    {/* <View
                       style={{
                         width: 30,
                         alignItems: 'center',
@@ -270,7 +271,7 @@ const BagScreen = ({navigation}) => {
                           style={{height: 20, width: 20}}
                         />
                       </TouchableOpacity>
-                    </View>
+                    </View> */}
                   </View>
                 </View>
               </View>

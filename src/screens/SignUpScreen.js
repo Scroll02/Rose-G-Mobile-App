@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {colors, button1} from '../globals/style';
 import {Icon} from '@rneui/base';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {firebase} from '../Firebase/FirebaseConfig';
 
 const SignUpScreen = ({navigation}) => {
@@ -32,6 +32,7 @@ const SignUpScreen = ({navigation}) => {
   const [customError, setCustomError] = useState('');
   const [successMsg, setSuccessMsg] = useState(null);
 
+  /* -------------------- Sign Up Button Function -------------------- */
   const handleSignup = () => {
     const FormData = {
       fullName: fullName,
@@ -44,6 +45,15 @@ const SignUpScreen = ({navigation}) => {
       setCustomError("Password doesn't match");
       return;
     }
+    if (
+      checkFullName == true ||
+      checkValidEmail == true ||
+      checkValidPassword == true
+    ) {
+      setCustomError('Follow the required format');
+      return;
+    }
+
     try {
       firebase
         .auth()
@@ -72,6 +82,20 @@ const SignUpScreen = ({navigation}) => {
         .catch(error => {
           console.log('Sign up firebase error', error.message);
           if (
+            fullName.length == 0 &&
+            email.length == 0 &&
+            password.length == 0 &&
+            confirmPassword.length == 0
+          ) {
+            setCustomError('Fill out the form');
+          } else if (
+            fullName.length == 0 ||
+            email.length == 0 ||
+            password.length == 0 ||
+            confirmPassword.length == 0
+          ) {
+            setCustomError('Fill out the form');
+          } else if (
             error.message ===
             'Firebase: The email address is already in use by another account. (auth/email-already-in-use).'
           ) {
@@ -85,7 +109,7 @@ const SignUpScreen = ({navigation}) => {
             error.message ===
             'Firebase: Password should be at least 6 characters (auth/weak-password).'
           ) {
-            setCustomError('Password should be at least 6 characters');
+            setCustomError('Password should be at least 8 characters');
           } else {
             setCustomError(error.message);
           }
@@ -95,6 +119,48 @@ const SignUpScreen = ({navigation}) => {
     }
   };
 
+  /* -------------------- Full Name Validation -------------------- */
+  const [checkFullName, setCheckFullName] = useState(false);
+  const handleFullName = text => {
+    setFullName(text);
+    // setFullName(text.replace(/^[A-Za-z ]+$/));
+
+    let reg = /^[A-Za-z ]+$/; // valid alphabet with space
+
+    if (reg.test(text)) {
+      setCheckFullName(false);
+    } else {
+      setCheckFullName(true);
+    }
+  };
+
+  /* -------------------- Email Validation -------------------- */
+  const [checkValidEmail, setCheckValidEmail] = useState(false);
+  const handleCheckEmail = text => {
+    let re = /\S+@\S+\.\S+/;
+    let regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+
+    setEmail(text);
+    if (re.test(text) || regex.test(text)) {
+      setCheckValidEmail(false);
+    } else {
+      setCheckValidEmail(true);
+    }
+  };
+
+  /* -------------------- Password Validation -------------------- */
+  const [checkValidPassword, setCheckValidPassword] = useState(false);
+  const handleCheckPassword = text => {
+    let regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,}$/;
+
+    setPassword(text);
+    if (regex.test(text)) {
+      setCheckValidPassword(false);
+    } else {
+      setCheckValidPassword(true);
+    }
+  };
   return (
     <View style={styles.mainView}>
       <View style={styles.topView}>
@@ -124,9 +190,18 @@ const SignUpScreen = ({navigation}) => {
                 setConfirmPasswordFocus(false);
                 setShowConfirmPassword(false);
               }}
-              onChangeText={text => setFullName(text)}
+              // onChangeText={text => setFullName(text)}
+              onChangeText={text => handleFullName(text)}
             />
           </View>
+          {/*-------------------- Full Name Validate -------------------- */}
+          {checkFullName ? (
+            <Text style={styles.textFailed}>
+              It should only contain alphabet
+            </Text>
+          ) : (
+            <Text style={styles.textFailed}></Text>
+          )}
 
           {/*-------------------- Email Text Input -------------------- */}
           <View style={styles.inputContainer}>
@@ -143,9 +218,16 @@ const SignUpScreen = ({navigation}) => {
                 setConfirmPasswordFocus(false);
                 setShowConfirmPassword(false);
               }}
-              onChangeText={text => setEmail(text)}
+              // onChangeText={text => setEmail(text)}
+              onChangeText={text => handleCheckEmail(text)}
             />
           </View>
+          {/*-------------------- Email Validate -------------------- */}
+          {checkValidEmail ? (
+            <Text style={styles.textFailed}>Wrong format email</Text>
+          ) : (
+            <Text style={styles.textFailed}> </Text>
+          )}
 
           {/*-------------------- Password Text Input -------------------- */}
           <View style={styles.inputContainer}>
@@ -163,7 +245,8 @@ const SignUpScreen = ({navigation}) => {
                 setConfirmPasswordFocus(false);
                 setShowConfirmPassword(false);
               }}
-              onChangeText={text => setPassword(text)}
+              // onChangeText={text => setPassword(text)}
+              onChangeText={text => handleCheckPassword(text)}
             />
             <Icon
               name={showPassword === false ? 'eye-off' : 'eye'}
@@ -173,6 +256,15 @@ const SignUpScreen = ({navigation}) => {
               onPress={() => setShowPassword(!showPassword)}
             />
           </View>
+          {/*-------------------- Password Validate -------------------- */}
+          {checkValidPassword ? (
+            <Text style={styles.textFailed}>
+              At least 8 characters, 1 numeric character, 1 lowercase letter, 1
+              uppercase letter, 1 special character
+            </Text>
+          ) : (
+            <Text style={styles.textFailed}> </Text>
+          )}
 
           {/*-------------------- Confirm Password Text Input -------------------- */}
           <View style={styles.inputContainer}>
@@ -287,28 +379,28 @@ const styles = StyleSheet.create({
   },
   topView: {
     width: '100%',
-    height: '30%',
+    height: '28%',
     justifyContent: 'center',
     alignItems: 'center',
   },
   bottomView: {
     width: '100%',
-    height: '70%',
+    height: '72%',
     backgroundColor: '#e8b0af',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     alignItems: 'center',
   },
   roseGLogo: {
-    width: '60%',
+    width: '55%',
     resizeMode: 'contain',
   },
   heading: {
     color: '#000',
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: 'bold',
     marginTop: 20,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   errorMsg: {
     color: 'red',
@@ -368,5 +460,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     backgroundColor: colors.col5,
+  },
+  textFailed: {
+    fontSize: 13,
+    marginHorizontal: 30,
+    alignSelf: 'flex-start',
+    color: 'red',
   },
 });

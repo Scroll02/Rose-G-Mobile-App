@@ -117,12 +117,12 @@ const CheckOutScreen = ({navigation, route}) => {
         navigation.replace('Home');
       });
 
+    // Delete the document to reset the bag
     const docRef2 = firebase
       .firestore()
       .collection('UserBag')
-      .doc(firebase.auth().currentUser.uid);
-    docRef2.delete();
-    //console.log("pay");
+      .doc(firebase.auth().currentUser.uid)
+      .delete();
   };
 
   /*-------------------- Error Message --------------------*/
@@ -306,27 +306,39 @@ const CheckOutScreen = ({navigation, route}) => {
 
               {/* Change for if COD */}
               {checked === 'Cash On Delivery' && (
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    height: 35,
-                    width: '50%',
-                    borderWidth: 1,
-                    borderColor: colors.col7,
-                    marginVertical: 7,
-                    marginHorizontal: 10,
-                    paddingLeft: 10,
-                    borderRadius: 10,
-                  }}>
-                  <TextInput
-                    placeholder="Change for"
-                    value={changeFor}
-                    placeholderTextColor={'#000'}
-                    style={{fontSize: 12}}
-                    onChangeText={text => {
-                      setChangeFor(text);
-                    }}
-                  />
+                <View style={{width: '90%', alignItems: 'center'}}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      height: 35,
+                      width: '50%',
+                      borderWidth: 1,
+                      borderColor: colors.col7,
+                      marginVertical: 7,
+                      marginHorizontal: 10,
+                      paddingLeft: 10,
+                      borderRadius: 10,
+                    }}>
+                    <TextInput
+                      placeholder="Change for"
+                      value={changeFor}
+                      placeholderTextColor={'#000'}
+                      style={{fontSize: 12}}
+                      onChangeText={text => {
+                        setChangeFor(text);
+                      }}
+                    />
+                  </View>
+
+                  {changeFor >= totalCost || changeFor == totalCost ? (
+                    <View></View>
+                  ) : (
+                    <View>
+                      <Text style={{color: 'red', fontSize: 12}}>
+                        Invalid Amount
+                      </Text>
+                    </View>
+                  )}
                 </View>
               )}
             </View>
@@ -358,12 +370,16 @@ const CheckOutScreen = ({navigation, route}) => {
           </Text>
         </View>
         {/*-------------------- Place Order Button --------------------*/}
-        {userData?.contactNumber !== null ||
-        userData?.address != null ||
-        userData?.fullName != null ? (
-          /*-------------------- Enabled Place Order Button --------------------*/
+        {userData?.contactNumber == '' ||
+        userData?.address == '' ||
+        userData?.fullName == '' ||
+        userData?.contactNumber == undefined ||
+        userData?.address == undefined ||
+        userData?.fullName == undefined ? (
+          /*-------------------- Disabled Place Order Button --------------------*/
           <View style={{alignItems: 'center'}}>
             <TouchableOpacity
+              disabled={true}
               onPress={placeOrder}
               style={{
                 width: '90%',
@@ -377,6 +393,7 @@ const CheckOutScreen = ({navigation, route}) => {
                 alignItems: 'center',
                 fontWeight: 'bold',
                 fontSize: 18,
+                opacity: 0.6,
               }}>
               <Text style={{fontSize: 18, fontWeight: 'bold', color: '#000'}}>
                 Place Order
@@ -384,10 +401,9 @@ const CheckOutScreen = ({navigation, route}) => {
             </TouchableOpacity>
           </View>
         ) : (
-          /*-------------------- Disabled Place Order Button --------------------*/
+          /*-------------------- Enabled Place Order Button --------------------*/
           <View style={{alignItems: 'center'}}>
             <TouchableOpacity
-              disabled={true}
               onPress={placeOrder}
               style={{
                 width: '90%',
@@ -450,6 +466,7 @@ const styles = StyleSheet.create({
   },
 
   //-------------------- CheckOut Screen Body --------------------//
+
   //-------------------- Choose Payment Method --------------------//
   radioBtnContainer: {
     flexDirection: 'row',
