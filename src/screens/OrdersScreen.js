@@ -32,6 +32,13 @@ const OrdersScreen = ({navigation}) => {
 
   // console.log(orders);
 
+  const convertDate = date => {
+    // console.log(date.seconds)
+    const newDate = new Date(date && date.toDate().getTime());
+    // console.log(newdate)
+    return newDate.toDateString();
+  };
+
   // -------------------- Cancel Order Function -------------------- //
   const cancelOrder = orderitem => {
     const orderRef = firebase
@@ -140,9 +147,11 @@ const OrdersScreen = ({navigation}) => {
                         </Text>
                         <Text style={styles.orderTxt2}>
                           Order Date:&nbsp;
-                          {moment(order.orderDate.toDate()).format(
-                            'MMM D, YYYY h:mm A',
-                          )}
+                          {order.orderDate
+                            ? moment(order.orderDate.toDate()).format(
+                                'MMM D, YYYY h:mm A',
+                              )
+                            : null}
                         </Text>
                         <Text style={styles.grandTotalCost}>
                           Total:&nbsp;₱

@@ -41,7 +41,7 @@ const FoodDetailsScreen = ({navigation, route}) => {
         docRef.update({
           bag: firebase.firestore.FieldValue.arrayUnion(data1),
         });
-        alert('Added to cart ');
+        alert('Added to bag ');
         navigation.replace('Menu');
       } else {
         docRef.set({

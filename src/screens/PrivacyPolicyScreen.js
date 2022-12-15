@@ -82,6 +82,7 @@ export default PrivacyPolicyScreen;
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
+    height: '100%',
     width: '100%',
     backgroundColor: colors.col6,
   },

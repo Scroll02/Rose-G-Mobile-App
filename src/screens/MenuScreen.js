@@ -125,6 +125,7 @@ const MenuScreen = ({navigation, route}) => {
                     <Image source={{uri: item.img}} style={styles.foodImg} />
                   </View>
                   <Text style={styles.foodTitle}>{item.foodName}</Text>
+                  <Text style={styles.foodDescription}>{item.description}</Text>
                   <Text style={styles.foodPriceTxt}>
                     ₱&nbsp;{parseFloat(item.price).toFixed(2)}
                   </Text>
@@ -200,7 +201,7 @@ const styles = StyleSheet.create({
 
   //-------------------- Menu --------------------//
   foodContainerOut: {
-    height: Dimensions.get('window').height,
+    height: Dimensions.get('screen').height,
     marginHorizontal: 8,
     // backgroundColor: 'red',
   },
@@ -211,14 +212,14 @@ const styles = StyleSheet.create({
     margin: 10,
     borderWidth: 1,
     width: 170,
-    height: 200,
+    height: 250,
   },
   foodImgContainer: {
     alignItems: 'center',
   },
   foodImg: {
-    width: 150,
-    height: 150,
+    width: 130,
+    height: 130,
     resizeMode: 'contain',
     justifyContent: 'center',
     alignItems: 'center',
@@ -229,6 +230,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginTop: 5,
     marginLeft: 10,
+  },
+  foodDescription: {
+    marginLeft: 10,
+    fontSize: 12,
+    marginBottom: 2,
   },
   foodPriceTxt: {
     fontWeight: '700',

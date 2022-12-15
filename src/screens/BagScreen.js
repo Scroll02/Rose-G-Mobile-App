@@ -43,7 +43,9 @@ const BagScreen = ({navigation}) => {
   }, []);
 
   //----------Food Quantity: Increase & Decrease Button Function----------//
-  const increaseQuantity = () => {};
+  const increaseQuantity = () => {
+    setQuantity((parseInt(quantity) + 1).toString());
+  };
   const decreaseQuantity = () => {
     if (parseInt(quantity) > 1) {
       setQuantity((parseInt(quantity) - 1).toString());
@@ -207,10 +209,13 @@ const BagScreen = ({navigation}) => {
                           ) +
                           parseFloat(
                             data.item.data?.addOnPrice * data.item.addOnQty,
-                          )
+                          ) *
+                            parseFloat(quantity)
                         ).toFixed(2)
-                      : parseFloat(
-                          data.item.data?.price * data.item.foodQty,
+                      : (
+                          parseFloat(
+                            data.item.data?.price * data.item.foodQty,
+                          ) * parseFloat(quantity)
                         ).toFixed(2)}
                   </Text>
                   {/* Quantity */}
@@ -224,13 +229,13 @@ const BagScreen = ({navigation}) => {
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}>
-                    {/* <View
+                    <View
                       style={{
                         width: 30,
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}>
-                      <TouchableOpacity>
+                      <TouchableOpacity onPress={decreaseQuantity}>
                         <Icon
                           name="minuscircleo"
                           type="antdesign"
@@ -238,7 +243,7 @@ const BagScreen = ({navigation}) => {
                           style={{height: 20, width: 20}}
                         />
                       </TouchableOpacity>
-                    </View> */}
+                    </View>
 
                     <View
                       style={{
@@ -252,11 +257,10 @@ const BagScreen = ({navigation}) => {
                           fontWeight: '500',
                           color: colors.col7,
                         }}>
-                        Quantity:&nbsp;
                         {parseInt(data.item.foodQty * quantity).toString()}
                       </Text>
                     </View>
-                    {/* <View
+                    <View
                       style={{
                         width: 30,
                         alignItems: 'center',
@@ -271,7 +275,7 @@ const BagScreen = ({navigation}) => {
                           style={{height: 20, width: 20}}
                         />
                       </TouchableOpacity>
-                    </View> */}
+                    </View>
                   </View>
                 </View>
               </View>
@@ -328,7 +332,7 @@ const BagScreen = ({navigation}) => {
               color: colors.col7,
               fontWeight: '500',
             }}>
-            ₱ {parseFloat(subtotalCost).toFixed(2)}
+            ₱ {(parseFloat(subtotalCost) * parseFloat(quantity)).toFixed(2)}
           </Text>
         </View>
 

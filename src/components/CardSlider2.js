@@ -52,6 +52,7 @@ const CardSlider2 = ({cardTitle, viewTitle, navigation, data}) => {
                 </View>
 
                 <Text style={styles.productTitle}>{item.foodName}</Text>
+                <Text style={styles.descriptionTxt}>{item.description}</Text>
                 <Text style={styles.productPriceTxt}>
                   ₱&nbsp;{parseFloat(item.price).toFixed(2)}
                 </Text>
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     width: 160,
-    height: 200,
+    height: 250,
     borderWidth: 1,
     borderColor: colors.col5,
     marginTop: 5,
@@ -121,6 +122,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginTop: 5,
     marginLeft: 10,
+  },
+  descriptionTxt: {
+    fontSize: 12,
+    marginLeft: 10,
+    marginBottom: 2,
   },
   productPriceTxt: {
     fontWeight: '700',
