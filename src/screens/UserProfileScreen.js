@@ -74,6 +74,7 @@ const UserProfileScreen = ({navigation, route}) => {
 
       {/*-------------------- Profile Screen Body --------------------*/}
       <View>
+        {/*-------------------- Profile Details --------------------*/}
         <Text style={styles.profileDetailsTxt}>Profile Details</Text>
         <View
           style={{
@@ -86,25 +87,33 @@ const UserProfileScreen = ({navigation, route}) => {
           {/*-------------------- Full Name Text --------------------*/}
           <View style={{flexDirection: 'row'}}>
             <Text style={styles.txt1}>Full Name: </Text>
-            <Text style={styles.txt2}>{userData?.fullName}</Text>
+            <Text numberOfLines={1} style={styles.txt2}>
+              {userData?.fullName}
+            </Text>
           </View>
 
           {/*-------------------- Email Text --------------------*/}
           <View style={{flexDirection: 'row'}}>
             <Text style={styles.txt1}>Email: </Text>
-            <Text style={styles.txt2}>{userData?.email}</Text>
+            <Text numberOfLines={1} style={styles.txt2}>
+              {userData?.email}
+            </Text>
           </View>
 
           {/*-------------------- Contact Number Text --------------------*/}
           <View style={{flexDirection: 'row'}}>
             <Text style={styles.txt1}>Contact Number: </Text>
-            <Text style={styles.txt2}>{userData?.contactNumber}</Text>
+            <Text numberOfLines={1} style={styles.txt2}>
+              {userData?.contactNumber}
+            </Text>
           </View>
 
           {/*-------------------- Address Text --------------------*/}
           <View style={{flexDirection: 'row'}}>
             <Text style={styles.txt1}>Address: </Text>
-            <Text style={styles.txt2}>{userData?.address}</Text>
+            <Text numberOfLines={1} style={styles.txt2}>
+              {userData?.address}
+            </Text>
           </View>
         </View>
 
@@ -185,9 +194,19 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   txt2: {
+    flex: 1,
     fontSize: 17,
     color: colors.col7,
     fontWeight: '400',
     marginBottom: 10,
+  },
+
+  profileDetailsContainer: {
+    width: '90%',
+    backgroundColor: colors.col5,
+    marginHorizontal: 20,
+    padding: 10,
+    borderRadius: 10,
+    margin: 10,
   },
 });

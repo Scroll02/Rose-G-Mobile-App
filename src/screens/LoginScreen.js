@@ -5,11 +5,22 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import React, {useState} from 'react';
 import {colors} from '../globals/style';
 import {Icon} from '@rneui/base';
 import {firebase} from '../Firebase/FirebaseConfig';
+
+// For Responsive Layout
+import {
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  responsiveScreenFontSize,
+} from 'react-native-responsive-dimensions';
+
+const windowWidth = Dimensions.get('screen').width;
+const windowHeight = Dimensions.get('screen').height;
 
 const LoginScreen = ({navigation}) => {
   const [emailFocus, setEmailFocus] = useState(false);
@@ -21,6 +32,7 @@ const LoginScreen = ({navigation}) => {
   const [customError, setcustomError] = useState('');
   // console.log(email, password);
 
+  /* -------------------- Login Button Function -------------------- */
   const handleLogin = () => {
     firebase
       .auth()
@@ -187,30 +199,37 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-    height: '100%',
+    // height: windowHeight - 100,
+    height: responsiveScreenHeight(100),
     width: '100%',
   },
   topView: {
     width: '100%',
-    height: '28%',
+    // height: '28%',
+    height: responsiveScreenHeight(28),
     justifyContent: 'center',
     alignItems: 'center',
   },
   bottomView: {
     width: '100%',
-    height: '72%',
+    // height: '72%',
+    height: responsiveScreenHeight(72),
     backgroundColor: colors.col1,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     alignItems: 'center',
   },
   roseGLogo: {
-    width: '55%',
+    marginTop: 50,
+    width: responsiveScreenWidth(50),
+    // width: '55%',
     resizeMode: 'contain',
   },
   heading: {
     color: '#000',
-    fontSize: 25,
+    // fontSize: 25,
+    fontSize: responsiveScreenFontSize(3),
+    width: responsiveScreenWidth(60),
     fontWeight: 'bold',
     marginTop: 15,
     marginBottom: 10,
@@ -220,8 +239,10 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: 'row',
-    height: 40,
-    width: '90%',
+    // height: 40,
+    // width: '90%',
+    height: responsiveScreenHeight(6),
+    width: responsiveScreenWidth(90),
     borderWidth: 1,
     borderColor: '#fff',
     marginVertical: 7,
@@ -231,25 +252,30 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 15,
     marginLeft: 15,
-    width: '85%',
+    // width: '85%',
+    width: responsiveScreenWidth(75),
   },
   eyeIcon: {
-    padding: 8,
+    // padding: 8,
+    padding: 14,
   },
   signInBtn: {
-    width: '90%',
+    // width: '90%',
+    width: responsiveScreenWidth(90),
     color: '#000',
     height: 40,
     backgroundColor: colors.col2,
     borderRadius: 10,
-    marginTop: 20,
+    marginTop: 15,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
   signInBtnTxt: {
+    textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 18,
+    width: responsiveScreenWidth(60),
     color: '#000',
   },
   forgotTxt: {
@@ -273,6 +299,9 @@ const styles = StyleSheet.create({
     marginTop: 5,
     color: '#000',
     fontWeight: 'bold',
+    alignContent: 'center',
+    width: '10%',
+    textAlign: 'center',
   },
   orLine: {
     marginVertical: 15,
@@ -285,20 +314,25 @@ const styles = StyleSheet.create({
   signInWithTxt: {
     color: '#000',
     marginVertical: 10,
-    fontSize: 15,
+    // fontSize: 15,
+    fontSize: responsiveScreenFontSize(2),
+    textAlign: 'center',
   },
   signInWithBtn: {
     flexDirection: 'row',
     backgroundColor: 'white',
     justifyContent: 'center',
-    width: 300,
-    height: 35,
+    // width: 300,
+    // height: 35,
+    height: responsiveScreenHeight(4),
+    width: responsiveScreenWidth(80),
     margin: 5,
     borderRadius: 10,
     padding: 5,
   },
   loginInWithBtnTxt: {
-    fontSize: 15,
+    // fontSize: 15,
+    fontSize: responsiveScreenFontSize(2),
     marginLeft: 10,
     color: '#000',
     fontWeight: '500',

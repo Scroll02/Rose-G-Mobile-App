@@ -94,7 +94,7 @@ const EditProfileDetailsScreen = ({navigation, route}) => {
           });
         });
       }
-      alert('your user data is updated');
+      alert('Your user data is updated');
       getUserData();
       navigation.replace('UserProfile');
     } else {

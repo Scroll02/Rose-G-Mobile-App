@@ -42,16 +42,6 @@ const BagScreen = ({navigation}) => {
     getBagData();
   }, []);
 
-  //----------Food Quantity: Increase & Decrease Button Function----------//
-  const increaseQuantity = () => {
-    setQuantity((parseInt(quantity) + 1).toString());
-  };
-  const decreaseQuantity = () => {
-    if (parseInt(quantity) > 1) {
-      setQuantity((parseInt(quantity) - 1).toString());
-    }
-  };
-
   /*-------------------- Sub Total Cost & Total Cost --------------------*/
   useEffect(() => {
     if (bagData != null) {
@@ -71,6 +61,16 @@ const BagScreen = ({navigation}) => {
       setTotalCost(JSON.stringify(grandTotalFoodCost));
     }
   }, [bagData]);
+
+  //----------Food Quantity: Increase & Decrease Button Function----------//
+  const increaseQuantity = () => {
+    setQuantity((parseInt(quantity) + 1).toString());
+  };
+  const decreaseQuantity = () => {
+    if (parseInt(quantity) > 1) {
+      setQuantity((parseInt(quantity) - 1).toString());
+    }
+  };
 
   /*-------------------- Delete Button --------------------*/
   const deleteItem = item => {

@@ -36,6 +36,7 @@ const MenuScreen = ({navigation, route}) => {
 
   const [productList, setProductList] = useState(foodData);
 
+  /*-------------------- Categories Section --------------------*/
   const setCategoryFilter = selectedCategoryIndex => {
     if (selectedCategoryIndex !== 0) {
       setProductList([
@@ -125,7 +126,9 @@ const MenuScreen = ({navigation, route}) => {
                     <Image source={{uri: item.img}} style={styles.foodImg} />
                   </View>
                   <Text style={styles.foodTitle}>{item.foodName}</Text>
-                  <Text style={styles.foodDescription}>{item.description}</Text>
+                  <Text numberOfLines={2} style={styles.foodDescription}>
+                    {item.description}
+                  </Text>
                   <Text style={styles.foodPriceTxt}>
                     ₱&nbsp;{parseFloat(item.price).toFixed(2)}
                   </Text>
@@ -212,7 +215,7 @@ const styles = StyleSheet.create({
     margin: 10,
     borderWidth: 1,
     width: 170,
-    height: 250,
+    height: 230,
   },
   foodImgContainer: {
     alignItems: 'center',
@@ -233,8 +236,8 @@ const styles = StyleSheet.create({
   },
   foodDescription: {
     marginLeft: 10,
-    fontSize: 12,
-    marginBottom: 2,
+    fontSize: 13,
+    marginBottom: 5,
   },
   foodPriceTxt: {
     fontWeight: '700',
