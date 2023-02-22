@@ -65,7 +65,7 @@ const LoginScreen = ({navigation}) => {
       {/* -------------------- Top View of the Screen -------------------- */}
       <View style={styles.topView}>
         <Image
-          source={require('../../assets/images/roseG_Logo.png')}
+          source={require('../../assets/images/roseGLogoFooter.png')}
           style={styles.roseGLogo}
         />
       </View>
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   },
   roseGLogo: {
     marginTop: 50,
-    width: responsiveScreenWidth(50),
+    width: responsiveScreenWidth(55),
     // width: '55%',
     resizeMode: 'contain',
   },

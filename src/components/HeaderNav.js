@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Icon} from '@rneui/base';
 import {colors} from '../globals/style';
@@ -8,7 +8,11 @@ const HeaderNav = ({navigation, data}) => {
   return (
     <View>
       <View style={styles.headerContainer}>
-        <Text style={styles.heading1}>Rose G</Text>
+        <Image
+          source={require('../../assets/images/roseGLogoName.png')}
+          style={styles.roseGLogo}
+        />
+        {/* <Text style={styles.heading1}>Rose G</Text> */}
         <TouchableOpacity onPress={() => navigation.navigate('Bag')}>
           <Icon
             name="shopping-bag"
@@ -56,6 +60,11 @@ const styles = StyleSheet.create({
     elevation: 10,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
+  },
+  roseGLogo: {
+    width: '40%',
+    height: 45,
+    resizeMode: 'contain',
   },
   heading1: {
     color: colors.col7,
