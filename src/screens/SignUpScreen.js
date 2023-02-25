@@ -2,7 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  StatusBar,
   Image,
   TextInput,
   TouchableOpacity,
@@ -12,8 +11,16 @@ import {Icon} from '@rneui/base';
 import React, {useState, useEffect} from 'react';
 import {firebase} from '../Firebase/FirebaseConfig';
 
+// Responsive Layout
+import {
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  responsiveScreenFontSize,
+} from '../globals/style';
+
 const SignUpScreen = ({navigation}) => {
-  const [fullNameFocus, setFullNameFocus] = useState(false);
+  const [firstNameFocus, setFirstNameFocus] = useState(false);
+  const [lastNameFocus, setLastNameFocus] = useState(false);
   const [emailFocus, setEmailFocus] = useState(false);
   const [passwordFocus, setPasswordFocus] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -23,7 +30,8 @@ const SignUpScreen = ({navigation}) => {
   const [isSelected, setSelection] = useState(false);
 
   /* -------------------- Taking Form Data -------------------- */
-  const [fullName, setFullName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -35,7 +43,8 @@ const SignUpScreen = ({navigation}) => {
   /* -------------------- Sign Up Button Function -------------------- */
   const handleSignup = () => {
     const FormData = {
-      fullName: fullName,
+      firstName: firstName,
+      lastName: lastName,
       email: email,
       password: password,
       // confirmPassword: confirmPassword,
@@ -46,7 +55,8 @@ const SignUpScreen = ({navigation}) => {
       return;
     }
     if (
-      checkFullName == true ||
+      checkFirstName == true ||
+      checkLastName == true ||
       checkValidEmail == true ||
       checkValidPassword == true
     ) {
@@ -64,7 +74,8 @@ const SignUpScreen = ({navigation}) => {
             const userRef = firebase.firestore().collection('UserData');
             userRef
               .add({
-                fullName: fullName,
+                firstName: firstName,
+                lastName: lastName,
                 email: email,
                 password: password,
                 // cpassword: cpassword,
@@ -82,15 +93,17 @@ const SignUpScreen = ({navigation}) => {
         .catch(error => {
           console.log('Sign up firebase error', error.message);
           if (
-            fullName.length == 0 &&
+            firstName.length == 0 &&
+            lastName.length == 0 &&
             email.length == 0 &&
             password.length == 0 &&
             confirmPassword.length == 0
           ) {
             setCustomError('Fill out the form');
           } else if (
-            fullName.length == 0 ||
-            email.length == 0 ||
+            (firstName.length == 0 &&
+              lastName.length == 0 &&
+              email.length == 0) ||
             password.length == 0 ||
             confirmPassword.length == 0
           ) {
@@ -119,18 +132,33 @@ const SignUpScreen = ({navigation}) => {
     }
   };
 
-  /* -------------------- Full Name Validation -------------------- */
-  const [checkFullName, setCheckFullName] = useState(false);
-  const handleFullName = text => {
-    setFullName(text);
+  /* -------------------- First Name Validation -------------------- */
+  const [checkFirstName, setCheckFirstName] = useState(false);
+  const handleFirstName = text => {
+    setFirstName(text);
     // setFullName(text.replace(/^[A-Za-z ]+$/));
 
     let reg = /^[A-Za-z ]+$/; // valid alphabet with space
 
     if (reg.test(text)) {
-      setCheckFullName(false);
+      setCheckFirstName(false);
     } else {
-      setCheckFullName(true);
+      setCheckFirstName(true);
+    }
+  };
+
+  /* -------------------- Last Name Validation -------------------- */
+  const [checkLastName, setCheckLastName] = useState(false);
+  const handleLastName = text => {
+    setLastName(text);
+    // setFullName(text.replace(/^[A-Za-z ]+$/));
+
+    let reg = /^[A-Za-z ]+$/; // valid alphabet with space
+
+    if (reg.test(text)) {
+      setCheckLastName(false);
+    } else {
+      setCheckLastName(true);
     }
   };
 
@@ -163,27 +191,34 @@ const SignUpScreen = ({navigation}) => {
   };
   return (
     <View style={styles.mainView}>
+      {/*-------------------- Top View Part -------------------- */}
       <View style={styles.topView}>
         <Image
-          source={require('../../assets/images/roseG_Logo.png')}
+          source={require('../../assets/images/roseGLogoFooter.png')}
           style={styles.roseGLogo}
         />
       </View>
+
+      {/*-------------------- Bottom View Part -------------------- */}
       {successMsg == null ? (
         <View style={styles.bottomView}>
-          <Text style={styles.heading}>Create an Account!</Text>
+          <Text numberOfLines={1} style={styles.heading}>
+            Create an Account!
+          </Text>
           {customError !== '' && (
             <Text style={styles.errorMsg}>{customError}</Text>
           )}
-          {/*-------------------- Full Name Text Input -------------------- */}
+
+          {/*-------------------- First Name Text Input -------------------- */}
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              placeholder="Full Name"
-              value={fullName}
+              placeholder="First Name"
+              value={firstName}
               placeholderTextColor={'#000'}
               onFocus={() => {
-                setFullNameFocus(true);
+                setFirstNameFocus(true);
+                setLastNameFocus(true);
                 setEmailFocus(false);
                 setPasswordFocus(false);
                 setShowPassword(false);
@@ -191,11 +226,40 @@ const SignUpScreen = ({navigation}) => {
                 setShowConfirmPassword(false);
               }}
               // onChangeText={text => setFullName(text)}
-              onChangeText={text => handleFullName(text)}
+              onChangeText={text => handleFirstName(text)}
             />
           </View>
-          {/*-------------------- Full Name Validate -------------------- */}
-          {checkFullName ? (
+          {/*-------------------- First Name Validate -------------------- */}
+          {checkFirstName ? (
+            <Text style={styles.textFailed}>
+              It should only contain alphabet
+            </Text>
+          ) : (
+            <Text style={styles.textFailed}></Text>
+          )}
+
+          {/*-------------------- Last Name Text Input -------------------- */}
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Last Name"
+              value={lastName}
+              placeholderTextColor={'#000'}
+              onFocus={() => {
+                setFirstNameFocus(false);
+                setLastNameFocus(true);
+                setEmailFocus(false);
+                setPasswordFocus(false);
+                setShowPassword(false);
+                setConfirmPasswordFocus(false);
+                setShowConfirmPassword(false);
+              }}
+              // onChangeText={text => setFullName(text)}
+              onChangeText={text => handleLastName(text)}
+            />
+          </View>
+          {/*-------------------- Last Name Validate -------------------- */}
+          {checkLastName ? (
             <Text style={styles.textFailed}>
               It should only contain alphabet
             </Text>
@@ -211,7 +275,8 @@ const SignUpScreen = ({navigation}) => {
               value={email}
               placeholderTextColor={'#000'}
               onFocus={() => {
-                setFullNameFocus(false);
+                setFirstNameFocus(false);
+                setLastNameFocus(false);
                 setEmailFocus(true);
                 setPasswordFocus(false);
                 setShowPassword(false);
@@ -238,7 +303,8 @@ const SignUpScreen = ({navigation}) => {
               value={password}
               placeholderTextColor={'#000'}
               onFocus={() => {
-                setFullNameFocus(false);
+                setFirstNameFocus(false);
+                setLastNameFocus(false);
                 setEmailFocus(false);
                 setPasswordFocus(true);
                 setShowPassword(false);
@@ -275,7 +341,8 @@ const SignUpScreen = ({navigation}) => {
               value={confirmPassword}
               placeholderTextColor={'#000'}
               onFocus={() => {
-                setFullNameFocus(false);
+                setFirstNameFocus(false);
+                setLastNameFocus(false);
                 setEmailFocus(false);
                 setPasswordFocus(false);
                 setShowPassword(false);
@@ -313,7 +380,9 @@ const SignUpScreen = ({navigation}) => {
 
           {/*-------------------- Sign Up Button -------------------- */}
           <TouchableOpacity style={button1.btn1} onPress={() => handleSignup()}>
-            <Text style={button1.btn1Txt}>Sign Up</Text>
+            <Text numberOfLines={1} style={button1.btn1Txt}>
+              Sign Up
+            </Text>
           </TouchableOpacity>
 
           {/*-------------------- Already Have An Account? -------------------- */}
@@ -376,54 +445,66 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-    height: '100%',
-    width: '100%',
+    // height: height_screen,
+    // width: width_screen,
+    height: responsiveScreenHeight(100),
+    width: responsiveScreenWidth(100),
   },
   topView: {
-    width: '100%',
-    height: '28%',
+    width: responsiveScreenWidth(100),
+    height: responsiveScreenHeight(30),
     justifyContent: 'center',
     alignItems: 'center',
   },
   bottomView: {
-    width: '100%',
-    height: '72%',
+    width: responsiveScreenWidth(100),
+    height: responsiveScreenHeight(70),
     backgroundColor: '#e8b0af',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     alignItems: 'center',
   },
   roseGLogo: {
-    width: '55%',
+    marginTop: responsiveScreenHeight(5),
+    width: responsiveScreenWidth(55),
     resizeMode: 'contain',
   },
   heading: {
     color: '#000',
-    fontSize: 20,
+    fontSize: responsiveScreenFontSize(2.5),
+    width: responsiveScreenWidth(50),
     fontWeight: 'bold',
     marginTop: 20,
     marginBottom: 10,
   },
   errorMsg: {
+    fontSize: responsiveScreenFontSize(1.7),
     color: 'red',
   },
+  // Text Fields
   inputContainer: {
     flexDirection: 'row',
-    height: 40,
-    width: '90%',
+    display: 'flex',
+    height: responsiveScreenHeight(5),
+    width: responsiveScreenWidth(90),
     borderWidth: 1,
     borderColor: '#fff',
-    marginVertical: 7,
-    marginHorizontal: 10,
+    marginVertical: responsiveScreenHeight(0.2),
+    // marginHorizontal: 10,
     borderRadius: 10,
   },
   input: {
-    fontSize: 15,
+    padding: responsiveScreenHeight(1),
+    fontSize: responsiveScreenFontSize(2),
     marginLeft: 15,
-    width: '85%',
+    width: responsiveScreenWidth(75),
   },
   eyeIcon: {
-    padding: 8,
+    flex: 1,
+    // padding: responsiveScreenWidth(2),
+    width: responsiveScreenWidth(5),
+    justifyContent: 'center',
+    alignContent: 'center',
   },
   checkBoxContainer: {
     flexDirection: 'row',
@@ -434,7 +515,7 @@ const styles = StyleSheet.create({
   },
   iAgreeTxt: {
     margin: 8,
-    fontSize: 13,
+    fontSize: responsiveScreenFontSize(1.5),
     color: '#000',
     textAlign: 'center',
   },
@@ -444,7 +525,7 @@ const styles = StyleSheet.create({
   },
   alreadyTxt: {
     color: '#000',
-    fontSize: 15,
+    fontSize: responsiveScreenFontSize(1.5),
     marginTop: 10,
   },
   signInTxt: {
@@ -453,7 +534,8 @@ const styles = StyleSheet.create({
   },
   successMessage: {
     color: 'green',
-    fontSize: 20,
+    fontSize: responsiveScreenFontSize(2.3),
+    width: responsiveScreenWidth(90),
     fontWeight: 'bold',
     textAlign: 'center',
     margin: 10,
@@ -464,8 +546,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.col5,
   },
   textFailed: {
-    fontSize: 13,
+    fontSize: responsiveScreenFontSize(1.5),
     marginHorizontal: 30,
+    marginVertical: 1,
     alignSelf: 'flex-start',
     color: 'red',
   },

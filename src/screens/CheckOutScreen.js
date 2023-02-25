@@ -107,7 +107,8 @@ const CheckOutScreen = ({navigation, route}) => {
         orderDate: firebase.firestore.FieldValue.serverTimestamp(),
         orderAddress: userData.address,
         orderContactNumber: userData.contactNumber,
-        orderFullName: userData.fullName,
+        orderFirstName: userData.firstName,
+        orderLastName: userData.lastName,
         orderUserUid: userLoggedUid,
         orderPayment: checked,
         changeFor: changeFor,
@@ -183,7 +184,9 @@ const CheckOutScreen = ({navigation, route}) => {
               </TouchableOpacity>
             </View>
 
-            <Text>Name: {userData?.fullName}</Text>
+            <Text>
+              Name:&nbsp;{userData?.firstName}&nbsp;{userData?.lastName}
+            </Text>
             <Text>Contact No.: {userData?.contactNumber}</Text>
             <Text>Delivery Address: {userData?.address}</Text>
           </View>
@@ -372,10 +375,12 @@ const CheckOutScreen = ({navigation, route}) => {
         {/*-------------------- Place Order Button --------------------*/}
         {userData?.contactNumber == '' ||
         userData?.address == '' ||
-        userData?.fullName == '' ||
+        userData?.firstName == '' ||
+        userData?.lastName == '' ||
         userData?.contactNumber == undefined ||
         userData?.address == undefined ||
-        userData?.fullName == undefined ? (
+        userData?.firstName == undefined ||
+        userData?.lastName == undefined ? (
           /*-------------------- Disabled Place Order Button --------------------*/
           <View style={{alignItems: 'center'}}>
             <TouchableOpacity

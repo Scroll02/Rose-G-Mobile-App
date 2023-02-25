@@ -2,7 +2,13 @@ import {StyleSheet, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-virtualized-view';
 import React from 'react';
 import {Icon} from '@rneui/base';
-import {colors} from '../globals/style';
+import {
+  colors,
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  responsiveScreenFontSize,
+} from '../globals/style';
+
 const TermsConditionScreen = ({navigation}) => {
   return (
     <View style={styles.mainContainer}>
@@ -21,12 +27,12 @@ const TermsConditionScreen = ({navigation}) => {
       <ScrollView>
         <View
           style={{
-            width: '90%',
+            width: responsiveScreenWidth(90),
             marginHorizontal: 20,
             marginVertical: 20,
             alignSelf: 'center',
           }}>
-          <Text style={{fontSize: 14, textAlign: 'justify'}}>
+          <Text style={styles.paragraph}>
             These Terms of Use (“Terms”) apply to any website, mobile or tablet
             application, or other on-line service or platform (“Services”)
             controlled and operated by Rose Garden Special Palabok. Rose Garden
@@ -39,10 +45,8 @@ const TermsConditionScreen = ({navigation}) => {
           </Text>
 
           {/* -------------------- Use of the Services -------------------- */}
-          <Text style={{fontSize: 14, fontWeight: 'bold'}}>
-            Use of the Services
-          </Text>
-          <Text style={{fontSize: 14, textAlign: 'justify'}}>
+          <Text style={styles.heading2}>Use of the Services</Text>
+          <Text style={styles.paragraph}>
             The main purpose of the Services is to provide You with information
             about Rose Garden Special Palabok and to provide information about
             Rose Garden products and services. You shall use the Website for
@@ -53,7 +57,7 @@ const TermsConditionScreen = ({navigation}) => {
             solicitation or promotion. By using the Services, You confirm that
             You are legally permitted to use the Services.
           </Text>
-          <Text style={{fontSize: 14, textAlign: 'justify', marginTop: 10}}>
+          <Text style={{marginTop: 5, ...styles.paragraph}}>
             All content on the Services, including but not limited to text,
             images, graphics, and sound files (“Content”), is subject to
             intellectual property rights and other rights owned or controlled by
@@ -65,7 +69,7 @@ const TermsConditionScreen = ({navigation}) => {
             applicable laws. Rose Garden does not transfer any property rights
             or issue any license by allowing use of the Services.
           </Text>
-          <Text style={{fontSize: 14, textAlign: 'justify', marginTop: 10}}>
+          <Text style={{marginTop: 5, ...styles.paragraph}}>
             You are responsible for any devices, software, and services needed
             to use the Services. Rose Garden does not guarantee the Services
             will properly function on any particular device or software. You are
@@ -74,7 +78,7 @@ const TermsConditionScreen = ({navigation}) => {
             the Services. You are responsible for all activity You conduct for
             any account You create or open in association with the Services.
           </Text>
-          <Text style={{fontSize: 14, textAlign: 'justify', marginTop: 10}}>
+          <Text style={{marginTop: 5, ...styles.paragraph}}>
             You must be age 18 to use the Services without supervision. The
             Services are not to be used by children younger than age 13. Persons
             who are age 13 or older but younger than age 18 (or the age of
@@ -86,10 +90,10 @@ const TermsConditionScreen = ({navigation}) => {
           </Text>
 
           {/* -------------------- Warranty Disclaimer and Limitation of Liability -------------------- */}
-          <Text style={{fontSize: 14, fontWeight: 'bold', marginTop: 20}}>
+          <Text style={styles.heading2}>
             Warranty Disclaimer and Limitation of Liability
           </Text>
-          <Text style={{fontSize: 14, textAlign: 'justify'}}>
+          <Text style={styles.paragraph}>
             The Services are provided on an “as is” basis without warranties of
             any kind, express or implied. Rose Garden Special Palabok disclaims
             all warranties as to merchantability and fitness for a particular
@@ -116,15 +120,16 @@ export default TermsConditionScreen;
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    height: '100%',
-    width: '100%',
+    height: responsiveScreenHeight(100),
+    width: responsiveScreenWidth(100),
     backgroundColor: colors.col6,
   },
   //-------------------- Header Navigation --------------------//
   headerContainer: {
     flexDirection: 'row',
-    width: '100%',
-    height: 50,
+    width: responsiveScreenWidth(100),
+    height: responsiveScreenHeight(6),
+    // height: 50,
     alignItems: 'center',
     padding: 10,
     backgroundColor: colors.col1,
@@ -135,15 +140,25 @@ const styles = StyleSheet.create({
   goBackIcon: {
     color: colors.col7,
     marginLeft: 5,
-    width: 40,
+    // width: 40,
+    width: responsiveScreenWidth(10),
   },
   heading1: {
     flex: 1,
     paddingRight: 45,
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: responsiveScreenFontSize(2.5),
     color: colors.col7,
+  },
+  heading2: {
+    marginTop: 20,
+    fontSize: responsiveScreenFontSize(1.8),
+    fontWeight: 'bold',
+  },
+  paragraph: {
+    fontSize: responsiveScreenFontSize(1.8),
+    textAlign: 'justify',
   },
   //-------------------- Terms & Condition --------------------//
 });

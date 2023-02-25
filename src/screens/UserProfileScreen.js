@@ -88,7 +88,7 @@ const UserProfileScreen = ({navigation, route}) => {
           <View style={{flexDirection: 'row'}}>
             <Text style={styles.txt1}>Full Name: </Text>
             <Text numberOfLines={1} style={styles.txt2}>
-              {userData?.fullName}
+              {userData?.firstName}&nbsp;{userData?.lastName}
             </Text>
           </View>
 

@@ -2,7 +2,12 @@ import {StyleSheet, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-virtualized-view';
 import React from 'react';
 import {Icon} from '@rneui/base';
-import {colors} from '../globals/style';
+import {
+  colors,
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  responsiveScreenFontSize,
+} from '../globals/style';
 
 const PrivacyPolicyScreen = ({navigation}) => {
   return (
@@ -25,21 +30,19 @@ const PrivacyPolicyScreen = ({navigation}) => {
       <ScrollView>
         <View
           style={{
-            width: '90%',
+            width: responsiveScreenWidth(90),
             marginHorizontal: 20,
             marginVertical: 20,
             alignSelf: 'center',
           }}>
-          <Text style={{fontSize: 14, textAlign: 'justify'}}>
+          <Text style={styles.paragraph}>
             Rose Garden Special appreciates Your use of the Services and
             respects Your privacy. You can review the Privacy Policy for a list
             of the Services.
           </Text>
           {/*-------------------- Modifications --------------------*/}
-          <Text style={{fontSize: 14, fontWeight: 'bold', marginTop: 20}}>
-            Modifications
-          </Text>
-          <Text style={{fontSize: 14, textAlign: 'justify'}}>
+          <Text style={styles.heading2}>Modifications</Text>
+          <Text style={styles.paragraph}>
             Rose Garden Special Palabok may revise these Terms on occasion and
             will post the most current version with the Services. If a revision
             meaningfully reduces Your rights, we will notify You (by, for
@@ -50,10 +53,8 @@ const PrivacyPolicyScreen = ({navigation}) => {
           </Text>
 
           {/*-------------------- Miscellaneous --------------------*/}
-          <Text style={{fontSize: 14, fontWeight: 'bold', marginTop: 20}}>
-            Miscellaneous
-          </Text>
-          <Text style={{fontSize: 14, textAlign: 'justify'}}>
+          <Text style={styles.heading2}>Miscellaneous</Text>
+          <Text style={styles.paragraph}>
             These Terms constitute the entire agreement of the parties and
             supersede all previous written or oral agreements between the
             parties with respect to the Services. These Terms will be governed
@@ -89,8 +90,8 @@ const styles = StyleSheet.create({
   //-------------------- Header Navigation --------------------//
   headerContainer: {
     flexDirection: 'row',
-    width: '100%',
-    height: 50,
+    width: responsiveScreenWidth(100),
+    height: responsiveScreenHeight(6),
     alignItems: 'center',
     padding: 10,
     backgroundColor: colors.col1,
@@ -101,15 +102,25 @@ const styles = StyleSheet.create({
   goBackIcon: {
     color: colors.col7,
     marginLeft: 5,
-    width: 40,
+    // width: 40,
+    width: responsiveScreenWidth(10),
   },
   heading1: {
     flex: 1,
     paddingRight: 45,
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: responsiveScreenFontSize(2.5),
     color: colors.col7,
+  },
+  heading2: {
+    marginTop: 20,
+    fontSize: responsiveScreenFontSize(1.8),
+    fontWeight: 'bold',
+  },
+  paragraph: {
+    fontSize: responsiveScreenFontSize(1.8),
+    textAlign: 'justify',
   },
   //-------------------- Privacy Policy --------------------//
 });

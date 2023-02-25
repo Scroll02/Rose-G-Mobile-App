@@ -1,4 +1,14 @@
+// For Responsive Layout
+import {
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  responsiveScreenFontSize,
+} from 'react-native-responsive-dimensions';
+
 module.exports = {
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  responsiveScreenFontSize,
   colors: {
     col1: '#e8b0af', //light pink
     col2: '#bcc998', //green
@@ -12,21 +22,34 @@ module.exports = {
   },
   button1: {
     btn1: {
-      width: '90%',
+      // width: responsiveScreenWidth(90),
+      // color: '#000',
+      // height: responsiveScreenHeight(5),
+      // backgroundColor: '#bcc998',
+      // borderRadius: 10,
+      // marginTop: 10,
+      // // display: 'flex',
+      // fontWeight: 'bold',
+      // fontSize: responsiveScreenFontSize(1.5),
+      width: responsiveScreenWidth(90),
       color: '#000',
-      height: 40,
+      height: responsiveScreenHeight(5),
       backgroundColor: '#bcc998',
       borderRadius: 10,
-      marginTop: 10,
+      marginTop: 15,
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      fontWeight: 'bold',
-      fontSize: 18,
     },
     btn1Txt: {
-      fontSize: 18,
+      // textAlign: 'center',
+      // fontSize: responsiveScreenFontSize(1.5),
+      // fontWeight: 'bold',
+      // color: '#000',
+      textAlign: 'center',
       fontWeight: 'bold',
+      fontSize: responsiveScreenFontSize(2),
+      width: responsiveScreenWidth(60),
       color: '#000',
     },
   },

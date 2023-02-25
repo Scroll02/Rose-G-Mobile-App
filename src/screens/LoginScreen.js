@@ -5,7 +5,6 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  Dimensions,
 } from 'react-native';
 import React, {useState} from 'react';
 import {colors} from '../globals/style';
@@ -18,9 +17,6 @@ import {
   responsiveScreenWidth,
   responsiveScreenFontSize,
 } from 'react-native-responsive-dimensions';
-
-const windowWidth = Dimensions.get('screen').width;
-const windowHeight = Dimensions.get('screen').height;
 
 const LoginScreen = ({navigation}) => {
   const [emailFocus, setEmailFocus] = useState(false);
@@ -152,7 +148,12 @@ const LoginScreen = ({navigation}) => {
           <View style={styles.signInWithBtn}>
             <Image
               source={require('../../assets/images/googleLogo.png')}
-              style={{height: 24, width: 24, resizeMode: 'contain'}}
+              style={{
+                height: responsiveScreenHeight(3),
+                width: responsiveScreenWidth(5),
+                padding: responsiveScreenHeight(1),
+                resizeMode: 'contain',
+              }}
             />
             <Text style={styles.loginInWithBtnTxt}>Connect with Google</Text>
           </View>
@@ -201,17 +202,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     // height: windowHeight - 100,
     height: responsiveScreenHeight(100),
-    width: '100%',
+    width: responsiveScreenWidth(100),
+    // width: '100%',
   },
   topView: {
-    width: '100%',
+    width: responsiveScreenWidth(100),
     // height: '28%',
     height: responsiveScreenHeight(28),
     justifyContent: 'center',
     alignItems: 'center',
   },
   bottomView: {
-    width: '100%',
+    width: responsiveScreenWidth(100),
     // height: '72%',
     height: responsiveScreenHeight(72),
     backgroundColor: colors.col1,
@@ -220,50 +222,55 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   roseGLogo: {
-    marginTop: 50,
-    width: responsiveScreenWidth(55),
+    marginTop: responsiveScreenHeight(5),
+    width: responsiveScreenWidth(50),
     // width: '55%',
     resizeMode: 'contain',
   },
   heading: {
     color: '#000',
     // fontSize: 25,
-    fontSize: responsiveScreenFontSize(3),
-    width: responsiveScreenWidth(60),
+    fontSize: responsiveScreenFontSize(2.5),
+    width: responsiveScreenWidth(50),
     fontWeight: 'bold',
     marginTop: 15,
     marginBottom: 10,
   },
   errorMsg: {
     color: 'red',
+    fontSize: responsiveScreenFontSize(1.5),
   },
   inputContainer: {
     flexDirection: 'row',
+    display: 'flex',
     // height: 40,
     // width: '90%',
     height: responsiveScreenHeight(6),
     width: responsiveScreenWidth(90),
     borderWidth: 1,
     borderColor: '#fff',
-    marginVertical: 7,
+    marginVertical: 3,
     marginHorizontal: 10,
     borderRadius: 10,
   },
   input: {
-    fontSize: 15,
+    fontSize: responsiveScreenFontSize(2),
+    padding: responsiveScreenWidth(1),
     marginLeft: 15,
     // width: '85%',
     width: responsiveScreenWidth(75),
   },
   eyeIcon: {
-    // padding: 8,
-    padding: 14,
+    // padding: responsiveScreenWidth(2),
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   signInBtn: {
     // width: '90%',
     width: responsiveScreenWidth(90),
     color: '#000',
-    height: 40,
+    height: responsiveScreenHeight(5),
     backgroundColor: colors.col2,
     borderRadius: 10,
     marginTop: 15,
@@ -274,11 +281,12 @@ const styles = StyleSheet.create({
   signInBtnTxt: {
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: responsiveScreenFontSize(2),
     width: responsiveScreenWidth(60),
     color: '#000',
   },
   forgotTxt: {
+    fontSize: responsiveScreenFontSize(1.5),
     color: colors.col4,
     marginTop: 5,
     marginRight: 25,
@@ -288,7 +296,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     color: '#000',
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: responsiveScreenFontSize(1.5),
     marginTop: 5,
   },
   agree: {
@@ -300,7 +308,8 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: 'bold',
     alignContent: 'center',
-    width: '10%',
+    width: responsiveScreenWidth(10),
+    fontSize: responsiveScreenFontSize(1.5),
     textAlign: 'center',
   },
   orLine: {
@@ -315,24 +324,25 @@ const styles = StyleSheet.create({
     color: '#000',
     marginVertical: 10,
     // fontSize: 15,
-    fontSize: responsiveScreenFontSize(2),
+    fontSize: responsiveScreenFontSize(1.5),
     textAlign: 'center',
   },
   signInWithBtn: {
     flexDirection: 'row',
     backgroundColor: 'white',
     justifyContent: 'center',
+    alignItems: 'center',
     // width: 300,
     // height: 35,
-    height: responsiveScreenHeight(4),
+    height: responsiveScreenHeight(5),
     width: responsiveScreenWidth(80),
-    margin: 5,
+    margin: responsiveScreenHeight(0.6),
     borderRadius: 10,
-    padding: 5,
+    padding: responsiveScreenHeight(1),
   },
   loginInWithBtnTxt: {
     // fontSize: 15,
-    fontSize: responsiveScreenFontSize(2),
+    fontSize: responsiveScreenFontSize(1.6),
     marginLeft: 10,
     color: '#000',
     fontWeight: '500',

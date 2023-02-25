@@ -11,7 +11,13 @@ import {
 import {ScrollView} from 'react-native-virtualized-view';
 import React, {useState, useEffect} from 'react';
 import {Icon} from '@rneui/base';
-import {colors, button1} from '../globals/style';
+import {
+  colors,
+  button1,
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  responsiveScreenFontSize,
+} from '../globals/style';
 import {firebase} from '../Firebase/FirebaseConfig';
 import {getAuth, sendPasswordResetEmail} from 'firebase/auth';
 
@@ -149,8 +155,8 @@ const styles = StyleSheet.create({
   //-------------------- Header Navigation --------------------//
   headerContainer: {
     flexDirection: 'row',
-    width: '100%',
-    height: 50,
+    width: responsiveScreenWidth(100),
+    height: responsiveScreenHeight(6),
     alignItems: 'center',
     padding: 10,
     backgroundColor: colors.col1,
@@ -161,27 +167,29 @@ const styles = StyleSheet.create({
   goBackIcon: {
     color: colors.col7,
     marginLeft: 5,
-    width: 40,
+    width: responsiveScreenWidth(10),
   },
   heading1: {
     flex: 1,
     paddingRight: 45,
     textAlign: 'center',
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: responsiveScreenFontSize(2.5),
     color: colors.col7,
   },
 
   //-------------------- Forgot Password Screen Body --------------------//
   topView: {
-    width: '100%',
-    height: '35%',
+    width: responsiveScreenWidth(100),
+    height: responsiveScreenHeight(35),
     justifyContent: 'center',
     alignItems: 'center',
   },
   bottomView: {
-    width: '100%',
-    height: '65%',
+    // width: '100%',
+    // height: '65%',
+    width: responsiveScreenWidth(100),
+    height: responsiveScreenHeight(65),
     backgroundColor: colors.col1,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
@@ -190,8 +198,8 @@ const styles = StyleSheet.create({
 
   inputContainer: {
     flexDirection: 'row',
-    height: 40,
-    width: '80%',
+    height: responsiveScreenHeight(6),
+    width: responsiveScreenWidth(80),
     borderWidth: 1,
     borderColor: '#fff',
     marginVertical: 7,
@@ -199,19 +207,21 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   input: {
-    fontSize: 15,
+    // fontSize: 15,
+    fontSize: responsiveScreenFontSize(2),
     marginLeft: 15,
-    width: '75%',
+    // width: '75%',
+    width: responsiveScreenWidth(80),
   },
   textFailed: {
-    fontSize: 13,
+    fontSize: responsiveScreenFontSize(1.8),
     alignSelf: 'center',
     color: 'red',
   },
   successMsg: {
     marginTop: 20,
-    width: '80%',
-    fontSize: 15,
+    width: responsiveScreenWidth(80),
+    fontSize: responsiveScreenFontSize(2),
     alignItems: 'center',
     textAlign: 'center',
     color: 'green',

@@ -52,7 +52,8 @@ const EditProfileDetailsScreen = ({navigation, route}) => {
   }, [userLoggedUid]);
 
   /*-------------------- Updating User Data --------------------*/
-  const [newFullName, setNewFullName] = useState('');
+  const [newFirstName, setNewFirstName] = useState('');
+  const [newLastName, setNewLastName] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [newContactNum, setNewContactNum] = useState('');
   const [newAddress, setNewAddress] = useState('');
@@ -63,10 +64,18 @@ const EditProfileDetailsScreen = ({navigation, route}) => {
       .where('uid', '==', userLoggedUid);
     const doc = await docRef.get();
     if (!doc.empty) {
-      if (newFullName !== '') {
+      if (newFirstName !== '') {
         doc.forEach(doc => {
           doc.ref.update({
-            fullName: newFullName,
+            firstName: newFirstName,
+          });
+        });
+      }
+
+      if (newLastName !== '') {
+        doc.forEach(doc => {
+          doc.ref.update({
+            lastName: newLastName,
           });
         });
       }
@@ -126,12 +135,24 @@ const EditProfileDetailsScreen = ({navigation, route}) => {
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.bodyContainer}>
           <Text style={styles.profileDetailsTxt}>Profile Details</Text>
-          <Text style={styles.txt1}>Full Name: {userData?.fullName}</Text>
+
+          {/*-------------------- First Name -------------------- */}
+          <Text style={styles.txt1}>First Name: {userData?.firstName}</Text>
           <TextInput
             style={styles.txtInput}
-            placeholder="Enter New Full Name"
-            onChangeText={e => setNewFullName(e)}
+            placeholder="Enter New First Name"
+            onChangeText={e => setNewFirstName(e)}
           />
+
+          {/*-------------------- Last Name -------------------- */}
+          <Text style={styles.txt1}>Last Name: {userData?.lastName}</Text>
+          <TextInput
+            style={styles.txtInput}
+            placeholder="Enter New Last Name"
+            onChangeText={e => setNewLastName(e)}
+          />
+
+          {/*-------------------- Email -------------------- */}
           <Text style={styles.txt1}>Email: {userData?.email}</Text>
           <TextInput
             style={styles.txtInput}
@@ -141,6 +162,8 @@ const EditProfileDetailsScreen = ({navigation, route}) => {
           <Text style={styles.txt1}>
             Contact Number:&nbsp;{userData?.contactNumber}
           </Text>
+
+          {/*-------------------- Contact Number -------------------- */}
           <TextInput
             style={styles.txtInput}
             placeholder="Enter New Contact Number"
@@ -149,6 +172,8 @@ const EditProfileDetailsScreen = ({navigation, route}) => {
             onChangeText={onChanged}
             value={newContactNum}
           />
+
+          {/*-------------------- Address -------------------- */}
           <Text style={styles.txt1}>Address: {userData?.address}</Text>
           <TextInput
             style={styles.txtInput}
