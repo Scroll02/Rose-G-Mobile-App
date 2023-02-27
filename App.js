@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, StatusBar} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {colors} from './src/globals/style';
@@ -9,9 +9,10 @@ import SignUpScreen from './src/screens/SignUpScreen';
 import TermsConditionScreen from './src/screens/TermsConditionScreen';
 import BottomNav from './src/components/BottomNav';
 import PrivacyPolicyScreen from './src/screens/PrivacyPolicyScreen';
-
+import {firebase} from './src/Firebase/FirebaseConfig';
 const App = () => {
   const Stack = createNativeStackNavigator();
+
   return (
     <NavigationContainer initialRouteName="LoginScreen">
       <StatusBar

@@ -68,6 +68,13 @@ const SignUpScreen = ({navigation}) => {
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
+        //Email Verification
+        // .then(() => {
+        //   firebase.auth().currentUser.sendEmailVerification({
+        //     handleCodeInApp: true,
+        //     url: 'https://rose-g-2537e.firebaseapp.com',
+        //   });
+        // })
         .then(userCredentials => {
           console.log('user created');
           if (userCredentials?.user.uid) {
@@ -81,9 +88,12 @@ const SignUpScreen = ({navigation}) => {
                 // cpassword: cpassword,
                 uid: userCredentials?.user.uid,
               })
+
               .then(() => {
                 console.log('Data added to firestore');
-                setSuccessMsg('Your account has been created');
+                setSuccessMsg(
+                  'Your account has been created, Verification email sent.',
+                );
               })
               .catch(error => {
                 console.log('firestore error', error);
