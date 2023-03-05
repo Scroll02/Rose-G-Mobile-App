@@ -68,13 +68,7 @@ const SignUpScreen = ({navigation}) => {
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        //Email Verification
-        // .then(() => {
-        //   firebase.auth().currentUser.sendEmailVerification({
-        //     handleCodeInApp: true,
-        //     url: 'https://rose-g-2537e.firebaseapp.com',
-        //   });
-        // })
+
         .then(userCredentials => {
           console.log('user created');
           if (userCredentials?.user.uid) {
@@ -98,6 +92,12 @@ const SignUpScreen = ({navigation}) => {
               .catch(error => {
                 console.log('firestore error', error);
               });
+
+            //Send Email Verification
+            firebase.auth().currentUser.sendEmailVerification({
+              handleCodeInApp: true,
+              url: 'https://rose-g-2537e.firebaseapp.com',
+            });
           }
         })
         .catch(error => {
@@ -132,7 +132,8 @@ const SignUpScreen = ({navigation}) => {
             error.message ===
             'Firebase: Password should be at least 6 characters (auth/weak-password).'
           ) {
-            setCustomError('Password should be at least 8 characters');
+            setCustomError(`Password should be at least 8 characters, 1 numeric character, 1 lowercase letter, 1
+            uppercase letter, 1 special character`);
           } else {
             setCustomError(error.message);
           }

@@ -36,9 +36,13 @@ const LoginScreen = ({navigation}) => {
       .then(userCredential => {
         //Signed In
         var user = userCredential.user;
-        console.log('Logged in successfully!');
-        //console.log(user);
-        navigation.navigate('HomeScreen');
+        if (user.emailVerified) {
+          console.log('Logged in successfully!');
+          //console.log(user);
+          navigation.navigate('HomeScreen');
+        } else {
+          setcustomError('Please verify your email address');
+        }
       })
       .catch(error => {
         var errorMessage = error.message;
