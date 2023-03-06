@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, StatusBar} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {colors} from './src/globals/style';
@@ -9,8 +9,16 @@ import SignUpScreen from './src/screens/SignUpScreen';
 import TermsConditionScreen from './src/screens/TermsConditionScreen';
 import BottomNav from './src/components/BottomNav';
 import PrivacyPolicyScreen from './src/screens/PrivacyPolicyScreen';
-import {firebase} from './src/Firebase/FirebaseConfig';
+
+// Splash Screen
+import SplashScreen from 'react-native-splash-screen';
+
 const App = () => {
+  // Splash Screen
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
   const Stack = createNativeStackNavigator();
 
   return (
