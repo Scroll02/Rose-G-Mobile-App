@@ -1,7 +1,12 @@
 import {StyleSheet, Text, View, TextInput} from 'react-native';
 import {ScrollView} from 'react-native-virtualized-view';
 import React, {useState, useEffect} from 'react';
-import {colors} from '../globals/style';
+import {
+  colors,
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  responsiveScreenFontSize,
+} from '../globals/style';
 import {Icon} from '@rneui/base';
 import HeaderNav from '../components/HeaderNav';
 import OfferSlider from '../components/OfferSlider';
@@ -95,13 +100,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.col6,
-    width: '100%',
-    height: '100%',
+    width: responsiveScreenWidth(100),
+    height: responsiveScreenHeight(100),
   },
   searchContainer: {
     flexDirection: 'row',
-    width: '90%',
-    height: 45,
+    width: responsiveScreenWidth(90),
+    // height: 45,
+    height: responsiveScreenHeight(7),
     backgroundColor: colors.col5,
     borderRadius: 10,
     alignItems: 'center',
@@ -111,7 +117,7 @@ const styles = StyleSheet.create({
   },
   input: {
     marginLeft: 10,
-    width: '90%',
+    width: responsiveScreenWidth(90),
     height: 45,
     fontSize: 18,
     color: colors.col7,

@@ -7,7 +7,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import {colors} from '../globals/style';
+import {
+  colors,
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  responsiveScreenFontSize,
+} from '../globals/style';
 import {menuCategoryData} from '../globals/sampleData';
 
 const CardSlider1 = ({cardTitle, viewTitle, navigation}) => {
@@ -53,30 +58,32 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: 'row',
-    width: '100%',
+    width: responsiveScreenWidth(100),
     justifyContent: 'space-between',
   },
   cardTitle: {
     color: colors.col7,
-    fontSize: 20,
+    fontSize: responsiveScreenFontSize(2.5),
     fontWeight: 'bold',
     marginHorizontal: 20,
   },
   viewTitle: {
     color: colors.col4,
-    fontSize: 15,
+    fontSize: responsiveScreenFontSize(2),
     fontWeight: 'bold',
     textDecorationLine: 'underline',
     marginHorizontal: 20,
     marginVertical: 5,
   },
   menuContainer: {
-    width: '100%',
+    width: responsiveScreenWidth(100),
     //backgroundColor: 'red',
   },
   cardContainer: {
-    width: 100,
-    height: 110,
+    width: responsiveScreenWidth(30),
+
+    // height: 110,
+    height: responsiveScreenHeight(20),
     borderRadius: 10,
     borderWidth: 1,
     borderColor: colors.col5,
@@ -85,11 +92,12 @@ const styles = StyleSheet.create({
     marginRight: 10,
     alignItems: 'center',
     backgroundColor: colors.col5,
+    justifyContent: 'center',
   },
   cardImg: {
     marginTop: 5,
-    width: '70%',
-    height: '70%',
+    width: responsiveScreenWidth(70),
+    height: responsiveScreenHeight(12),
     resizeMode: 'contain',
   },
   menuTitle: {

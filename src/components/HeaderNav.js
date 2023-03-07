@@ -1,7 +1,12 @@
 import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Icon} from '@rneui/base';
-import {colors} from '../globals/style';
+import {
+  colors,
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  responsiveScreenFontSize,
+} from '../globals/style';
 
 const HeaderNav = ({navigation, data}) => {
   // console.log(JSON.parse(data)?.bag.length);
@@ -52,8 +57,9 @@ export default HeaderNav;
 const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
-    width: '100%',
-    height: 50,
+    width: responsiveScreenWidth(100),
+    // height: 50,
+    height: responsiveScreenHeight(8),
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: colors.col1,
@@ -62,13 +68,15 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 20,
   },
   roseGLogo: {
-    width: '40%',
-    height: 45,
+    width: responsiveScreenWidth(40),
+    // height: 45,
+    height: responsiveScreenHeight(6),
     resizeMode: 'contain',
   },
   heading1: {
     color: colors.col7,
-    fontSize: 20,
+    // fontSize: 20,
+    fontSize: responsiveScreenFontSize(1.5),
     fontWeight: 'bold',
     marginLeft: 20,
   },

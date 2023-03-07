@@ -7,7 +7,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import {colors} from '../globals/style';
+import {
+  colors,
+  responsiveScreenHeight,
+  responsiveScreenWidth,
+  responsiveScreenFontSize,
+} from '../globals/style';
 import {featuredData} from '../globals/sampleData';
 
 const CardSlider2 = ({cardTitle, viewTitle, navigation, data}) => {
@@ -75,30 +80,33 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: 'row',
-    width: '100%',
+    width: responsiveScreenWidth(100),
     justifyContent: 'space-between',
   },
   cardTitle: {
     color: colors.col7,
-    fontSize: 20,
+    // fontSize: 20,
+    fontSize: responsiveScreenFontSize(2.5),
     fontWeight: 'bold',
     marginHorizontal: 20,
   },
   viewTitle: {
     color: colors.col4,
-    fontSize: 15,
+    fontSize: responsiveScreenFontSize(2),
     fontWeight: 'bold',
     textDecorationLine: 'underline',
     marginHorizontal: 20,
     marginVertical: 5,
   },
   featuredContainer: {
-    width: '100%',
+    width: responsiveScreenWidth(100),
     //backgroundColor: 'red',
   },
   cardContainer: {
-    width: 160,
-    height: 230,
+    // width: 160,
+    width: responsiveScreenWidth(45),
+    // height: 230,
+    height: responsiveScreenHeight(28),
     borderWidth: 1,
     borderColor: colors.col5,
     marginTop: 5,

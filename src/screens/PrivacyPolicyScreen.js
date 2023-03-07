@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     width: responsiveScreenWidth(100),
-    height: responsiveScreenHeight(6),
+    height: responsiveScreenHeight(8),
     alignItems: 'center',
     padding: 10,
     backgroundColor: colors.col1,
