@@ -86,7 +86,7 @@ const LoginScreen = ({navigation}) => {
             style={styles.input}
             placeholder="Email"
             value={email}
-            placeholderTextColor={'#000'}
+            placeholderTextColor={'black'}
             onFocus={() => {
               setEmailFocus(true);
               setPasswordFocus(false);
@@ -105,7 +105,7 @@ const LoginScreen = ({navigation}) => {
             secureTextEntry={showPassword === false ? true : false}
             placeholder="Password"
             value={password}
-            placeholderTextColor={'#000'}
+            placeholderTextColor={'black'}
             onFocus={() => {
               setEmailFocus(false);
               setPasswordFocus(true);
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: colors.col6,
     // height: windowHeight - 100,
     height: responsiveScreenHeight(100),
     width: responsiveScreenWidth(100),
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   heading: {
-    color: '#000',
+    color: colors.col7,
     // fontSize: 25,
     fontSize: responsiveScreenFontSize(2.5),
     width: responsiveScreenWidth(50),
@@ -241,8 +241,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   errorMsg: {
-    color: 'red',
+    color: colors.col9,
     fontSize: responsiveScreenFontSize(1.5),
+    padding: 3,
+    margin: 3,
+    borderRadius: 10,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -252,7 +255,7 @@ const styles = StyleSheet.create({
     height: responsiveScreenHeight(6),
     width: responsiveScreenWidth(90),
     borderWidth: 1,
-    borderColor: '#fff',
+    borderColor: colors.col7,
     marginVertical: 3,
     marginHorizontal: 10,
     borderRadius: 10,
@@ -263,6 +266,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     // width: '85%',
     width: responsiveScreenWidth(75),
+    color: colors.col7,
   },
   eyeIcon: {
     // padding: responsiveScreenWidth(2),
@@ -273,7 +277,7 @@ const styles = StyleSheet.create({
   signInBtn: {
     // width: '90%',
     width: responsiveScreenWidth(90),
-    color: '#000',
+    color: colors.col7,
     height: responsiveScreenHeight(5),
     backgroundColor: colors.col2,
     borderRadius: 10,
@@ -287,7 +291,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: responsiveScreenFontSize(2),
     width: responsiveScreenWidth(60),
-    color: '#000',
+    color: colors.col7,
   },
   forgotTxt: {
     fontSize: responsiveScreenFontSize(1.5),
@@ -298,7 +302,7 @@ const styles = StyleSheet.create({
   },
   byContinuing: {
     marginHorizontal: 20,
-    color: '#000',
+    color: colors.col7,
     textAlign: 'center',
     fontSize: responsiveScreenFontSize(1.5),
     marginTop: 5,
@@ -309,7 +313,7 @@ const styles = StyleSheet.create({
   },
   orTxt: {
     marginTop: 5,
-    color: '#000',
+    color: colors.col7,
     fontWeight: 'bold',
     alignContent: 'center',
     width: responsiveScreenWidth(10),
@@ -319,13 +323,13 @@ const styles = StyleSheet.create({
   orLine: {
     marginVertical: 15,
     marginHorizontal: 20,
-    backgroundColor: '#000',
+    backgroundColor: colors.col7,
     height: 1,
     flex: 1,
     alignSelf: 'center',
   },
   signInWithTxt: {
-    color: '#000',
+    color: colors.col7,
     marginVertical: 10,
     // fontSize: 15,
     fontSize: responsiveScreenFontSize(1.5),
@@ -352,6 +356,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   signUpTxt: {
-    color: 'red',
+    color: colors.col9,
   },
 });

@@ -22,6 +22,7 @@ const MenuScreen = ({navigation, route}) => {
   const [drinksData, setDrinksData] = useState([]);
   const [iceCreamData, setIceCreamData] = useState([]);
   const foodRef = firebase.firestore().collection('FoodData');
+
   useEffect(() => {
     foodRef.onSnapshot(snapshot => {
       setFoodData(snapshot.docs.map(doc => doc.data()));
@@ -32,7 +33,6 @@ const MenuScreen = ({navigation, route}) => {
     setDrinksData(foodData.filter(item => item.categoryTitle == 'Drinks'));
     setIceCreamData(foodData.filter(item => item.categoryTitle == 'Ice Cream'));
   }, [foodData]);
-  // console.log(drinksData);
 
   const [productList, setProductList] = useState(foodData);
 
@@ -46,11 +46,6 @@ const MenuScreen = ({navigation, route}) => {
       setProductList(foodData);
     }
     setSelectedCategoryIndex(selectedCategoryIndex);
-  };
-
-  const openFoodDetailsScreen = item => {
-    //console.log(item);
-    navigation.navigate('FoodDetails', item);
   };
 
   return (
@@ -69,8 +64,7 @@ const MenuScreen = ({navigation, route}) => {
         <Text style={styles.heading1}>Menu</Text>
       </View>
 
-      {/*-------------------- Categories Section --------------------*/}
-
+      {/*-------------------- Categories Button Section --------------------*/}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -83,6 +77,7 @@ const MenuScreen = ({navigation, route}) => {
                 activeOpacity={0.8}
                 onPress={() => {
                   setCategoryFilter(e.categoryTitle);
+
                   setSelectedCategoryIndex(index);
                 }}>
                 <View

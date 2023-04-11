@@ -455,7 +455,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: colors.col6,
     // height: height_screen,
     // width: width_screen,
     height: responsiveScreenHeight(100),
@@ -470,7 +470,7 @@ const styles = StyleSheet.create({
   bottomView: {
     width: responsiveScreenWidth(100),
     height: responsiveScreenHeight(70),
-    backgroundColor: '#e8b0af',
+    backgroundColor: colors.col1,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     alignItems: 'center',
@@ -481,7 +481,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   heading: {
-    color: '#000',
+    color: colors.col7,
     fontSize: responsiveScreenFontSize(2.5),
     width: responsiveScreenWidth(50),
     fontWeight: 'bold',
@@ -490,7 +490,9 @@ const styles = StyleSheet.create({
   },
   errorMsg: {
     fontSize: responsiveScreenFontSize(1.7),
-    color: 'red',
+    color: colors.col9,
+    padding: 3,
+    borderRadius: 10,
   },
   // Text Fields
   inputContainer: {
@@ -499,7 +501,7 @@ const styles = StyleSheet.create({
     height: responsiveScreenHeight(5),
     width: responsiveScreenWidth(90),
     borderWidth: 1,
-    borderColor: '#fff',
+    borderColor: colors.col7,
     marginVertical: responsiveScreenHeight(0.2),
     // marginHorizontal: 10,
     borderRadius: 10,
@@ -527,7 +529,7 @@ const styles = StyleSheet.create({
   iAgreeTxt: {
     margin: 8,
     fontSize: responsiveScreenFontSize(1.5),
-    color: '#000',
+    color: colors.col7,
     textAlign: 'center',
   },
   termsCondition: {
@@ -535,7 +537,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   alreadyTxt: {
-    color: '#000',
+    color: colors.col7,
     fontSize: responsiveScreenFontSize(1.5),
     marginTop: 10,
   },

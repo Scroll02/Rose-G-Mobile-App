@@ -63,9 +63,28 @@ const BagScreen = ({navigation}) => {
   }, [bagData]);
 
   //----------Food Quantity: Increase & Decrease Button Function----------//
-  const increaseQuantity = () => {
-    setQuantity((parseInt(quantity) + 1).toString());
+  // const increaseQuantity = () => {
+  //   setQuantity((parseInt(quantity) + 1).toString());
+  // };
+
+  const increaseQuantity = async itemIndex => {
+    try {
+      const docRef = firebase
+        .firestore()
+        .collection('UserBag')
+        .doc(firebase.auth().currentUser.uid);
+
+      await docRef.update({
+        [`bag.${itemIndex}.foodQty`]:
+          firebase.firestore.FieldValue.increment(1),
+      });
+
+      setQuantity((parseInt(quantity) + 1).toString());
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+    }
   };
+
   const decreaseQuantity = () => {
     if (parseInt(quantity) > 1) {
       setQuantity((parseInt(quantity) - 1).toString());

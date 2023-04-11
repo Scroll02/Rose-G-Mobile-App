@@ -10,15 +10,16 @@ module.exports = {
   responsiveScreenWidth,
   responsiveScreenFontSize,
   colors: {
-    col1: '#e8b0af', //light pink
+    col1: '#e8b0af',
     col2: '#bcc998', //green
     col3: '#e3686b', //dark pink
     col4: '#c26522', //brown
     col5: '#f4ede5', //dirty white
-    // col5: '#EAD4AF',
     col6: 'white', //white
     col7: 'black', //black
     col8: 'grey', //grey
+    col9: '#ff0000', //red
+    // col10: '#e8b0af', //light pink
   },
   button1: {
     btn1: {
